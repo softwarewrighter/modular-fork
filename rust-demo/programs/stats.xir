@@ -1,0 +1,13 @@
+# Mean and variance. The mean is a single-value map (both arguments are
+# single values) computed in a kernel and written by thread 0; the
+# deviations use it in the same stage.
+%x = input f32 [1000]
+%n = const f32 [] 1000.0
+%s = reduce add %x
+%mean = map div %s %n
+%d = map sub %x %mean
+%d2 = map mul %d %d
+%ss = reduce add %d2
+%var = map div %ss %n
+output %mean
+output %var

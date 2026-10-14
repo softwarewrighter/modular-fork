@@ -1,0 +1,9 @@
+# Threshold: the mask of what is above t, and the values kept by it.
+# A comparison gives a bool; select picks by it. Both are outputs.
+%x = input f32 [16]
+%t = const f32 [] 5.0
+%zero = const f32 [] 0.0
+%m = map gt %x %t
+%k = select %m %x %zero
+output %m
+output %k

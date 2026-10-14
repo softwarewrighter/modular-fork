@@ -1,0 +1,8 @@
+# SAXPY: y = a x + b. The scale and the add fuse into one kernel; the
+# scalar constants become literals in the kernel text.
+%x = input f32 [8]
+%a = const f32 [] 2.0
+%b = const f32 [] 1.0
+%ax = map mul %a %x
+%y = map add %ax %b
+output %y

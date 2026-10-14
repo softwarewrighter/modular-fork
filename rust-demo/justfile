@@ -1,0 +1,65 @@
+# rust-demo: Rust writes Mojo GPU code, builds it as a shared library, loads
+# it, runs it on this machine's GPU (Metal here, CUDA on the Arch box) and
+# checks it against a Rust reference. `just` lists the recipes.
+
+set shell := ["bash", "-euo", "pipefail", "-c"]
+
+root := justfile_directory()
+mojo := root + "/.venv/bin/mojo"
+tool := root + "/target/release/xir-mojo"
+
+default:
+    @just --list --unsorted
+
+# the venv with the pinned MAX nightly (Mojo + max.gpu), and the GPU toolchain check
+setup:
+    scripts/setup.sh
+
+# the Rust tool
+build:
+    cargo build --release
+
+# generate, build, load, run on the GPU, check: one program (saxpy, threshold, reduce, softmax, stats)
+run prog="saxpy" *args="": build
+    {{tool}} run programs/{{prog}}.xir {{args}} 2> >(grep -v -i 'crashpad\|warning\|~\|^<unknown>\|declared here' >&2 || true)
+
+# every program, in turn
+all: build
+    for p in programs/*.xir; do echo; echo "=== $p"; {{tool}} run "$p" 2> >(grep -v -i 'crashpad\|warning\|~\|^<unknown>\|declared here' >&2 || true); done
+
+# print the Mojo the tool writes for a program, then run it
+show prog="saxpy": build
+    {{tool}} run programs/{{prog}}.xir --show-mojo 2> >(grep -v -i 'crashpad\|warning\|~\|^<unknown>\|declared here' >&2 || true)
+
+# only write the Mojo (no toolchain needed): work/<prog>/<prog>.mojo
+emit prog="saxpy": build
+    {{tool}} run programs/{{prog}}.xir --emit-only
+
+# run with the GPU assembly printed as the device compiler received it (Metal AIR here, PTX on NVIDIA)
+asm prog="saxpy": build
+    {{tool}} run programs/{{prog}}.xir --dump-asm 2> >(grep -v -i 'crashpad\|warning\|~\|^<unknown>\|declared here' >&2 || true)
+
+# the reference only: parse, check, evaluate in Rust (no GPU, no Mojo)
+check prog="saxpy": build
+    {{tool}} check programs/{{prog}}.xir
+
+# the tests that need no GPU: parser, checker, reference, plan, emitted text
+test:
+    cargo test --release --test programs
+
+# the device gate: every program on the GPU, its outputs checked (needs setup and a GPU)
+gate: build
+    XIR_REQUIRE_DEVICE=1 cargo test --release --test device -- --nocapture
+
+# build any hand-written Mojo file as a C-callable shared library
+lib src out="":
+    scripts/build-mojo-lib.sh {{src}} {{out}}
+
+# what the GPU is, through Mojo alone (no Rust): a one-line probe
+probe:
+    printf 'from max.gpu.host import DeviceContext\ndef main() raises:\n    var ctx = DeviceContext()\n    print("api:", ctx.api(), " name:", ctx.name())\n' > work/probe.mojo 2>/dev/null || (mkdir -p work && printf 'from max.gpu.host import DeviceContext\ndef main() raises:\n    var ctx = DeviceContext()\n    print("api:", ctx.api(), " name:", ctx.name())\n' > work/probe.mojo)
+    {{mojo}} run work/probe.mojo 2> >(grep -v Crashpad >&2 || true)
+
+# remove generated libraries and build output (keeps .venv)
+clean:
+    rm -rf work target

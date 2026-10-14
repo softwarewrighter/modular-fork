@@ -1,0 +1,9 @@
+[package]
+name = "xir-mojo"
+version = "0.1.0"
+edition = "2021"
+description = "Rust emits Mojo GPU code from a tiny array IR, builds it as a shared library, loads it, and runs it on the GPU"
+license = "Apache-2.0 WITH LLVM-exception"
+
+[dependencies]
+libloading = "0.8"

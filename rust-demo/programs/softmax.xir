@@ -1,0 +1,13 @@
+# Softmax of a vector, as X_eTaL-ML's NN library writes it: subtract the
+# max (one reduction), exponentiate, divide by the sum (a second reduction).
+# Three fused kernel stages separated by the two reductions. The sum of the
+# probabilities is a third reduction, as a check.
+%x = input f32 [1024]
+%m = reduce max %x
+%c = map sub %x %m
+%e = map exp %c
+%s = reduce add %e
+%p = map div %e %s
+%total = reduce add %p
+output %p
+output %total

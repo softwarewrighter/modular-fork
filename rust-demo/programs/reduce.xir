@@ -1,0 +1,10 @@
+# Reductions: the sum, the largest and the smallest of a thousand items,
+# each a two-pass tree on the device (a partial per block of 256, then one
+# block over the four partials).
+%x = input f32 [1000]
+%s = reduce add %x
+%mx = reduce max %x
+%mn = reduce min %x
+output %s
+output %mx
+output %mn
