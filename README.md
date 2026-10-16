@@ -23,7 +23,7 @@ into XIR, this tool turns the XIR into Mojo, and the GPU's answer is
 checked against what X_eTaL's own evaluator printed for the source. Five
 of X_eTaL-gpu's thirteen Accel demos lower into the subset this tool
 takes (vectors of one length, f32 and ints, fused maps, whole-array
-reductions) and all five agree exactly on the M1 Max. The other eight
+reductions) and all five agree exactly on the M1 Max and on the RTX 5060 Ti. The other eight
 need axes, matrices and gathers, which X_eTaL-gpu's saga gpu-mojo adds
 as it ports this emitter into its own `components/mojo`. X_eTaL-gpu's
 OpenCL path is not replaced; Mojo is a second backend beside it.
@@ -34,7 +34,7 @@ OpenCL path is not replaced; Mojo is a second backend beside it.
 | ---- | ----- |
 | The demo | [rust-demo/README.md](rust-demo/README.md) |
 | Results, per device | [rust-demo/doc/results.md](rust-demo/doc/results.md) |
-| RTX 5060 Ti evidence (raw logs, 2026-10-16) | [rust-demo/doc/evidence/rtx5060-20261016/](rust-demo/doc/evidence/rtx5060-20261016/) · [what they establish](rust-demo/doc/rtx5060-handoff.md) |
+| RTX 5060 Ti evidence (raw logs, 2026-10-16) | [five programs](rust-demo/doc/evidence/rtx5060-20261016/) · [all ten, with the X_eTaL-lowered five](rust-demo/doc/evidence/rtx5060-20261016-ten-programs/) · [what they establish](rust-demo/doc/rtx5060-handoff.md) |
 | Proving the GPU ran it | [rust-demo/doc/proving-gpu-execution.md](rust-demo/doc/proving-gpu-execution.md) |
 | Mojo as a C-callable library | [rust-demo/doc/mojo-as-a-library.md](rust-demo/doc/mojo-as-a-library.md) |
 | Linux and NVIDIA setup | [rust-demo/doc/porting-arch-rtx5060.md](rust-demo/doc/porting-arch-rtx5060.md) |
@@ -63,11 +63,15 @@ evaluator as well (the device gate runs these too):
 
 | Accel demo (`.xtl`) | Lowered to | Apple M1 Max, Metal | RTX 5060 Ti, CUDA |
 | ------------------- | ---------- | ------------------- | ----------------- |
-| saxpy | 1 fused kernel | exact | pending re-run |
-| threshold | comparisons, cast, int `mod` | exact | pending re-run |
-| reduce-sum | int and float reductions | exact | pending re-run |
-| pipeline | 2 kernels, 2 reductions | exact | pending re-run |
-| vector-add | int and float kernels | exact | pending re-run |
+| saxpy | 1 fused kernel | exact | exact |
+| threshold | comparisons, cast, int `mod` | exact | exact |
+| reduce-sum | int and float reductions | exact | exact |
+| pipeline | 2 kernels, 2 reductions | exact | exact |
+| vector-add | int and float kernels | exact | exact |
+
+Both columns are from 2026-10-16; the Arch run is at commit f95c7ba386
+with the lowered XIR pinned to X_eTaL-gpu 38bae5c, its logs under
+[rust-demo/doc/evidence/rtx5060-20261016-ten-programs/](rust-demo/doc/evidence/rtx5060-20261016-ten-programs/).
 
 The device dump shows Metal AIR (`air64-apple-macosx26.0.0`) on the Mac
 and PTX for `sm_120a` on the NVIDIA card. Build and run times per program

@@ -97,8 +97,8 @@ reductions exactly or within 7e-6 (the variance, the device's tree
 folding in another order). The NVIDIA run needed no change to the Rust,
 the programs or the generated Mojo. The five programs lowered from
 X_eTaL source agree exactly with the Rust reference and with X_eTaL's
-evaluator on the M1 Max (2026-10-16; the Arch box has not re-run them
-yet). Per-program numbers and the raw Linux logs are in
+evaluator on the M1 Max and on the RTX 5060 Ti (both 2026-10-16).
+Per-program numbers and the raw Linux logs are in
 [doc/results.md](doc/results.md).
 
 | Step | M1 Max, Metal | RTX 5060 Ti, CUDA |
