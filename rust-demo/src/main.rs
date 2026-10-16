@@ -2,8 +2,12 @@
 //! shared library with `mojo build --emit shared-lib`, loads it, runs it on
 //! the GPU, and checks the device against a Rust reference.
 //!
-//!     xir-mojo run programs/saxpy.xir [--inputs FILE] [--show-mojo] [--emit-only] [--dump-asm] [--work DIR]
+//!     xir-mojo run programs/saxpy.xir [--inputs FILE] [--expect FILE] [--show-mojo] [--emit-only] [--dump-asm] [--work DIR]
 //!     xir-mojo check programs/saxpy.xir          # parse, check, evaluate the reference only
+//!
+//! `--expect FILE` (or `PROGRAM.expect` beside the program) holds what the
+//! X_eTaL evaluator printed for the same program, one line per output; the
+//! device is then checked against it too, as X_eTaL-gpu's gate checks OpenCL.
 
 use xir_mojo::{emit, eval, host, ir};
 
@@ -16,6 +20,7 @@ struct Args {
     command: String,
     program: PathBuf,
     inputs: Option<PathBuf>,
+    expect: Option<PathBuf>,
     work: Option<PathBuf>,
     show_mojo: bool,
     emit_only: bool,
@@ -24,7 +29,7 @@ struct Args {
 
 fn usage() -> ! {
     eprintln!(
-        "usage: xir-mojo run PROGRAM.xir [--inputs FILE] [--show-mojo] [--emit-only] [--dump-asm] [--work DIR]\n       xir-mojo check PROGRAM.xir [--inputs FILE]"
+        "usage: xir-mojo run PROGRAM.xir [--inputs FILE] [--expect FILE] [--show-mojo] [--emit-only] [--dump-asm] [--work DIR]\n       xir-mojo check PROGRAM.xir [--inputs FILE] [--expect FILE]"
     );
     exit(2)
 }
@@ -39,6 +44,7 @@ fn parse_args() -> Args {
         command,
         program: PathBuf::new(),
         inputs: None,
+        expect: None,
         work: None,
         show_mojo: false,
         emit_only: false,
@@ -48,6 +54,7 @@ fn parse_args() -> Args {
     while let Some(a) = it.next() {
         match a.as_str() {
             "--inputs" => args.inputs = Some(PathBuf::from(it.next().unwrap_or_else(|| usage()))),
+            "--expect" => args.expect = Some(PathBuf::from(it.next().unwrap_or_else(|| usage()))),
             "--work" => args.work = Some(PathBuf::from(it.next().unwrap_or_else(|| usage()))),
             "--show-mojo" => args.show_mojo = true,
             "--emit-only" => args.emit_only = true,
@@ -97,10 +104,41 @@ fn read_inputs(p: &ir::Program, path: &Path) -> Result<HashMap<String, Vec<f32>>
     Ok(bound)
 }
 
+/// The X_eTaL evaluator's output for the program: one line per `output`,
+/// the items as `xetal` prints them (Ints without a point, Floats with one).
+fn read_expect(p: &ir::Program, path: &Path) -> Result<Vec<Vec<f32>>, String> {
+    let text = fs::read_to_string(path).map_err(|e| format!("{}: {e}", path.display()))?;
+    let lines: Vec<&str> = text.lines().filter(|l| !l.trim().is_empty() && !l.starts_with('#')).collect();
+    if lines.len() != p.outputs.len() {
+        return Err(format!(
+            "{}: {} line(s) for {} output(s)",
+            path.display(),
+            lines.len(),
+            p.outputs.len()
+        ));
+    }
+    lines
+        .iter()
+        .enumerate()
+        .map(|(j, l)| {
+            l.split_whitespace()
+                .map(|w| {
+                    w.parse::<f32>()
+                        .map_err(|_| format!("{}:{}: `{w}` is not a number", path.display(), j + 1))
+                })
+                .collect()
+        })
+        .collect()
+}
+
 fn show(v: &[f32], ty: ir::Ty) -> String {
     let items: Vec<String> = v
         .iter()
-        .map(|x| if ty == ir::Ty::Bool { (if *x != 0.0 { "1" } else { "0" }).to_string() } else { format!("{x:?}") })
+        .map(|x| match ty {
+            ir::Ty::Bool => (if *x != 0.0 { "1" } else { "0" }).to_string(),
+            ir::Ty::I64 => format!("{}", *x as i64),
+            ir::Ty::F32 => format!("{x:?}"),
+        })
         .collect();
     let joined = items.join(" ");
     if joined.len() > 110 {
@@ -110,7 +148,7 @@ fn show(v: &[f32], ty: ir::Ty) -> String {
     }
 }
 
-/// Exact for bools. For floats, each item must be within a relative 1e-4
+/// Exact for bools and ints. For floats, each item must be within a relative 1e-4
 /// (or an absolute 1e-6 near zero), since the device's tree reduction folds in
 /// another order than the reference; the largest relative difference is reported.
 fn compare(gpu: &[f32], want: &[f32], ty: ir::Ty) -> (bool, f32) {
@@ -122,6 +160,13 @@ fn compare(gpu: &[f32], want: &[f32], ty: ir::Ty) -> (bool, f32) {
     for (g, w) in gpu.iter().zip(want) {
         if ty == ir::Ty::Bool {
             if (*g != 0.0) != (*w != 0.0) {
+                ok = false;
+                worst = 1.0;
+            }
+            continue;
+        }
+        if ty == ir::Ty::I64 {
+            if g != w {
                 ok = false;
                 worst = 1.0;
             }
@@ -161,6 +206,12 @@ fn real_main(args: &Args) -> Result<(), String> {
         read_inputs(&program, &inputs_path)?
     };
     let reference = eval::run(&program, &bound)?;
+    let expect_path = args.expect.clone().unwrap_or_else(|| args.program.with_extension("expect"));
+    let expected = if args.expect.is_some() || expect_path.exists() {
+        Some(read_expect(&program, &expect_path)?)
+    } else {
+        None
+    };
     let plan = emit::plan(&program);
 
     println!("program: {} ({})", stem, args.program.display());
@@ -175,9 +226,27 @@ fn real_main(args: &Args) -> Result<(), String> {
         plan.buffers()
     );
     if args.command == "check" {
+        let mut agreed = 0;
         for (j, &o) in program.outputs.iter().enumerate() {
             let v = &program.values[o];
             println!("output %{}\n  reference: {}", v.name, show(&reference[j], v.ty));
+            if let Some(exp) = &expected {
+                let (ok, worst) = compare(&reference[j], &exp[j], v.ty);
+                println!("  xetal:     {}", show(&exp[j], v.ty));
+                println!("  {}", if ok { if worst == 0.0 { "agree (exact)" } else { "agree" } } else { "DISAGREE" });
+                agreed += ok as usize;
+            }
+        }
+        if let Some(_) = &expected {
+            println!(
+                "RESULT: {} of {} reference outputs agree with the X_eTaL evaluator ({})",
+                agreed,
+                program.outputs.len(),
+                expect_path.display()
+            );
+            if agreed != program.outputs.len() {
+                return Err("the Rust reference disagrees with the X_eTaL evaluator".into());
+            }
         }
         return Ok(());
     }
@@ -266,10 +335,14 @@ fn real_main(args: &Args) -> Result<(), String> {
     }
 
     let mut agreed = 0;
+    let mut agreed_xetal = 0;
     for (j, &o) in program.outputs.iter().enumerate() {
         let v = &program.values[o];
         let (ok, worst) = compare(&outputs[j], &reference[j], v.ty);
         println!("output %{}\n  gpu:       {}\n  reference: {}", v.name, show(&outputs[j], v.ty), show(&reference[j], v.ty));
+        if let Some(exp) = &expected {
+            println!("  xetal:     {}", show(&exp[j], v.ty));
+        }
         if ok {
             agreed += 1;
             if worst == 0.0 {
@@ -280,9 +353,28 @@ fn real_main(args: &Args) -> Result<(), String> {
         } else {
             println!("  DISAGREE (largest relative difference {worst:.2e})");
         }
+        if let Some(exp) = &expected {
+            let (ok_x, worst_x) = compare(&outputs[j], &exp[j], v.ty);
+            if ok_x {
+                agreed_xetal += 1;
+                if worst_x != 0.0 {
+                    println!("  agree with the X_eTaL evaluator (largest relative difference {worst_x:.2e})");
+                }
+            } else {
+                println!("  DISAGREE with the X_eTaL evaluator (largest relative difference {worst_x:.2e})");
+            }
+        }
     }
-    println!("RESULT: {} of {} outputs agree with the Rust reference", agreed, program.outputs.len());
-    if agreed != program.outputs.len() {
+    let n_out = program.outputs.len();
+    if expected.is_some() {
+        println!(
+            "RESULT: {agreed} of {n_out} outputs agree with the Rust reference; {agreed_xetal} of {n_out} with the X_eTaL evaluator ({})",
+            expect_path.display()
+        );
+    } else {
+        println!("RESULT: {agreed} of {n_out} outputs agree with the Rust reference");
+    }
+    if agreed != n_out || (expected.is_some() && agreed_xetal != n_out) {
         return Err("the device disagrees with the reference".into());
     }
     Ok(())

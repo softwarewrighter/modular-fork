@@ -19,7 +19,7 @@ setup:
 build:
     cargo build --release
 
-# generate, build, load, run on the GPU, check: one program (saxpy, threshold, reduce, softmax, stats)
+# generate, build, load, run on the GPU, check: one program (saxpy, threshold, reduce, softmax, stats, accel-saxpy, ...)
 run prog="saxpy" *args="": build
     {{tool}} run programs/{{prog}}.xir {{args}} 2> >(grep -v -i 'crashpad\|warning\|~\|^<unknown>\|declared here' >&2 || true)
 
@@ -38,6 +38,14 @@ emit prog="saxpy": build
 # run with the GPU assembly printed as the device compiler received it (Metal AIR here, PTX on NVIDIA)
 asm prog="saxpy": build
     {{tool}} run programs/{{prog}}.xir --dump-asm 2> >(grep -v -i 'crashpad\|warning\|~\|^<unknown>\|declared here' >&2 || true)
+
+# X_eTaL source to the GPU through Mojo, nothing by hand: lowered by the sibling X_eTaL-gpu's tool, run here, checked against xetal
+xtl file *args="":
+    scripts/from-xtl.sh {{file}} {{args}} 2> >(grep -v -i 'crashpad\|warning\|~\|^<unknown>\|declared here' >&2 || true)
+
+# rewrite programs/accel-*.xir and .expect from X_eTaL-gpu's Accel demos (needs ../../X_eTaL-gpu built)
+refresh-xtl:
+    scripts/from-xtl.sh --refresh
 
 # the reference only: parse, check, evaluate in Rust (no GPU, no Mojo)
 check prog="saxpy": build

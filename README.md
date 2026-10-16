@@ -17,9 +17,16 @@ the NVIDIA RTX 5060 Ti. The same Rust, the same five programs and the same
 generated Mojo ran on both, with no change for NVIDIA, and every result is
 checked against a Rust reference evaluator.
 
-What it is not yet: the five programs are written by hand in a small XIR
-subset (vectors, f32, fused maps and whole-array reductions); X_eTaL's own
-front end is not connected, and X_eTaL-gpu's OpenCL path is not replaced.
+Since 2026-10-16 the program can come from X_eTaL source with nothing
+written by hand: X_eTaL-gpu's `xetal-gpu lower` turns an `.xtl` program
+into XIR, this tool turns the XIR into Mojo, and the GPU's answer is
+checked against what X_eTaL's own evaluator printed for the source. Five
+of X_eTaL-gpu's thirteen Accel demos lower into the subset this tool
+takes (vectors of one length, f32 and ints, fused maps, whole-array
+reductions) and all five agree exactly on the M1 Max. The other eight
+need axes, matrices and gathers, which X_eTaL-gpu's saga gpu-mojo adds
+as it ports this emitter into its own `components/mojo`. X_eTaL-gpu's
+OpenCL path is not replaced; Mojo is a second backend beside it.
 
 ## Links
 
@@ -50,6 +57,17 @@ fold).
 | reduce | sum, max, min (two-pass trees) | exact | exact |
 | softmax | two stages split by reductions | within 5e-7 | within 4.77e-7 |
 | stats | mean and variance | within 6.6e-6 | within 6.56e-6 |
+
+From X_eTaL source, lowered by `xetal-gpu` and checked against X_eTaL's
+evaluator as well (the device gate runs these too):
+
+| Accel demo (`.xtl`) | Lowered to | Apple M1 Max, Metal | RTX 5060 Ti, CUDA |
+| ------------------- | ---------- | ------------------- | ----------------- |
+| saxpy | 1 fused kernel | exact | pending re-run |
+| threshold | comparisons, cast, int `mod` | exact | pending re-run |
+| reduce-sum | int and float reductions | exact | pending re-run |
+| pipeline | 2 kernels, 2 reductions | exact | pending re-run |
+| vector-add | int and float kernels | exact | pending re-run |
 
 The device dump shows Metal AIR (`air64-apple-macosx26.0.0`) on the Mac
 and PTX for `sm_120a` on the NVIDIA card. Build and run times per program
@@ -94,8 +112,9 @@ for them.
 git switch experimental
 cd rust-demo
 scripts/setup.sh      # venv with the pinned Mojo and MAX nightly; checks the GPU toolchain
-just gate             # build, run and check all five programs on this machine's GPU
+just gate             # build, run and check all ten programs on this machine's GPU
 just capture          # versions, tests, runs and assembly into work/results-<time>/
+just xtl ../../X_eTaL-gpu/libs/Accel/demos/saxpy.xtl   # X_eTaL source, lowered, Mojo, GPU, checked
 ```
 
 ---

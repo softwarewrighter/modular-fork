@@ -57,6 +57,27 @@ Use `just capture` to collect a fresh run under ignored `work/`. GPU runs requir
 access outside the coding sandbox, which hides the NVIDIA device nodes.
 See [Linux setup](porting-arch-rtx5060.md) for reproduction.
 
+## From X_eTaL source: Apple M1 Max, Metal (2026-10-16)
+
+The five Accel demos of X_eTaL-gpu (revision 38bae5c) whose lowering
+stays in this tool's subset, lowered by `xetal-gpu lower` with nothing
+written by hand (`programs/accel-*.xir`), run through the same emitter
+and checked against the Rust reference and against X_eTaL's evaluator
+baseline for the source (`programs/accel-*.expect`). Same Mojo and MAX
+nightly as above.
+
+| Accel demo | Outputs | Stages | Reductions | xir_run | Verdict |
+| ---------- | ------- | ------ | ---------- | ------- | ------- |
+| saxpy | 1 | 1 | 0 | 50 ms | exact, both oracles |
+| threshold | 5 | 1 | 0 | 47 ms | exact, both oracles (ints, `cast`, floored `mod`) |
+| reduce-sum | 5 | 4 | 5 | 59 ms | exact, both oracles |
+| pipeline | 2 | 2 | 2 | 49 ms | exact, both oracles |
+| vector-add | 2 | 1 | 0 | 42 ms | exact, both oracles |
+
+`just gate` now runs ten programs. The Arch box has not re-run since
+these landed: see the re-run section of
+[porting-arch-rtx5060.md](porting-arch-rtx5060.md).
+
 ## Tesla M40 and other pre-Turing cards
 
 Not attempted. See `older-gpus.md`.

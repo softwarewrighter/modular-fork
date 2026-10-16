@@ -149,3 +149,66 @@ fn the_checker_refuses_what_the_device_could_not_run() {
         assert!(err.contains(needle), "{src:?}: {err}");
     }
 }
+
+/// The programs `xetal-gpu lower` wrote from X_eTaL source (`programs/accel-*.xir`)
+/// parse, and the Rust reference gives what X_eTaL's own evaluator printed
+/// for the same source (`programs/accel-*.expect`), exactly: no GPU needed
+/// to know the two oracles agree.
+#[test]
+fn lowered_xetal_programs_match_the_evaluator() {
+    let dir = root().join("programs");
+    let mut seen = 0;
+    for entry in fs::read_dir(&dir).unwrap() {
+        let path = entry.unwrap().path();
+        let stem = path.file_stem().unwrap().to_str().unwrap().to_string();
+        if !stem.starts_with("accel-") || path.extension().and_then(|e| e.to_str()) != Some("xir") {
+            continue;
+        }
+        seen += 1;
+        let src = fs::read_to_string(&path).unwrap();
+        assert!(src.starts_with("# "), "{stem}: no provenance header");
+        assert!(src.contains("lowered by xetal-gpu"), "{stem}: not marked as lowered");
+        let p = ir::parse(&src).unwrap_or_else(|e| panic!("{stem}: {e}"));
+        let got = eval::run(&p, &HashMap::new()).unwrap_or_else(|e| panic!("{stem}: {e}"));
+        let expect = fs::read_to_string(path.with_extension("expect")).unwrap();
+        let lines: Vec<&str> = expect.lines().filter(|l| !l.starts_with('#') && !l.trim().is_empty()).collect();
+        assert_eq!(lines.len(), p.outputs.len(), "{stem}: outputs vs evaluator lines");
+        for (j, line) in lines.iter().enumerate() {
+            let want: Vec<f32> = line.split_whitespace().map(|w| w.parse().unwrap()).collect();
+            assert_eq!(got[j], want, "{stem}: output {j} ({})", p.values[p.outputs[j]].name);
+        }
+        // The emitted Mojo says which values are ints carried as Float32.
+        let plan = emit::plan(&p);
+        let text = emit::emit(&p, &plan, &stem);
+        let has_ints = p.values.iter().any(|v| v.ty == ir::Ty::I64);
+        assert_eq!(text.contains("i64 in the IR, carried as Float32"), has_ints, "{stem}");
+    }
+    assert_eq!(seen, 5, "five Accel demos lower into the subset");
+}
+
+#[test]
+fn ints_cast_and_mod() {
+    let p = ir::parse(
+        "%a = const i64 [4] -3 -2 -1 4\n%two = const i64 [] 2\n%m = map mod %a %two\n\
+         %f = cast f64 %a\n%h = const f64 [] 0.5\n%g = map mul %f %h\n%b = map gt %a %two\n%c = cast i64 %b\n\
+         output %m\noutput %g\noutput %c\n",
+    )
+    .unwrap();
+    let out = eval::run(&p, &HashMap::new()).unwrap();
+    assert_eq!(out[0], vec![1.0, 0.0, 1.0, 0.0], "floored mod, the divisor's sign");
+    assert_eq!(out[1], vec![-1.5, -1.0, -0.5, 2.0]);
+    assert_eq!(out[2], vec![0.0, 0.0, 0.0, 1.0]);
+    assert_eq!(p.values[p.index_of("m").unwrap()].ty, ir::Ty::I64);
+    assert_eq!(p.values[p.index_of("c").unwrap()].ty, ir::Ty::I64);
+    let plan = emit::plan(&p);
+    let text = emit::emit(&p, &plan, "t");
+    assert!(text.contains("Float32(Int(v_a) % Int(Float32(2.0)))"), "int mod goes through Mojo's Int %:\n{text}");
+    assert!(text.contains("Float32(1.0) if v_b else Float32(0.0)"), "bool to int cast");
+
+    let e = |s: &str| ir::parse(s).err().unwrap();
+    assert!(e("%a = const i64 [] 16777217\noutput %a\n").contains("beyond 2^24"));
+    assert!(e("%a = const i64 [2] 1 2\n%b = map div %a %a\noutput %b\n").contains("takes f32"));
+    assert!(e("%a = const i64 [2] 1 2\n%b = map exp %a\noutput %b\n").contains("takes f32"));
+    let big = ir::parse("%a = const i64 [2] 5000 5000\n%b = map mul %a %a\n%c = map mul %b %a\noutput %c\n").unwrap();
+    assert!(eval::run(&big, &HashMap::new()).unwrap_err().contains("beyond 2^24"));
+}

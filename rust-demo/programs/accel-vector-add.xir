@@ -1,0 +1,15 @@
+# vector-add.xtl, lowered by xetal-gpu (X_eTaL-gpu 38bae5c); not written by hand.
+# Regenerate: scripts/from-xtl.sh --refresh (or scripts/from-xtl.sh FILE.xtl).
+%a = const i64 [8] 1 2 3 4 5 6 7 8
+%l = const i64 [] 10
+%r = const i64 [8] 1 2 3 4 5 6 7 8
+%mul = map mul %l %r
+%add = map add %a %mul
+%l_2 = const f64 [8] 1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0
+%r_2 = const f64 [] 4.0
+%div = map div %l_2 %r_2
+%l_3 = const f64 [] 0.5
+%mul_2 = map mul %l_3 %div
+%add_2 = map add %div %mul_2
+output %add
+output %add_2

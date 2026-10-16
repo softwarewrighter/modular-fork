@@ -3,7 +3,7 @@
 //! outputs (exactly for bools, within a tolerance for floats, since the
 //! device's tree reduction folds in another order).
 
-use crate::ir::{MapOp, Op, Program, RedOp, Shape};
+use crate::ir::{MapOp, Op, Program, RedOp, Shape, Ty, EXACT_INT};
 use std::collections::HashMap;
 
 fn map1(op: MapOp, a: f32) -> f32 {
@@ -30,6 +30,8 @@ fn map2(op: MapOp, a: f32, b: f32) -> f32 {
         MapOp::Sub => a - b,
         MapOp::Mul => a * b,
         MapOp::Div => a / b,
+        // Floored, as X_eTaL's and Python's: the result takes the divisor's sign.
+        MapOp::Mod => a - b * (a / b).floor(),
         MapOp::Min => a.min(b),
         MapOp::Max => a.max(b),
         MapOp::Eq => bit(a == b),
@@ -92,6 +94,22 @@ pub fn run(p: &Program, inputs: &HashMap<String, Vec<f32>>) -> Result<Vec<Vec<f3
             Op::Select(c, a, b) => (0..len)
                 .map(|i| if at(*c, i) != 0.0 { at(*a, i) } else { at(*b, i) })
                 .collect(),
+            Op::Cast(a) => (0..len)
+                .map(|i| {
+                    let x = at(*a, i);
+                    match (p.values[*a].ty, v.ty) {
+                        (_, Ty::Bool) => {
+                            if x != 0.0 {
+                                1.0
+                            } else {
+                                0.0
+                            }
+                        }
+                        (Ty::F32, Ty::I64) => x.trunc(),
+                        _ => x,
+                    }
+                })
+                .collect(),
             Op::Reduce(op, a) => {
                 let x = &vals[*a];
                 let mut acc = x[x.len() - 1];
@@ -106,6 +124,14 @@ pub fn run(p: &Program, inputs: &HashMap<String, Vec<f32>>) -> Result<Vec<Vec<f3
             }
         };
         debug_assert!(matches!(v.shape, Shape::Scalar) == (computed.len() == 1) || len == 1);
+        if v.ty == Ty::I64 {
+            if let Some(x) = computed.iter().find(|x| x.abs() > EXACT_INT) {
+                return Err(format!(
+                    "%{} holds {x}, beyond 2^24: ints are carried in f32 here and stay exact only below it",
+                    v.name
+                ));
+            }
+        }
         vals.push(computed);
     }
     Ok(p.outputs.iter().map(|&o| vals[o].clone()).collect())

@@ -6,6 +6,36 @@ and the outside observers (`nvidia-smi`). Verified on 2026-10-16 with
 driver 615.78.08 and the pinned nightly: all five programs and the device
 gate pass, without source changes. See [results](results.md).
 
+## Re-run after 2026-10-16 (the X_eTaL-lowered programs)
+
+The branch gained five programs lowered from X_eTaL source
+(`programs/accel-*.xir` with `.expect`), `i64`, `cast` and `mod` in the
+tool, and a second oracle (X_eTaL's evaluator output). The Arch box
+has not run these. Nothing new is needed there: the lowered programs
+and their expectations are committed, so X_eTaL-gpu need not be present.
+
+```sh
+cd modular-fork
+git switch experimental && git pull --ff-only origin experimental
+cd rust-demo
+just test             # 9 host tests, no GPU
+just all              # all ten programs; the accel-* ones print a `xetal:` line per output
+just gate             # the device gate over all ten
+just capture          # or everything at once into work/results-<time>/
+just asm accel-threshold | grep -E '^\.target|\.entry'   # PTX for the int kernel
+```
+
+What to record, in `doc/results.md` beside the Mac's section: the ten
+`RESULT:` lines (the accel ones end with `... with the X_eTaL evaluator`),
+the `device:` line, driver and Mojo versions, and the `xir_run` times.
+The `gate.log` from `just capture` is enough evidence; commit it under
+`doc/evidence/rtx5060-<date>/` as the first run was.
+
+If X_eTaL-gpu is cloned beside the fork and built there (`just build`),
+`just xtl ../../X_eTaL-gpu/libs/Accel/demos/saxpy.xtl` runs the whole
+chain from source on the card, and `just refresh-xtl` regenerates the
+committed lowered programs from the sibling's current revision.
+
 ## Steps
 
 1. Clone the fork's `experimental` branch and enter `rust-demo/`.

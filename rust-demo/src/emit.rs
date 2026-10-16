@@ -50,14 +50,14 @@ impl Plan {
 }
 
 fn is_elementwise(op: &Op) -> bool {
-    matches!(op, Op::Map(..) | Op::Select(..))
+    matches!(op, Op::Map(..) | Op::Select(..) | Op::Cast(..))
 }
 
 fn args_of(op: &Op) -> Vec<usize> {
     match op {
         Op::Map(_, a) => a.clone(),
         Op::Select(c, a, b) => vec![*c, *a, *b],
-        Op::Reduce(_, a) => vec![*a],
+        Op::Cast(a) | Op::Reduce(_, a) => vec![*a],
         _ => vec![],
     }
 }
@@ -76,7 +76,7 @@ pub fn plan(p: &Program) -> Plan {
     let mut kernel_index = 0usize;
     for (i, v) in p.values.iter().enumerate() {
         match &v.op {
-            Op::Map(..) | Op::Select(..) => {
+            Op::Map(..) | Op::Select(..) | Op::Cast(..) => {
                 stage_of[i] = Some(kernel_index);
                 current.push(i);
             }
@@ -155,6 +155,15 @@ fn expr(p: &Program, i: usize) -> String {
                 Sub => format!("{x} - {y}"),
                 Mul => format!("{x} * {y}"),
                 Div => format!("{x} / {y}"),
+                // Floored, as X_eTaL's: Mojo's Int `%` is Python's; for
+                // floats the formula says so.
+                Mod => {
+                    if p.values[i].ty == Ty::I64 {
+                        format!("Float32(Int({x}) % Int({y}))")
+                    } else {
+                        format!("{x} - {y} * floor({x} / {y})")
+                    }
+                }
                 Min => format!("min({x}, {y})"),
                 Max => format!("max({x}, {y})"),
                 Neg => format!("-{x}"),
@@ -173,6 +182,16 @@ fn expr(p: &Program, i: usize) -> String {
             }
         }
         Op::Select(c, a, b) => format!("{} if {} else {}", v(*a), v(*c), v(*b)),
+        Op::Cast(a) => {
+            let x = v(*a);
+            match (p.values[*a].ty, p.values[i].ty) {
+                (Ty::Bool, Ty::Bool) => x,
+                (Ty::Bool, _) => format!("Float32(1.0) if {x} else Float32(0.0)"),
+                (_, Ty::Bool) => format!("Bool({x} != 0.0)"),
+                (Ty::F32, Ty::I64) => format!("Float32(Int({x}))"),
+                _ => x,
+            }
+        }
         _ => unreachable!("only elementwise values have expressions"),
     }
 }
@@ -282,9 +301,22 @@ pub fn emit(p: &Program, plan: &Plan, name: &str) -> String {
         r = plan.reductions(),
         b = plan.buffers()
     );
+    let ints: Vec<String> = p
+        .values
+        .iter()
+        .filter(|v| v.ty == Ty::I64)
+        .map(|v| format!("%{}", v.name))
+        .collect();
+    if !ints.is_empty() {
+        let _ = writeln!(
+            s,
+            "# i64 in the IR, carried as Float32 on the device (exact below 2^24): {}.",
+            ints.join(", ")
+        );
+    }
     s.push_str(
         r#"
-from std.math import exp, log, inf, nan
+from std.math import exp, log, floor, inf, nan
 from std.memory import unsafe_stack_allocation
 from std.runtime import initialize_runtime
 from std.sys import has_accelerator
