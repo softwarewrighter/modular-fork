@@ -52,8 +52,9 @@ fold).
 | stats | mean and variance | within 6.6e-6 | within 6.56e-6 |
 
 The device dump shows Metal AIR (`air64-apple-macosx26.0.0`) on the Mac
-and PTX for `sm_120a` on the NVIDIA card. Times include the first-use
-kernel compile, uploads and downloads, one run each; they are not
+and PTX for `sm_120a` on the NVIDIA card. Build and run times per program
+and per device are in [rust-demo/doc/results.md](rust-demo/doc/results.md);
+they are single runs including the first-use kernel compile, not
 benchmarks.
 
 ## How Mojo reaches each GPU

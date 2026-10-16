@@ -21,10 +21,10 @@ programs/saxpy.xir ──parse, check──▶ IR ──Rust reference (f32)─�
                                      └──emit──▶ work/saxpy/saxpy.mojo         │
                                                   │ mojo build --emit shared-lib
                                                   ▼                           │
-                                         work/saxpy/libsaxpy.dylib            │
+                                  work/saxpy/libsaxpy.dylib (.so on Linux)    │
                                                   │ dlopen (libloading)       │
                                                   ▼                           │
-                                 xir_run: DeviceContext → Metal kernels ──────┘
+                            xir_run: DeviceContext → Metal or CUDA kernels ───┘
                                  xir_trace: which block and thread did each element
 ```
 
@@ -38,10 +38,12 @@ programs/saxpy.xir ──parse, check──▶ IR ──Rust reference (f32)─�
   `max/examples/gpu-functions/vector_addition.mojo` and `reduction.mojo`
   in this repository.
 - **It runs on the GPU, provably.** Every run prints the device the
-  library opened (`api=metal  name=Apple M1 Max`), the grid it launched,
-  and which block and thread computed the first and last element, read
-  back from a provenance kernel. `just asm saxpy` prints the Metal AIR
-  the device compiler received. [doc/proving-gpu-execution.md](doc/proving-gpu-execution.md)
+  library opened (`api=metal  name=Apple M1 Max` on the Mac,
+  `api=cuda  name=NVIDIA GeForce RTX 5060 Ti` on the Arch box), the grid
+  it launched, and which block and thread computed the first and last
+  element, read back from a provenance kernel. `just asm saxpy` prints
+  what the device compiler received: Metal AIR on the Mac, PTX for
+  `sm_120a` on the NVIDIA card. [doc/proving-gpu-execution.md](doc/proving-gpu-execution.md)
   has the full argument, including outside observers and a negative control.
 - **It is checked.** The Rust reference evaluates the same program in f32,
   folding reductions from the right as X_eTaL's `r_/` does; the tool
@@ -57,16 +59,21 @@ variance: single-value maps computed in a kernel and written by thread 0).
 
 ## How well it works
 
-On the M1 Max (macOS 26.5, Mojo 1.2.0.dev2026101305, 2026-10-13) all
-five programs agree with the reference: elementwise and bool outputs
-exactly, reductions exactly or within 7e-6 (the variance, the device's
-tree folding in another order). Numbers in [doc/results.md](doc/results.md).
+On the M1 Max through Metal (2026-10-13) and on the RTX 5060 Ti through
+CUDA (2026-10-16), both with Mojo 1.2.0.dev2026101305, all five programs
+agree with the reference: elementwise and bool outputs exactly,
+reductions exactly or within 7e-6 (the variance, the device's tree
+folding in another order). The NVIDIA run needed no change to the Rust,
+the programs or the generated Mojo. Per-program numbers and the raw
+Linux logs are in [doc/results.md](doc/results.md).
 
-| Step | Cost here |
-| ---- | --------- |
-| `mojo build --emit shared-lib`, per program | about 2.6 s |
-| `xir_run`, including the first-use Metal compile of each kernel, uploads and downloads | 40 to 55 ms |
-| `just gate` (five programs, build and run) | about 15 s |
+| Step | M1 Max, Metal | RTX 5060 Ti, CUDA |
+| ---- | ------------- | ----------------- |
+| `mojo build --emit shared-lib`, per program | about 2.6 s | about 4.5 s |
+| `xir_run`, including the first-use kernel compile, uploads and downloads | 40 to 55 ms | 390 to 465 ms |
+| `just gate` (five programs, build and run) | about 15 s | about 13 s |
+
+One run each, not benchmarks; the first-use compile dominates `xir_run`.
 
 What it does not do, by design, so that the lowering stays readable:
 f32 only; rank 0 and rank 1 shapes, one vector length per program;
