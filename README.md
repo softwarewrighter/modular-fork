@@ -1,5 +1,106 @@
 <!-- rumdl-disable-file MD033 MD041 MD075 -->
 
+# softwarewrighter fork: X_eTaL array code on GPUs through Mojo
+
+This fork of [modular/modular](https://github.com/modular/modular) adds
+[`rust-demo/`](rust-demo/), on the `experimental` branch: array code from
+the [X_eTaL](https://github.com/softwarewrighter/X_eTaL) ecosystem, run on
+Apple and NVIDIA GPUs through a Mojo library instead of OpenCL.
+
+[X_eTaL-gpu](https://github.com/softwarewrighter/X_eTaL-gpu) lowers X_eTaL
+array programs to an accelerator IR (XIR) and emits OpenCL C for it. Here a
+small Rust tool reads programs in XIR's text form, writes the Mojo a
+person would write for the same GPU work, builds it with
+`mojo build --emit shared-lib` into a library with a C interface, loads it,
+and runs it. Mojo picks the GPU: **Metal** on the Apple M1 Max, **CUDA** on
+the NVIDIA RTX 5060 Ti. The same Rust, the same five programs and the same
+generated Mojo ran on both, with no change for NVIDIA, and every result is
+checked against a Rust reference evaluator.
+
+What it is not yet: the five programs are written by hand in a small XIR
+subset (vectors, f32, fused maps and whole-array reductions); X_eTaL's own
+front end is not connected, and X_eTaL-gpu's OpenCL path is not replaced.
+
+## Links
+
+| What | Where |
+| ---- | ----- |
+| The demo | [rust-demo/README.md](rust-demo/README.md) |
+| Results, per device | [rust-demo/doc/results.md](rust-demo/doc/results.md) |
+| RTX 5060 Ti evidence (raw logs, 2026-10-16) | [rust-demo/doc/evidence/rtx5060-20261016/](rust-demo/doc/evidence/rtx5060-20261016/) · [what they establish](rust-demo/doc/rtx5060-handoff.md) |
+| Proving the GPU ran it | [rust-demo/doc/proving-gpu-execution.md](rust-demo/doc/proving-gpu-execution.md) |
+| Mojo as a C-callable library | [rust-demo/doc/mojo-as-a-library.md](rust-demo/doc/mojo-as-a-library.md) |
+| Linux and NVIDIA setup | [rust-demo/doc/porting-arch-rtx5060.md](rust-demo/doc/porting-arch-rtx5060.md) |
+| Older NVIDIA cards | [rust-demo/doc/older-gpus.md](rust-demo/doc/older-gpus.md) |
+| X_eTaL, X_eTaL-gpu, X_eTaL-ML | [X_eTaL](https://github.com/softwarewrighter/X_eTaL) · [X_eTaL-gpu](https://github.com/softwarewrighter/X_eTaL-gpu) · [X_eTaL-ML](https://github.com/softwarewrighter/X_eTaL-ML) |
+| The OpenCL work, on the blog | [Array Programs on GPUs Old and New](https://blog.softwarewrighter.com/2026/10/13/array-languages-xetal-gpu/) |
+| Upstream | [modular/modular](https://github.com/modular/modular) · [Mojo docs](https://mojolang.org/docs/) · [GPU compatibility](docs/max/packages.mdx) |
+
+## Results
+
+Mojo 1.2.0.dev2026101305 on both machines. All five programs agree with
+the reference: elementwise results exactly, reductions exactly or within
+the float tolerance (the GPU sums as a tree, the reference as a right
+fold).
+
+| Program | What it exercises | Apple M1 Max, Metal | RTX 5060 Ti, CUDA |
+| ------- | ----------------- | ------------------- | ----------------- |
+| saxpy | fused elementwise | exact | exact |
+| threshold | comparisons, bools, select | exact | exact |
+| reduce | sum, max, min (two-pass trees) | exact | exact |
+| softmax | two stages split by reductions | within 5e-7 | within 4.77e-7 |
+| stats | mean and variance | within 6.6e-6 | within 6.56e-6 |
+
+The device dump shows Metal AIR (`air64-apple-macosx26.0.0`) on the Mac
+and PTX for `sm_120a` on the NVIDIA card. Times include the first-use
+kernel compile, uploads and downloads, one run each; they are not
+benchmarks.
+
+## How Mojo reaches each GPU
+
+- **Apple silicon:** Mojo compiles kernels to Metal AIR and runs them
+  through Metal (needs Xcode's Metal toolchain). No OpenCL.
+- **NVIDIA:** Mojo compiles kernels with its own LLVM backend to PTX,
+  assembles the PTX to machine code with `ptxas` (its bundled one needs
+  driver 580 or newer; `MODULAR_NVPTX_COMPILER_PATH` names another), and
+  loads it through the CUDA driver (`libcuda`). No CUDA toolkit, `nvcc` or
+  OpenCL is involved.
+- **AMD:** through ROCm (HIP); not tried here.
+
+## The NVIDIA cards, Mojo or OpenCL
+
+Modular lists the RTX 30, 40 and 50 series (Ampere, Ada, Blackwell) and
+Turing as compatible for Mojo development, with driver 580 or newer.
+Mojo's compiler also has targets for Maxwell and Pascal, which the
+docs do not list as supported; Kepler has none. Older GPUs will be
+supported through X_eTaL-gpu's OpenCL path if Mojo cannot be configured
+for them.
+
+| Card | Architecture | Mojo | Plan |
+| ---- | ------------ | ---- | ---- |
+| RTX 5060 Ti 16 GB | Blackwell, sm_120 | listed; **verified 2026-10-16** | Mojo |
+| RTX 4070 Laptop 8 GB | Ada, sm_89 | listed | Mojo |
+| RTX 3090 24 GB, RTX 3060 12 GB, RTX 3060 Laptop | Ampere, sm_86 | listed | Mojo |
+| A2 16 GB | Ampere, sm_86 | architecture listed, card not | Mojo, to confirm |
+| GTX 1660 Super | Turing, sm_75 | architecture listed, card not | Mojo, to confirm |
+| Tesla P100, P4 | Pascal, sm_60, sm_61 | compiler target only | try Mojo, else OpenCL |
+| Tesla M40, M10 | Maxwell, sm_52, sm_50 | compiler target only | try Mojo, else OpenCL |
+| Tesla K80, Quadro K4200 | Kepler, sm_37, sm_30 | none | OpenCL |
+
+## Quick start
+
+```sh
+git switch experimental
+cd rust-demo
+scripts/setup.sh      # venv with the pinned Mojo and MAX nightly; checks the GPU toolchain
+just gate             # build, run and check all five programs on this machine's GPU
+just capture          # versions, tests, runs and assembly into work/results-<time>/
+```
+
+---
+
+*Below: the original Modular README, unchanged.*
+
 <div align="center">
     <img src="https://modular-assets.s3.us-east-1.amazonaws.com/images/modular-banner-github.png">
 
