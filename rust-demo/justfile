@@ -51,6 +51,10 @@ test:
 gate: build
     XIR_REQUIRE_DEVICE=1 cargo test --release --test device -- --nocapture
 
+# capture versions, host tests, every GPU result, the gate and device assembly
+capture:
+    bash scripts/capture-results.sh
+
 # build any hand-written Mojo file as a C-callable shared library
 lib src out="":
     scripts/build-mojo-lib.sh {{src}} {{out}}

@@ -43,7 +43,10 @@ case "$(uname -s)" in
     ;;
   Linux)
     if command -v nvidia-smi >/dev/null; then
-      nvidia-smi --query-gpu=name,driver_version,memory.total --format=csv,noheader | sed 's/^/gpu: /'
+      if ! nvidia-smi --query-gpu=name,driver_version,memory.total --format=csv,noheader | sed 's/^/gpu: /'; then
+        echo "ERROR: nvidia-smi cannot access the GPU. Check host driver/device access; coding sandboxes may hide /dev/nvidia*." >&2
+        exit 1
+      fi
       DRIVER="$(nvidia-smi --query-gpu=driver_version --format=csv,noheader | head -1 | cut -d. -f1)"
       if [ "${DRIVER:-0}" -lt 580 ]; then
         echo "NOTE: driver $DRIVER is older than 580; set MODULAR_NVPTX_COMPILER_PATH to a CUDA toolkit's ptxas (see doc/porting-arch-rtx5060.md)" >&2

@@ -1,0 +1,18 @@
+cargo build --release
+    Finished `release` profile [optimized] target(s) in 0.01s
+XIR_REQUIRE_DEVICE=1 cargo test --release --test device -- --nocapture
+   Compiling xir-mojo v0.1.0 (/disk1/github/softwarewrighter/modular-fork/rust-demo)
+    Finished `release` profile [optimized] target(s) in 0.38s
+     Running tests/device.rs (target/release/deps/device-f4ed12fb9bec7eed)
+
+running 1 test
+device: api=cuda  name=NVIDIA GeForce RTX 5060 Ti
+ok  reduce.xir
+ok  saxpy.xir
+ok  softmax.xir
+ok  stats.xir
+ok  threshold.xir
+test every_program_agrees_with_the_reference_on_the_device ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 13.27s
+

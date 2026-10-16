@@ -4,9 +4,10 @@ A proof of one idea: a Rust program can generate Mojo source equivalent
 to what a Mojo programmer would write for a GPU, build it as a shared
 library with the Mojo compiler, load it, and run it on the GPU of the
 machine it is on, with the answer checked against a Rust reference. On
-this Mac the GPU is the Apple M1 Max through Metal; on the Arch box it
-will be the RTX 5060 Ti through CUDA, from the same code (not run there
-yet: [doc/porting-arch-rtx5060.md](doc/porting-arch-rtx5060.md)).
+the Mac the GPU is the Apple M1 Max through Metal; on the Arch box it
+is the RTX 5060 Ti (16 GB) through CUDA, from the same code. All five
+programs pass on both ([results](doc/results.md),
+[Linux setup](doc/porting-arch-rtx5060.md)).
 
 It is a simpler cousin of [X_eTaL-gpu](https://github.com/softwarewrighter/X_eTaL-gpu)'s
 `gp:a_ccel<` macro and OpenCL emitter: the same shape of pipeline, with a
@@ -121,10 +122,14 @@ just asm saxpy        # the run with the device assembly printed
 just all              # every program
 just test             # parser, reference, plan, emitted text (no GPU)
 just gate             # every program on the GPU, asserted
+just capture          # versions, tests, GPU results and assembly into ignored work/results-*/
 just lib my.mojo      # any hand-written Mojo file as a C-callable shared library
 ```
 
 Without `just`: `scripts/setup.sh`, then `cargo run --release -- run programs/saxpy.xir`.
+
+For the verified NVIDIA run and portable text evidence, see
+[the RTX 5060 Ti handoff](doc/rtx5060-handoff.md).
 
 ## Layout
 

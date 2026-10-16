@@ -1,0 +1,101 @@
+cargo build --release
+    Finished `release` profile [optimized] target(s) in 0.01s
+for p in programs/*.xir; do echo; echo "=== $p"; /disk1/github/softwarewrighter/modular-fork/rust-demo/target/release/xir-mojo run "$p" 2> >(grep -v -i 'crashpad\|warning\|~\|^<unknown>\|declared here' >&2 || true); done
+
+=== programs/reduce.xir
+program: reduce (programs/reduce.xir)
+  N = 1000 elements; 4 value(s), 1 input(s), 3 output(s); 0 fused kernel stage(s), 3 reduction(s), 4 device buffer(s)
+generated: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/reduce/reduce.mojo (222 lines of Mojo)
+built: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/reduce/libreduce.so (/disk1/github/softwarewrighter/modular-fork/rust-demo/.venv/bin/mojo build --emit shared-lib) in 4.6 s
+device: api=cuda  name=NVIDIA GeForce RTX 5060 Ti
+launch: 4 block(s) of 256 threads for 1000 element(s)
+ran: xir_run in 391.86 ms (includes the first-use kernel compile, uploads and downloads; speed is not the point)
+proof: element 0 computed by block 0 thread 0; element 999 by block 3 thread 231; 4 distinct block(s), 256 distinct thread index(es)
+       elements per block: block 0: 256, block 1: 256, block 2: 256, block 3: 232
+output %s
+  gpu:       249750.0
+  reference: 249750.0
+  agree (exact)
+output %mx
+  gpu:       499.5
+  reference: 499.5
+  agree (exact)
+output %mn
+  gpu:       0.0
+  reference: 0.0
+  agree (exact)
+RESULT: 3 of 3 outputs agree with the Rust reference
+
+=== programs/saxpy.xir
+program: saxpy (programs/saxpy.xir)
+  N = 8 elements; 5 value(s), 1 input(s), 1 output(s); 1 fused kernel stage(s), 0 reduction(s), 2 device buffer(s)
+generated: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/saxpy/saxpy.mojo (140 lines of Mojo)
+built: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/saxpy/libsaxpy.so (/disk1/github/softwarewrighter/modular-fork/rust-demo/.venv/bin/mojo build --emit shared-lib) in 4.4 s
+device: api=cuda  name=NVIDIA GeForce RTX 5060 Ti
+launch: 1 block(s) of 256 threads for 8 element(s)
+ran: xir_run in 403.08 ms (includes the first-use kernel compile, uploads and downloads; speed is not the point)
+proof: element 0 computed by block 0 thread 0; element 7 by block 0 thread 7; 1 distinct block(s), 8 distinct thread index(es)
+output %y
+  gpu:       1.0 1.5 2.0 2.5 3.0 3.5 4.0 4.5
+  reference: 1.0 1.5 2.0 2.5 3.0 3.5 4.0 4.5
+  agree (exact)
+RESULT: 1 of 1 outputs agree with the Rust reference
+
+=== programs/softmax.xir
+program: softmax (programs/softmax.xir)
+  N = 1024 elements; 7 value(s), 1 input(s), 2 output(s); 2 fused kernel stage(s), 3 reduction(s), 6 device buffer(s)
+generated: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/softmax/softmax.mojo (228 lines of Mojo)
+built: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/softmax/libsoftmax.so (/disk1/github/softwarewrighter/modular-fork/rust-demo/.venv/bin/mojo build --emit shared-lib) in 4.7 s
+device: api=cuda  name=NVIDIA GeForce RTX 5060 Ti
+launch: 4 block(s) of 256 threads for 1024 element(s)
+ran: xir_run in 392.85 ms (includes the first-use kernel compile, uploads and downloads; speed is not the point)
+proof: element 0 computed by block 0 thread 0; element 1023 by block 3 thread 255; 4 distinct block(s), 256 distinct thread index(es)
+       elements per block: block 0: 256, block 1: 256, block 2: 256, block 3: 256
+output %p
+  gpu:       3.5893314e-7 3.6254053e-7 3.6618417e-7 3.6986395e-7 3.7358146e-7 3.7733605e-7 ... 0.00975349 0.009851508 0.00995052 (1024 items)
+  reference: 3.5893302e-7 3.6254045e-7 3.6618414e-7 3.6986407e-7 3.7358134e-7 3.77336e-7 ... 0.009753492 0.009851508 0.00995052 (1024 items)
+  agree (largest relative difference 4.42e-7; the device folds reductions in another order)
+output %total
+  gpu:       1.0
+  reference: 1.0000005
+  agree (largest relative difference 4.77e-7; the device folds reductions in another order)
+RESULT: 2 of 2 outputs agree with the Rust reference
+
+=== programs/stats.xir
+program: stats (programs/stats.xir)
+  N = 1000 elements; 8 value(s), 1 input(s), 2 output(s); 2 fused kernel stage(s), 2 reduction(s), 6 device buffer(s)
+generated: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/stats/stats.mojo (202 lines of Mojo)
+built: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/stats/libstats.so (/disk1/github/softwarewrighter/modular-fork/rust-demo/.venv/bin/mojo build --emit shared-lib) in 4.5 s
+device: api=cuda  name=NVIDIA GeForce RTX 5060 Ti
+launch: 4 block(s) of 256 threads for 1000 element(s)
+ran: xir_run in 463.62 ms (includes the first-use kernel compile, uploads and downloads; speed is not the point)
+proof: element 0 computed by block 0 thread 0; element 999 by block 3 thread 231; 4 distinct block(s), 256 distinct thread index(es)
+       elements per block: block 0: 256, block 1: 256, block 2: 256, block 3: 232
+output %mean
+  gpu:       249.75
+  reference: 249.75
+  agree (exact)
+output %var
+  gpu:       20833.313
+  reference: 20833.45
+  agree (largest relative difference 6.56e-6; the device folds reductions in another order)
+RESULT: 2 of 2 outputs agree with the Rust reference
+
+=== programs/threshold.xir
+program: threshold (programs/threshold.xir)
+  N = 16 elements; 5 value(s), 1 input(s), 2 output(s); 1 fused kernel stage(s), 0 reduction(s), 3 device buffer(s)
+generated: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/threshold/threshold.mojo (147 lines of Mojo)
+built: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/threshold/libthreshold.so (/disk1/github/softwarewrighter/modular-fork/rust-demo/.venv/bin/mojo build --emit shared-lib) in 4.6 s
+device: api=cuda  name=NVIDIA GeForce RTX 5060 Ti
+launch: 1 block(s) of 256 threads for 16 element(s)
+ran: xir_run in 455.76 ms (includes the first-use kernel compile, uploads and downloads; speed is not the point)
+proof: element 0 computed by block 0 thread 0; element 15 by block 0 thread 15; 1 distinct block(s), 16 distinct thread index(es)
+output %m
+  gpu:       0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1
+  reference: 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1
+  agree (exact)
+output %k
+  gpu:       0.0 0.0 0.0 0.0 0.0 0.0 0.0 5.25 6.0 6.75 7.5 8.25 9.0 9.75 10.5 11.25
+  reference: 0.0 0.0 0.0 0.0 0.0 0.0 0.0 5.25 6.0 6.75 7.5 8.25 9.0 9.75 10.5 11.25
+  agree (exact)
+RESULT: 2 of 2 outputs agree with the Rust reference

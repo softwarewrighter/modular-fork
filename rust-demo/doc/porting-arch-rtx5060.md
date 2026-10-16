@@ -2,8 +2,9 @@
 
 Nothing in `src/` or `programs/` is Mac-specific. The differences are the
 wheel (Linux x86_64), the library suffix (`.so`), the device API (`cuda`)
-and the outside observers (`nvidia-smi`). This was not run there yet; the
-steps below are what to do and what to record.
+and the outside observers (`nvidia-smi`). Verified on 2026-10-16 with
+driver 615.78.08 and the pinned nightly: all five programs and the device
+gate pass, without source changes. See [results](results.md).
 
 ## Steps
 
@@ -33,11 +34,17 @@ launch: 1 block(s) of 256 threads for 8 element(s)
 proof: element 0 computed by block 0 thread 0; element 7 by block 0 thread 7; ...
 ```
 
-`just asm saxpy` prints PTX instead of Metal AIR: look for `.target sm_120`
-(or `sm_120a`) and `.entry` lines named after `stage0` and `reduce_add`.
+`just asm saxpy` prints PTX instead of Metal AIR: the verified dump has
+`.target sm_120a` and `.entry` lines for `saxpy_stage0` and `saxpy_trace`
+(with compiler-generated suffixes). Use `just asm reduce` for reduction
+kernels.
 
 ## If it does not
 
+- A sandbox can hide `/dev/nvidia*` even when the host driver works.
+  Run the demo with GPU device access; this verification required running
+  outside the coding sandbox. An in-sandbox `nvidia-smi` failure alone
+  does not establish a host driver problem.
 - "GPU not detected" with a GPU in `nvidia-smi`: `libcuda.so.1` must be
   findable (`/usr/lib/libcuda.so.1` on Arch). `MLRT_CUDA_DEBUG=1` logs the
   detection.
