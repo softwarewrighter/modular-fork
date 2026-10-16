@@ -74,9 +74,69 @@ nightly as above.
 | pipeline | 2 | 2 | 2 | 49 ms | exact, both oracles |
 | vector-add | 2 | 1 | 0 | 42 ms | exact, both oracles |
 
-`just gate` now runs ten programs. The Arch box has not re-run since
-these landed: see the re-run section of
-[porting-arch-rtx5060.md](porting-arch-rtx5060.md).
+`just gate` now runs ten programs. The Arch re-run is recorded below.
+
+## Ten-program re-run: RTX 5060 Ti, CUDA (2026-10-16)
+
+Verified revision `f95c7ba386198ed07a4855456275b49dc4bc55ad` with the
+committed Accel XIR pinned to X_eTaL-gpu `38bae5c`. No sibling checkout,
+lowering refresh, or source changes were needed for this verification.
+Arch Linux 7.2.9-arch1-1, NVIDIA driver **615.78.08**, 16311 MiB VRAM,
+Mojo **1.2.0.dev2026101305 (bb6fedb4)** / MAX 26.7.0.dev2026101305,
+Rust 1.99.0.
+
+```text
+device: api=cuda  name=NVIDIA GeForce RTX 5060 Ti
+```
+
+`just test`, `just all`, `just gate`, and `just capture` all passed:
+nine host tests and all ten GPU programs. The separate `just gate` took
+25.50 s (test duration); the captured gate took 25.87 s. The times and
+ten verbatim verdicts below are
+from the subsequent capture starting at 2026-10-16T22:14:38Z.
+
+| Program | xir_run |
+| ------- | ------- |
+| accel-pipeline | 400.38 ms |
+| accel-reduce-sum | 403.85 ms |
+| accel-saxpy | 399.50 ms |
+| accel-threshold | 397.04 ms |
+| accel-vector-add | 386.68 ms |
+| reduce | 398.24 ms |
+| saxpy | 397.07 ms |
+| softmax | 396.25 ms |
+| stats | 395.31 ms |
+| threshold | 392.37 ms |
+
+In the same program order:
+
+```text
+RESULT: 2 of 2 outputs agree with the Rust reference; 2 of 2 with the X_eTaL evaluator (programs/accel-pipeline.expect)
+RESULT: 5 of 5 outputs agree with the Rust reference; 5 of 5 with the X_eTaL evaluator (programs/accel-reduce-sum.expect)
+RESULT: 1 of 1 outputs agree with the Rust reference; 1 of 1 with the X_eTaL evaluator (programs/accel-saxpy.expect)
+RESULT: 5 of 5 outputs agree with the Rust reference; 5 of 5 with the X_eTaL evaluator (programs/accel-threshold.expect)
+RESULT: 2 of 2 outputs agree with the Rust reference; 2 of 2 with the X_eTaL evaluator (programs/accel-vector-add.expect)
+RESULT: 3 of 3 outputs agree with the Rust reference
+RESULT: 1 of 1 outputs agree with the Rust reference
+RESULT: 2 of 2 outputs agree with the Rust reference
+RESULT: 2 of 2 outputs agree with the Rust reference
+RESULT: 2 of 2 outputs agree with the Rust reference
+```
+
+The five `accel-*` demos agree exactly with both oracles, including
+threshold's integer, cast, and floored-modulo operations. The original
+five still pass their existing numerical tolerances. These remain
+single-run timings including first-use compilation and transfers.
+
+Capture evidence is committed under
+[`evidence/rtx5060-20261016-ten-programs/`](evidence/rtx5060-20261016-ten-programs/):
+`environment.log`, `host-tests.log`, `all.log`, `gate.log`, and
+`assembly.log`. The earlier five-program evidence remains unchanged.
+
+Re-run when X_eTaL-gpu lowering changes the emitted XIR for these demos:
+use `just refresh-xtl` with the built sibling, review
+`git diff -- programs/accel-*`, then repeat the checks and capture above.
+The committed programs can be verified without X_eTaL-gpu on the machine.
 
 ## Tesla M40 and other pre-Turing cards
 

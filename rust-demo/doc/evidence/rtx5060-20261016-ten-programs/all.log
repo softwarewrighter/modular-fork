@@ -1,0 +1,218 @@
+=== programs/accel-pipeline.xir
+program: accel-pipeline (programs/accel-pipeline.xir)
+  N = 8 elements; 16 value(s), 0 input(s), 2 output(s); 2 fused kernel stage(s), 2 reduction(s), 8 device buffer(s)
+generated: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/accel-pipeline/accel-pipeline.mojo (242 lines of Mojo)
+built: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/accel-pipeline/libaccel-pipeline.so (/disk1/github/softwarewrighter/modular-fork/rust-demo/.venv/bin/mojo build --emit shared-lib) in 1.7 s
+device: api=cuda  name=NVIDIA GeForce RTX 5060 Ti
+launch: 1 block(s) of 256 threads for 8 element(s)
+ran: xir_run in 400.38 ms (includes the first-use kernel compile, uploads and downloads; speed is not the point)
+proof: element 0 computed by block 0 thread 0; element 7 by block 0 thread 7; 1 distinct block(s), 8 distinct thread index(es)
+output %addr
+  gpu:       32
+  reference: 32
+  xetal:     32
+  agree (exact)
+output %addr_2
+  gpu:       16.625
+  reference: 16.625
+  xetal:     16.625
+  agree (exact)
+RESULT: 2 of 2 outputs agree with the Rust reference; 2 of 2 with the X_eTaL evaluator (programs/accel-pipeline.expect)
+=== programs/accel-reduce-sum.xir
+program: accel-reduce-sum (programs/accel-reduce-sum.xir)
+  N = 8 elements; 14 value(s), 0 input(s), 5 output(s); 4 fused kernel stage(s), 5 reduction(s), 12 device buffer(s)
+generated: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/accel-reduce-sum/accel-reduce-sum.mojo (299 lines of Mojo)
+built: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/accel-reduce-sum/libaccel-reduce-sum.so (/disk1/github/softwarewrighter/modular-fork/rust-demo/.venv/bin/mojo build --emit shared-lib) in 1.8 s
+device: api=cuda  name=NVIDIA GeForce RTX 5060 Ti
+launch: 1 block(s) of 256 threads for 8 element(s)
+ran: xir_run in 403.85 ms (includes the first-use kernel compile, uploads and downloads; speed is not the point)
+proof: element 0 computed by block 0 thread 0; element 7 by block 0 thread 7; 1 distinct block(s), 8 distinct thread index(es)
+output %addr
+  gpu:       108
+  reference: 108
+  xetal:     108
+  agree (exact)
+output %maxr
+  gpu:       24
+  reference: 24
+  xetal:     24
+  agree (exact)
+output %addr_2
+  gpu:       408
+  reference: 408
+  xetal:     408
+  agree (exact)
+output %addr_3
+  gpu:       4.5
+  reference: 4.5
+  xetal:     4.5
+  agree (exact)
+output %addr_4
+  gpu:       3.1875
+  reference: 3.1875
+  xetal:     3.1875
+  agree (exact)
+RESULT: 5 of 5 outputs agree with the Rust reference; 5 of 5 with the X_eTaL evaluator (programs/accel-reduce-sum.expect)
+=== programs/accel-saxpy.xir
+program: accel-saxpy (programs/accel-saxpy.xir)
+  N = 8 elements; 9 value(s), 0 input(s), 1 output(s); 1 fused kernel stage(s), 0 reduction(s), 3 device buffer(s)
+generated: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/accel-saxpy/accel-saxpy.mojo (161 lines of Mojo)
+built: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/accel-saxpy/libaccel-saxpy.so (/disk1/github/softwarewrighter/modular-fork/rust-demo/.venv/bin/mojo build --emit shared-lib) in 1.6 s
+device: api=cuda  name=NVIDIA GeForce RTX 5060 Ti
+launch: 1 block(s) of 256 threads for 8 element(s)
+ran: xir_run in 399.50 ms (includes the first-use kernel compile, uploads and downloads; speed is not the point)
+proof: element 0 computed by block 0 thread 0; element 7 by block 0 thread 7; 1 distinct block(s), 8 distinct thread index(es)
+output %add
+  gpu:       1.5 1.5 1.75 2.125 2.5 2.875 3.25 3.5
+  reference: 1.5 1.5 1.75 2.125 2.5 2.875 3.25 3.5
+  xetal:     1.5 1.5 1.75 2.125 2.5 2.875 3.25 3.5
+  agree (exact)
+RESULT: 1 of 1 outputs agree with the Rust reference; 1 of 1 with the X_eTaL evaluator (programs/accel-saxpy.expect)
+=== programs/accel-threshold.xir
+program: accel-threshold (programs/accel-threshold.xir)
+  N = 8 elements; 19 value(s), 0 input(s), 5 output(s); 1 fused kernel stage(s), 0 reduction(s), 7 device buffer(s)
+generated: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/accel-threshold/accel-threshold.mojo (196 lines of Mojo)
+built: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/accel-threshold/libaccel-threshold.so (/disk1/github/softwarewrighter/modular-fork/rust-demo/.venv/bin/mojo build --emit shared-lib) in 1.6 s
+device: api=cuda  name=NVIDIA GeForce RTX 5060 Ti
+launch: 1 block(s) of 256 threads for 8 element(s)
+ran: xir_run in 397.04 ms (includes the first-use kernel compile, uploads and downloads; speed is not the point)
+proof: element 0 computed by block 0 thread 0; element 7 by block 0 thread 7; 1 distinct block(s), 8 distinct thread index(es)
+output %sub
+  gpu:       -0.75 -0.5 -0.25 0.0 0.25 0.5 0.75 1.0
+  reference: -0.75 -0.5 -0.25 0.0 0.25 0.5 0.75 1.0
+  xetal:     -0.75 -0.5 -0.25 0.0 0.25 0.5 0.75 1.0
+  agree (exact)
+output %mul
+  gpu:       -0.0 -0.0 -0.0 0.0 0.0 0.0 0.75 1.0
+  reference: -0.0 -0.0 -0.0 0.0 0.0 0.0 0.75 1.0
+  xetal:     -0.0 -0.0 -0.0 0.0 0.0 0.0 0.75 1.0
+  agree (exact)
+output %max
+  gpu:       0.0 0.0 0.0 0.0 0.25 0.5 0.75 1.0
+  reference: 0.0 0.0 0.0 0.0 0.25 0.5 0.75 1.0
+  xetal:     0.0 0.0 0.0 0.0 0.25 0.5 0.75 1.0
+  agree (exact)
+output %max_2
+  gpu:       0 0 0 0 1 2 3 4
+  reference: 0 0 0 0 1 2 3 4
+  xetal:     0 0 0 0 1 2 3 4
+  agree (exact)
+output %mul_2
+  gpu:       -3 0 -1 0 1 0 3 0
+  reference: -3 0 -1 0 1 0 3 0
+  xetal:     -3 0 -1 0 1 0 3 0
+  agree (exact)
+RESULT: 5 of 5 outputs agree with the Rust reference; 5 of 5 with the X_eTaL evaluator (programs/accel-threshold.expect)
+=== programs/accel-vector-add.xir
+program: accel-vector-add (programs/accel-vector-add.xir)
+  N = 8 elements; 11 value(s), 0 input(s), 2 output(s); 1 fused kernel stage(s), 0 reduction(s), 5 device buffer(s)
+generated: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/accel-vector-add/accel-vector-add.mojo (183 lines of Mojo)
+built: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/accel-vector-add/libaccel-vector-add.so (/disk1/github/softwarewrighter/modular-fork/rust-demo/.venv/bin/mojo build --emit shared-lib) in 1.6 s
+device: api=cuda  name=NVIDIA GeForce RTX 5060 Ti
+launch: 1 block(s) of 256 threads for 8 element(s)
+ran: xir_run in 386.68 ms (includes the first-use kernel compile, uploads and downloads; speed is not the point)
+proof: element 0 computed by block 0 thread 0; element 7 by block 0 thread 7; 1 distinct block(s), 8 distinct thread index(es)
+output %add
+  gpu:       11 22 33 44 55 66 77 88
+  reference: 11 22 33 44 55 66 77 88
+  xetal:     11 22 33 44 55 66 77 88
+  agree (exact)
+output %add_2
+  gpu:       0.375 0.75 1.125 1.5 1.875 2.25 2.625 3.0
+  reference: 0.375 0.75 1.125 1.5 1.875 2.25 2.625 3.0
+  xetal:     0.375 0.75 1.125 1.5 1.875 2.25 2.625 3.0
+  agree (exact)
+RESULT: 2 of 2 outputs agree with the Rust reference; 2 of 2 with the X_eTaL evaluator (programs/accel-vector-add.expect)
+=== programs/reduce.xir
+program: reduce (programs/reduce.xir)
+  N = 1000 elements; 4 value(s), 1 input(s), 3 output(s); 0 fused kernel stage(s), 3 reduction(s), 4 device buffer(s)
+generated: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/reduce/reduce.mojo (222 lines of Mojo)
+built: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/reduce/libreduce.so (/disk1/github/softwarewrighter/modular-fork/rust-demo/.venv/bin/mojo build --emit shared-lib) in 1.7 s
+device: api=cuda  name=NVIDIA GeForce RTX 5060 Ti
+launch: 4 block(s) of 256 threads for 1000 element(s)
+ran: xir_run in 398.24 ms (includes the first-use kernel compile, uploads and downloads; speed is not the point)
+proof: element 0 computed by block 0 thread 0; element 999 by block 3 thread 231; 4 distinct block(s), 256 distinct thread index(es)
+       elements per block: block 0: 256, block 1: 256, block 2: 256, block 3: 232
+output %s
+  gpu:       249750.0
+  reference: 249750.0
+  agree (exact)
+output %mx
+  gpu:       499.5
+  reference: 499.5
+  agree (exact)
+output %mn
+  gpu:       0.0
+  reference: 0.0
+  agree (exact)
+RESULT: 3 of 3 outputs agree with the Rust reference
+=== programs/saxpy.xir
+program: saxpy (programs/saxpy.xir)
+  N = 8 elements; 5 value(s), 1 input(s), 1 output(s); 1 fused kernel stage(s), 0 reduction(s), 2 device buffer(s)
+generated: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/saxpy/saxpy.mojo (140 lines of Mojo)
+built: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/saxpy/libsaxpy.so (/disk1/github/softwarewrighter/modular-fork/rust-demo/.venv/bin/mojo build --emit shared-lib) in 1.6 s
+device: api=cuda  name=NVIDIA GeForce RTX 5060 Ti
+launch: 1 block(s) of 256 threads for 8 element(s)
+ran: xir_run in 397.07 ms (includes the first-use kernel compile, uploads and downloads; speed is not the point)
+proof: element 0 computed by block 0 thread 0; element 7 by block 0 thread 7; 1 distinct block(s), 8 distinct thread index(es)
+output %y
+  gpu:       1.0 1.5 2.0 2.5 3.0 3.5 4.0 4.5
+  reference: 1.0 1.5 2.0 2.5 3.0 3.5 4.0 4.5
+  agree (exact)
+RESULT: 1 of 1 outputs agree with the Rust reference
+=== programs/softmax.xir
+program: softmax (programs/softmax.xir)
+  N = 1024 elements; 7 value(s), 1 input(s), 2 output(s); 2 fused kernel stage(s), 3 reduction(s), 6 device buffer(s)
+generated: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/softmax/softmax.mojo (228 lines of Mojo)
+built: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/softmax/libsoftmax.so (/disk1/github/softwarewrighter/modular-fork/rust-demo/.venv/bin/mojo build --emit shared-lib) in 1.6 s
+device: api=cuda  name=NVIDIA GeForce RTX 5060 Ti
+launch: 4 block(s) of 256 threads for 1024 element(s)
+ran: xir_run in 396.25 ms (includes the first-use kernel compile, uploads and downloads; speed is not the point)
+proof: element 0 computed by block 0 thread 0; element 1023 by block 3 thread 255; 4 distinct block(s), 256 distinct thread index(es)
+       elements per block: block 0: 256, block 1: 256, block 2: 256, block 3: 256
+output %p
+  gpu:       3.5893314e-7 3.6254053e-7 3.6618417e-7 3.6986395e-7 3.7358146e-7 3.7733605e-7 ... 0.00975349 0.009851508 0.00995052 (1024 items)
+  reference: 3.5893302e-7 3.6254045e-7 3.6618414e-7 3.6986407e-7 3.7358134e-7 3.77336e-7 ... 0.009753492 0.009851508 0.00995052 (1024 items)
+  agree (largest relative difference 4.42e-7; the device folds reductions in another order)
+output %total
+  gpu:       1.0
+  reference: 1.0000005
+  agree (largest relative difference 4.77e-7; the device folds reductions in another order)
+RESULT: 2 of 2 outputs agree with the Rust reference
+=== programs/stats.xir
+program: stats (programs/stats.xir)
+  N = 1000 elements; 8 value(s), 1 input(s), 2 output(s); 2 fused kernel stage(s), 2 reduction(s), 6 device buffer(s)
+generated: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/stats/stats.mojo (202 lines of Mojo)
+built: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/stats/libstats.so (/disk1/github/softwarewrighter/modular-fork/rust-demo/.venv/bin/mojo build --emit shared-lib) in 1.7 s
+device: api=cuda  name=NVIDIA GeForce RTX 5060 Ti
+launch: 4 block(s) of 256 threads for 1000 element(s)
+ran: xir_run in 395.31 ms (includes the first-use kernel compile, uploads and downloads; speed is not the point)
+proof: element 0 computed by block 0 thread 0; element 999 by block 3 thread 231; 4 distinct block(s), 256 distinct thread index(es)
+       elements per block: block 0: 256, block 1: 256, block 2: 256, block 3: 232
+output %mean
+  gpu:       249.75
+  reference: 249.75
+  agree (exact)
+output %var
+  gpu:       20833.313
+  reference: 20833.45
+  agree (largest relative difference 6.56e-6; the device folds reductions in another order)
+RESULT: 2 of 2 outputs agree with the Rust reference
+=== programs/threshold.xir
+program: threshold (programs/threshold.xir)
+  N = 16 elements; 5 value(s), 1 input(s), 2 output(s); 1 fused kernel stage(s), 0 reduction(s), 3 device buffer(s)
+generated: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/threshold/threshold.mojo (147 lines of Mojo)
+built: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/threshold/libthreshold.so (/disk1/github/softwarewrighter/modular-fork/rust-demo/.venv/bin/mojo build --emit shared-lib) in 1.6 s
+device: api=cuda  name=NVIDIA GeForce RTX 5060 Ti
+launch: 1 block(s) of 256 threads for 16 element(s)
+ran: xir_run in 392.37 ms (includes the first-use kernel compile, uploads and downloads; speed is not the point)
+proof: element 0 computed by block 0 thread 0; element 15 by block 0 thread 15; 1 distinct block(s), 16 distinct thread index(es)
+output %m
+  gpu:       0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1
+  reference: 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1
+  agree (exact)
+output %k
+  gpu:       0.0 0.0 0.0 0.0 0.0 0.0 0.0 5.25 6.0 6.75 7.5 8.25 9.0 9.75 10.5 11.25
+  reference: 0.0 0.0 0.0 0.0 0.0 0.0 0.0 5.25 6.0 6.75 7.5 8.25 9.0 9.75 10.5 11.25
+  agree (exact)
+RESULT: 2 of 2 outputs agree with the Rust reference

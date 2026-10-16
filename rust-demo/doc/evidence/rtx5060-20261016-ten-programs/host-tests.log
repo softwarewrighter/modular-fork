@@ -1,0 +1,16 @@
+    Finished `release` profile [optimized] target(s) in 0.02s
+     Running tests/programs.rs (target/release/deps/programs-8740744d35b0b599)
+
+running 9 tests
+test the_checker_refuses_what_the_device_could_not_run ... ok
+test saxpy_reference_and_plan ... ok
+test softmax_stages_split_at_reductions ... ok
+test threshold_bools_round_trip_as_zero_and_one ... ok
+test lowered_xetal_programs_match_the_evaluator ... ok
+test every_program_parses_plans_and_emits ... ok
+test ints_cast_and_mod ... ok
+test stats_single_value_maps_are_written_by_thread_zero ... ok
+test reductions_fold_from_the_right_like_xetal ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

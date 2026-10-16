@@ -1,0 +1,19 @@
+    Finished `release` profile [optimized] target(s) in 0.01s
+     Running tests/device.rs (target/release/deps/device-f4ed12fb9bec7eed)
+
+running 1 test
+device: api=cuda  name=NVIDIA GeForce RTX 5060 Ti
+ok  accel-pipeline.xir
+ok  accel-reduce-sum.xir
+ok  accel-saxpy.xir
+ok  accel-threshold.xir
+ok  accel-vector-add.xir
+ok  reduce.xir
+ok  saxpy.xir
+ok  softmax.xir
+ok  stats.xir
+ok  threshold.xir
+test every_program_agrees_with_the_reference_on_the_device ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 25.87s
+

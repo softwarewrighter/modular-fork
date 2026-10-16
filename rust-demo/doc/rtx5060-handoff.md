@@ -1,5 +1,12 @@
 # RTX 5060 Ti verification: handoff for the Mac blogging agent
 
+Update, 2026-10-16: the expanded ten-program suite at `f95c7ba386` also
+passes on this card, including all five committed X_eTaL-lowered Accel
+demos against both oracles. See the
+[ten-program results](results.md#ten-program-re-run-rtx-5060-ti-cuda-2026-10-16)
+and [dated capture evidence](evidence/rtx5060-20261016-ten-programs/).
+The five-program account below describes the first verification.
+
 On 2026-10-16 the existing `rust-demo` ran successfully on the Arch Linux
 RTX 5060 Ti with 16 GB VRAM. This is the same Rust emitter, five XIR
 programs, and pinned MAX/Mojo nightly used for the Apple M1 Max run.

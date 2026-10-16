@@ -11,7 +11,10 @@ gate pass, without source changes. See [results](results.md).
 The branch gained five programs lowered from X_eTaL source
 (`programs/accel-*.xir` with `.expect`), `i64`, `cast` and `mod` in the
 tool, and a second oracle (X_eTaL's evaluator output). The Arch box
-has not run these. Nothing new is needed there: the lowered programs
+verified all ten at revision `f95c7ba386` on 2026-10-16: nine host tests,
+all ten GPU programs, the device gate, and capture pass. See the
+[ten-program results](results.md#ten-program-re-run-rtx-5060-ti-cuda-2026-10-16).
+Nothing new is needed there: the lowered programs
 and their expectations are committed, so X_eTaL-gpu need not be present.
 
 ```sh
@@ -35,6 +38,9 @@ If X_eTaL-gpu is cloned beside the fork and built there (`just build`),
 `just xtl ../../X_eTaL-gpu/libs/Accel/demos/saxpy.xtl` runs the whole
 chain from source on the card, and `just refresh-xtl` regenerates the
 committed lowered programs from the sibling's current revision.
+Re-run whenever lowering changes what it emits for these five demos.
+The committed XIR is pinned to `38bae5c`; after a refresh, review
+`git diff -- programs/accel-*` before running the checks again.
 
 ## Steps
 
