@@ -1,0 +1,11 @@
+Script started on 2026-10-16 15:57:34-07:00 [COMMAND="just run-mojo libs/Accel/demos/reduce-sum.xtl" <not executed on terminal>]
+[1mcd components && cargo build -q --release -p xetal-gpu-cli[0m
+[1mshift; XETAL_PATH="$(scripts/libs.py path)" target/release/xetal-gpu run libs/Accel/demos/reduce-sum.xtl --device mojo --time "$@"[0m
+repeat 1 mojo time (api=cuda;name=NVIDIA GeForce RTX 5060 Ti): build 0.000 ms, run 431.069 ms (the device context, uploads, kernels and downloads), total 1386.458 ms
+108
+24
+408
+4.5
+3.1875
+
+Script done on 2026-10-16 15:57:51-07:00 [COMMAND_EXIT_CODE="0"]
