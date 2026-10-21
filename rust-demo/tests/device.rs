@@ -3,6 +3,8 @@
 //! checked against the Rust reference by the tool itself. Needs the Mojo
 //! toolchain (`scripts/setup.sh`) and a GPU; without them the test is
 //! skipped with a note, unless XIR_REQUIRE_DEVICE=1 makes that a failure.
+//! The second test runs every program again with `--cpu`: the same
+//! generated Mojo built with `-D XIR_CPU=true`, on a CPU DeviceContext.
 //!
 //!     cargo test --release --test device -- --nocapture
 
@@ -73,5 +75,48 @@ fn every_program_agrees_with_the_reference_on_the_device() {
             eprintln!("{device}");
         }
         eprintln!("ok  {}", p.file_name().unwrap().to_str().unwrap());
+    }
+}
+
+#[test]
+fn every_program_agrees_with_the_reference_on_the_cpu() {
+    if !mojo_available() {
+        let msg = "no Mojo toolchain (run scripts/setup.sh); the CPU gate did not run";
+        if std::env::var("XIR_REQUIRE_DEVICE").is_ok() {
+            panic!("{msg}");
+        }
+        eprintln!("SKIPPED: {msg}");
+        return;
+    }
+    let mut programs: Vec<PathBuf> = fs::read_dir(root().join("programs"))
+        .unwrap()
+        .map(|e| e.unwrap().path())
+        .filter(|p| p.extension().and_then(|e| e.to_str()) == Some("xir"))
+        .collect();
+    programs.sort();
+    assert!(!programs.is_empty());
+    for p in &programs {
+        let out = Command::new(env!("CARGO_BIN_EXE_xir-mojo"))
+            .arg("run")
+            .arg(p)
+            .arg("--cpu")
+            .output()
+            .expect("run the tool");
+        let stdout = String::from_utf8_lossy(&out.stdout);
+        let stderr = String::from_utf8_lossy(&out.stderr);
+        assert!(
+            out.status.success(),
+            "{}: exit {:?}\n--- stdout\n{stdout}\n--- stderr\n{stderr}",
+            p.display(),
+            out.status.code()
+        );
+        let n_out = stdout.matches("\noutput %").count();
+        let verdict = format!("RESULT: {n_out} of {n_out} outputs agree with the Rust reference");
+        assert!(stdout.contains(&verdict), "{}: {stdout}", p.display());
+        assert!(!stdout.contains("DISAGREE"), "{}: {stdout}", p.display());
+        assert!(stdout.contains("device: api=cpu"), "{}: not the CPU context\n{stdout}", p.display());
+        assert!(stdout.contains("-D XIR_CPU=true"), "{}: not the CPU build\n{stdout}", p.display());
+        assert!(stdout.contains("proof: none to read back"), "{}: {stdout}", p.display());
+        eprintln!("ok  {} (cpu)", p.file_name().unwrap().to_str().unwrap());
     }
 }

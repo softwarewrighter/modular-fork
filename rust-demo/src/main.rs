@@ -2,7 +2,7 @@
 //! shared library with `mojo build --emit shared-lib`, loads it, runs it on
 //! the GPU, and checks the device against a Rust reference.
 //!
-//!     xir-mojo run programs/saxpy.xir [--inputs FILE] [--expect FILE] [--show-mojo] [--emit-only] [--dump-asm] [--work DIR]
+//!     xir-mojo run programs/saxpy.xir [--inputs FILE] [--expect FILE] [--show-mojo] [--emit-only] [--dump-asm] [--cpu] [--work DIR]
 //!     xir-mojo check programs/saxpy.xir          # parse, check, evaluate the reference only
 //!
 //! `--expect FILE` (or `PROGRAM.expect` beside the program) holds what the
@@ -25,11 +25,12 @@ struct Args {
     show_mojo: bool,
     emit_only: bool,
     dump_asm: bool,
+    cpu: bool,
 }
 
 fn usage() -> ! {
     eprintln!(
-        "usage: xir-mojo run PROGRAM.xir [--inputs FILE] [--expect FILE] [--show-mojo] [--emit-only] [--dump-asm] [--work DIR]\n       xir-mojo check PROGRAM.xir [--inputs FILE] [--expect FILE]\n       xir-mojo emit-cuda PROGRAM.xir [--inputs FILE] [--expect FILE] [--work DIR]"
+        "usage: xir-mojo run PROGRAM.xir [--inputs FILE] [--expect FILE] [--show-mojo] [--emit-only] [--dump-asm] [--cpu] [--work DIR]\n       xir-mojo check PROGRAM.xir [--inputs FILE] [--expect FILE]\n       xir-mojo emit-cuda PROGRAM.xir [--inputs FILE] [--expect FILE] [--work DIR]\n  --cpu builds the same Mojo with -D XIR_CPU=true and runs it on the CPU (a parallel range, not a grid)"
     );
     exit(2)
 }
@@ -49,6 +50,7 @@ fn parse_args() -> Args {
         show_mojo: false,
         emit_only: false,
         dump_asm: false,
+        cpu: false,
     };
     let mut positional = Vec::new();
     while let Some(a) = it.next() {
@@ -59,6 +61,7 @@ fn parse_args() -> Args {
             "--show-mojo" => args.show_mojo = true,
             "--emit-only" => args.emit_only = true,
             "--dump-asm" => args.dump_asm = true,
+            "--cpu" => args.cpu = true,
             other if other.starts_with("--") => usage(),
             other => positional.push(other.to_string()),
         }
@@ -291,25 +294,32 @@ fn real_main(args: &Args) -> Result<(), String> {
     }
 
     let mojo = host::mojo_path();
-    let lib = work.join(format!("lib{stem}.{}", host::lib_ext()));
-    let took = host::build(&mojo, &mojo_src, &lib, args.dump_asm)?;
+    let lib = work.join(format!("lib{stem}{}.{}", if args.cpu { "-cpu" } else { "" }, host::lib_ext()));
+    let took = host::build(&mojo, &mojo_src, &lib, args.dump_asm, args.cpu)?;
     println!(
-        "built: {} ({} build --emit shared-lib{}) in {:.1} s",
+        "built: {} ({} build --emit shared-lib{}{}) in {:.1} s",
         lib.display(),
         mojo.display(),
         if args.dump_asm { " -D DUMP_GPU_ASM=true" } else { "" },
+        if args.cpu { " -D XIR_CPU=true" } else { "" },
         took.as_secs_f64()
     );
 
     let kernel = host::Kernel::load(&lib)?;
     let has_gpu = kernel.init()?;
-    if has_gpu != 1 {
+    if args.cpu {
+        println!("cpu: the same source built with -D XIR_CPU=true; a CPU DeviceContext, each stage a parallel range over the elements (has_accelerator() = {})", has_gpu == 1);
+    } else if has_gpu != 1 {
         return Err("the library was compiled without a GPU target (has_accelerator() is False)".into());
     }
     let info = kernel.device_info()?;
     println!("device: {}", info.replace(';', "  "));
-    let (blocks, tpb) = kernel.launch()?;
-    println!("launch: {} block(s) of {} threads for {} element(s)", blocks, tpb, program.n);
+    if args.cpu {
+        println!("launch: a parallel range of {} element(s) on the CPU (no grid)", program.n);
+    } else {
+        let (blocks, tpb) = kernel.launch()?;
+        println!("launch: {} block(s) of {} threads for {} element(s)", blocks, tpb, program.n);
+    }
 
     let input_vecs: Vec<Vec<f32>> = program
         .inputs()
@@ -321,39 +331,44 @@ fn real_main(args: &Args) -> Result<(), String> {
         .iter()
         .map(|&o| vec![f32::NAN; program.values[o].len()])
         .collect();
-    if args.dump_asm {
+    let dump = args.dump_asm && !args.cpu;
+    if dump {
         println!("---- GPU assembly, as the device compiler received it (DUMP_GPU_ASM) ----");
     }
     let ran = kernel.run(&input_vecs, &mut outputs, program.n)?;
-    if args.dump_asm {
+    if dump {
         println!("---- end of GPU assembly ----");
     }
-    println!("ran: xir_run in {:.2} ms (includes the first-use kernel compile, uploads and downloads; speed is not the point)", ran.as_secs_f64() * 1e3);
-
-    let (block_of, thread_of) = kernel.trace(program.n)?;
-    let mut per_block: BTreeMap<i32, usize> = BTreeMap::new();
-    for b in &block_of {
-        *per_block.entry(*b).or_default() += 1;
-    }
-    let last = program.n - 1;
-    println!(
-        "proof: element 0 computed by block {} thread {}; element {} by block {} thread {}; {} distinct block(s), {} distinct thread index(es)",
-        block_of[0],
-        thread_of[0],
-        last,
-        block_of[last],
-        thread_of[last],
-        per_block.len(),
-        {
-            let mut t: Vec<i32> = thread_of.clone();
-            t.sort();
-            t.dedup();
-            t.len()
+    if args.cpu {
+        println!("ran: xir_run in {:.2} ms on the CPU (includes the copies; speed is not the point)", ran.as_secs_f64() * 1e3);
+        println!("proof: none to read back; on the CPU there is no block or thread, xir_trace returns 3");
+    } else {
+        println!("ran: xir_run in {:.2} ms (includes the first-use kernel compile, uploads and downloads; speed is not the point)", ran.as_secs_f64() * 1e3);
+        let (block_of, thread_of) = kernel.trace(program.n)?;
+        let mut per_block: BTreeMap<i32, usize> = BTreeMap::new();
+        for b in &block_of {
+            *per_block.entry(*b).or_default() += 1;
         }
-    );
-    if per_block.len() > 1 {
-        let summary: Vec<String> = per_block.iter().map(|(b, c)| format!("block {b}: {c}")).collect();
-        println!("       elements per block: {}", summary.join(", "));
+        let last = program.n - 1;
+        println!(
+            "proof: element 0 computed by block {} thread {}; element {} by block {} thread {}; {} distinct block(s), {} distinct thread index(es)",
+            block_of[0],
+            thread_of[0],
+            last,
+            block_of[last],
+            thread_of[last],
+            per_block.len(),
+            {
+                let mut t: Vec<i32> = thread_of.clone();
+                t.sort();
+                t.dedup();
+                t.len()
+            }
+        );
+        if per_block.len() > 1 {
+            let summary: Vec<String> = per_block.iter().map(|(b, c)| format!("block {b}: {c}")).collect();
+            println!("       elements per block: {}", summary.join(", "));
+        }
     }
 
     let mut agreed = 0;
@@ -361,7 +376,13 @@ fn real_main(args: &Args) -> Result<(), String> {
     for (j, &o) in program.outputs.iter().enumerate() {
         let v = &program.values[o];
         let (ok, worst) = compare(&outputs[j], &reference[j], v.ty);
-        println!("output %{}\n  gpu:       {}\n  reference: {}", v.name, show(&outputs[j], v.ty), show(&reference[j], v.ty));
+        println!(
+            "output %{}\n  {}       {}\n  reference: {}",
+            v.name,
+            if args.cpu { "cpu:" } else { "gpu:" },
+            show(&outputs[j], v.ty),
+            show(&reference[j], v.ty)
+        );
         if let Some(exp) = &expected {
             println!("  xetal:     {}", show(&exp[j], v.ty));
         }

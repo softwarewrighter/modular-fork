@@ -23,7 +23,10 @@ and a checked RTX 5060 Ti run of the lowered threshold program; [the
 Metal blog handoff](doc/metal-blog-handoff.md) has Mojo's Metal AIR for
 the same program and its checked run on the M1 Max; [the AMD blog
 handoff](doc/amd-blog-handoff.md) has Mojo's gfx1100 assembly for it,
-cross-compiled with no AMD GPU (listings only, nothing run).
+cross-compiled with no AMD GPU (listings only, nothing run); [the CPU
+blog handoff](doc/cpu-blog-handoff.md) has the same Mojo built with
+`-D XIR_CPU=true`, its arm64 kernel body, and the checked run on the
+M1 Max's CPU.
 
 It is a simpler cousin of [X_eTaL-gpu](https://github.com/softwarewrighter/X_eTaL-gpu)'s
 `gp:a_ccel<` macro and OpenCL emitter: the same shape of pipeline, with a
@@ -121,6 +124,10 @@ Per-program numbers and the raw Linux logs are in
 
 One run each, not benchmarks; the first-use compile dominates `xir_run`.
 
+The same generated file also builds for the CPU (`-D XIR_CPU=true`,
+`just cpu`): a CPU `DeviceContext`, each stage a parallel range over the
+elements, each reduction a fold; the gate runs every program both ways.
+
 What it does not do, by design, so that the lowering stays readable:
 f32 on the device (i64 carried in it, exact below 2^24); rank 0 and rank 1 shapes, one vector length per program;
 whole-array reductions only (no axis, no matmul, no gather); at most 65536
@@ -174,11 +181,15 @@ just show softmax     # the generated Mojo, then the run
 just asm saxpy        # the run with the device assembly printed
 just all              # every program
 just test             # parser, reference, plan, emitted text (no GPU)
-just gate             # every program on the GPU, asserted
+just gate             # every program on the GPU, and again on the CPU, asserted
 just capture          # versions, tests, GPU results and assembly into ignored work/results-*/
 just lib my.mojo      # any hand-written Mojo file as a C-callable shared library
 just xtl FILE.xtl     # X_eTaL source: lowered by ../../X_eTaL-gpu, run here, checked against xetal
 just refresh-xtl      # rewrite programs/accel-*.xir and .expect from X_eTaL-gpu's Accel demos
+just cpu saxpy        # the same generated Mojo built with -D XIR_CPU=true, run on the CPU, checked
+just capture-metal    # evidence captures for the threshold program: Metal AIR and the run,
+just capture-amd      #   gfx1100 listings with no AMD GPU, the CPU build and its host assembly
+just capture-cpu      #   (each into a directory of text: logs, listings, the checked output)
 ```
 
 Without `just`: `scripts/setup.sh`, then `cargo run --release -- run programs/saxpy.xir`.
@@ -201,6 +212,8 @@ For the verified NVIDIA run and portable text evidence, see
 | `scripts/setup.sh` | the venv and toolchain check |
 | `scripts/build-mojo-lib.sh` | build any Mojo file as a shared library; print exports, rpaths, dependencies |
 | `scripts/from-xtl.sh` | X_eTaL source through `xetal-gpu lower` and this tool; `--refresh` rewrites `programs/accel-*` |
+| `scripts/capture-metal.sh`, `capture-amd.sh`, `capture-cpu.sh`, `capture-cuda.sh` | evidence captures of the threshold program for the blog: listings, logs, checked runs (`doc/*-blog-handoff.md` read them) |
+| `src/cuda.rs` | a second emitter, XIR to standalone CUDA C++ (`emit-cuda`), for comparing nvcc's PTX with Mojo's |
 | `doc/mojo-as-a-library.md` | the recipe and the pitfalls found |
 | `doc/proving-gpu-execution.md` | the evidence that the GPU ran it |
 | `doc/porting-arch-rtx5060.md` | the same demo on the Arch box |

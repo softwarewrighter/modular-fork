@@ -1,0 +1,35 @@
+program: accel-threshold (programs/accel-threshold.xir)
+  N = 8 elements; 19 value(s), 0 input(s), 5 output(s); 1 fused kernel stage(s), 0 reduction(s), 7 device buffer(s)
+generated: /Users/mike/github/softwarewrighter/modular-fork/rust-demo/work/accel-threshold/accel-threshold.mojo (240 lines of Mojo)
+built: /Users/mike/github/softwarewrighter/modular-fork/rust-demo/work/accel-threshold/libaccel-threshold-cpu.dylib (/Users/mike/github/softwarewrighter/modular-fork/rust-demo/.venv/bin/mojo build --emit shared-lib -D XIR_CPU=true) in 1.0 s
+cpu: the same source built with -D XIR_CPU=true; a CPU DeviceContext, each stage a parallel range over the elements (has_accelerator() = true)
+device: api=cpu  name=cpu
+launch: a parallel range of 8 element(s) on the CPU (no grid)
+ran: xir_run in 0.72 ms on the CPU (includes the copies; speed is not the point)
+proof: none to read back; on the CPU there is no block or thread, xir_trace returns 3
+output %sub
+  cpu:       -0.75 -0.5 -0.25 0.0 0.25 0.5 0.75 1.0
+  reference: -0.75 -0.5 -0.25 0.0 0.25 0.5 0.75 1.0
+  xetal:     -0.75 -0.5 -0.25 0.0 0.25 0.5 0.75 1.0
+  agree (exact)
+output %mul
+  cpu:       -0.0 -0.0 -0.0 0.0 0.0 0.0 0.75 1.0
+  reference: -0.0 -0.0 -0.0 0.0 0.0 0.0 0.75 1.0
+  xetal:     -0.0 -0.0 -0.0 0.0 0.0 0.0 0.75 1.0
+  agree (exact)
+output %max
+  cpu:       0.0 0.0 0.0 0.0 0.25 0.5 0.75 1.0
+  reference: 0.0 0.0 0.0 0.0 0.25 0.5 0.75 1.0
+  xetal:     0.0 0.0 0.0 0.0 0.25 0.5 0.75 1.0
+  agree (exact)
+output %max_2
+  cpu:       0 0 0 0 1 2 3 4
+  reference: 0 0 0 0 1 2 3 4
+  xetal:     0 0 0 0 1 2 3 4
+  agree (exact)
+output %mul_2
+  cpu:       -3 0 -1 0 1 0 3 0
+  reference: -3 0 -1 0 1 0 3 0
+  xetal:     -3 0 -1 0 1 0 3 0
+  agree (exact)
+RESULT: 5 of 5 outputs agree with the Rust reference; 5 of 5 with the X_eTaL evaluator (programs/accel-threshold.expect)

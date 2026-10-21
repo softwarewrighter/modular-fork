@@ -196,12 +196,17 @@ fn expr(p: &Program, i: usize) -> String {
     }
 }
 
-fn reduce_kernel(op: RedOp) -> String {
-    let (identity, combine) = match op {
+/// The identity (in terms of `src`) and the combine of `lhs` and `rhs`.
+fn reduce_parts(op: RedOp) -> (&'static str, &'static str) {
+    match op {
         RedOp::Add => ("Float32(0.0)", "lhs + rhs"),
         RedOp::Max => ("src[unsafe_offset=0]", "max(lhs, rhs)"),
         RedOp::Min => ("src[unsafe_offset=0]", "min(lhs, rhs)"),
-    };
+    }
+}
+
+fn reduce_kernel(op: RedOp) -> String {
+    let (identity, combine) = reduce_parts(op);
     format!(
         r#"
 def reduce_{name}(
@@ -246,19 +251,20 @@ fn stage_kernel(p: &Program, plan: &Plan, k: usize, vals: &[usize]) -> String {
         }
     }
     let writes: Vec<usize> = vals.iter().copied().filter(|&i| plan.materialized[i]).collect();
-    let mut s = String::new();
-    let _ = writeln!(s, "\ndef stage{k}(");
+    let mut params = String::new();
     for &r in &reads {
-        let _ = writeln!(s, "    b_{}: Pointer[Float32, ImmutAnyOrigin],", p.values[r].name);
+        let _ = writeln!(params, "    b_{}: Pointer[Float32, ImmutAnyOrigin],", p.values[r].name);
     }
     for &w in &writes {
-        let _ = writeln!(s, "    b_{}: Pointer[Float32, MutAnyOrigin],", p.values[w].name);
+        let _ = writeln!(params, "    b_{}: Pointer[Float32, MutAnyOrigin],", p.values[w].name);
     }
-    let _ = writeln!(s, "    n: Int32,\n):");
+    let args: Vec<String> = reads.iter().chain(writes.iter()).map(|&i| format!("b_{}", p.values[i].name)).collect();
     let names: Vec<String> = vals.iter().map(|&i| format!("%{}", p.values[i].name)).collect();
-    let _ = writeln!(s, "    \"\"\"Stage {k}: {} fused, one thread per element.\"\"\"", names.join(", "));
-    let _ = writeln!(s, "    var i = Int(block_idx.x * block_dim.x + thread_idx.x)");
-    let _ = writeln!(s, "    if i < Int(n):");
+
+    // The body, for element i: shared by the GPU kernel and the CPU range.
+    let mut s = String::new();
+    let _ = writeln!(s, "\n@inline(.always)\ndef stage{k}_at(\n    i: Int,\n{params}):");
+    let _ = writeln!(s, "    \"\"\"Stage {k}, element i: {} fused.\"\"\"", names.join(", "));
     for &r in &reads {
         let v = &p.values[r];
         let idx = if v.is_vector() { "i" } else { "0" };
@@ -267,10 +273,10 @@ fn stage_kernel(p: &Program, plan: &Plan, k: usize, vals: &[usize]) -> String {
         } else {
             format!("b_{}[unsafe_offset={idx}]", v.name)
         };
-        let _ = writeln!(s, "        var v_{} = {}", v.name, load);
+        let _ = writeln!(s, "    var v_{} = {}", v.name, load);
     }
     for &i in vals {
-        let _ = writeln!(s, "        var v_{} = {}", p.values[i].name, expr(p, i));
+        let _ = writeln!(s, "    var v_{} = {}", p.values[i].name, expr(p, i));
     }
     for &w in &writes {
         let v = &p.values[w];
@@ -280,11 +286,18 @@ fn stage_kernel(p: &Program, plan: &Plan, k: usize, vals: &[usize]) -> String {
             format!("v_{}", v.name)
         };
         if v.is_vector() {
-            let _ = writeln!(s, "        b_{}[unsafe_offset=i] = {}", v.name, stored);
+            let _ = writeln!(s, "    b_{}[unsafe_offset=i] = {}", v.name, stored);
         } else {
-            let _ = writeln!(s, "        if i == 0:\n            b_{}[unsafe_offset=0] = {}", v.name, stored);
+            let _ = writeln!(s, "    if i == 0:\n        b_{}[unsafe_offset=0] = {}", v.name, stored);
         }
     }
+
+    // The kernel: one thread per element.
+    let _ = writeln!(s, "\n\ndef stage{k}(\n{params}    n: Int32,\n):");
+    let _ = writeln!(s, "    \"\"\"Stage {k}: {} fused, one thread per element.\"\"\"", names.join(", "));
+    let _ = writeln!(s, "    var i = Int(block_idx.x * block_dim.x + thread_idx.x)");
+    let _ = writeln!(s, "    if i < Int(n):");
+    let _ = writeln!(s, "        stage{k}_at(i, {})", args.join(", "));
     s
 }
 
@@ -319,11 +332,17 @@ pub fn emit(p: &Program, plan: &Plan, name: &str) -> String {
 from std.math import exp, log, floor, inf, nan
 from std.memory import unsafe_stack_allocation
 from std.runtime import initialize_runtime
-from std.sys import has_accelerator
+from std.sys import get_defined_bool, has_accelerator
 
 from max.gpu import block_dim, block_idx, thread_idx
 from max.gpu.host import DeviceContext
 from max.gpu.sync import barrier
+
+# Built with `-D XIR_CPU=true`, the same program runs on the CPU: the same
+# DeviceContext calls against a CPU context, each stage as a parallel range
+# over the elements (enqueue_cpu_range) instead of a grid, each reduction a
+# plain fold. Nothing else changes.
+comptime XIR_CPU = get_defined_bool["XIR_CPU"]()
 "#,
     );
     let _ = writeln!(s, "\ncomptime N = {}", p.n);
@@ -350,6 +369,14 @@ from max.gpu.sync import barrier
 
     s.push_str(
         r#"
+
+def xir_context() raises -> DeviceContext:
+    """The device the program runs on: the GPU, or the CPU when built with -D XIR_CPU=true."""
+    comptime if XIR_CPU:
+        return DeviceContext(api="cpu")
+    else:
+        return DeviceContext()
+
 
 def trace(
     block_of: Pointer[Int32, MutAnyOrigin],
@@ -378,7 +405,7 @@ def xir_device_info(buf: Pointer[UInt8, MutAnyOrigin], cap: Int64) abi("C") -> I
     """Writes `api=...;name=...` for the device the kernels run on; its length, or -1."""
     initialize_runtime()
     try:
-        var ctx = DeviceContext()
+        var ctx = xir_context()
         var s = String("api=", ctx.api(), ";name=", ctx.name())
         var bytes = s.as_bytes()
         var n = min(len(bytes), Int(cap))
@@ -403,12 +430,14 @@ def xir_trace(
     thread_of: Pointer[Int32, MutAnyOrigin],
     n: Int64,
 ) abi("C") -> Int32:
-    """Runs the provenance kernel: block_of[i], thread_of[i] for each of N elements."""
+    """Runs the provenance kernel: block_of[i], thread_of[i] for each of N elements; 3 on the CPU (no grid)."""
     initialize_runtime()
     if Int(n) != N:
         return 2
+    comptime if XIR_CPU:
+        return 3
     try:
-        var ctx = DeviceContext()
+        var ctx = xir_context()
         var b_dev = ctx.enqueue_create_buffer[DType.int32](N)
         var t_dev = ctx.enqueue_create_buffer[DType.int32](N)
         ctx.enqueue_function[trace](b_dev, t_dev, Int32(N), grid_dim=BLOCKS, block_dim=TPB)
@@ -440,7 +469,7 @@ def xir_run(
     if Int(n) != N:
         return 2
     try:
-        var ctx = DeviceContext()
+        var ctx = xir_context()
 "#,
     );
 
@@ -543,10 +572,31 @@ def xir_run(
                 for &w in &writes {
                     args.push(format!("b_{}", p.values[w].name));
                 }
+                let _ = writeln!(s, "        # stage {stage_no}\n        comptime if XIR_CPU:\n            ctx.synchronize()");
+                let mut ptrs: Vec<String> = Vec::new();
+                for &r in &reads {
+                    let name = &p.values[r].name;
+                    let _ = writeln!(
+                        s,
+                        "            var p{stage_no}_{name} = b_{name}.unsafe_ptr().as_imm().unsafe_origin_cast[ImmutAnyOrigin]()"
+                    );
+                    ptrs.push(format!("p{stage_no}_{name}"));
+                }
+                for &w in &writes {
+                    let name = &p.values[w].name;
+                    let _ = writeln!(s, "            var p{stage_no}_{name} = b_{name}.unsafe_ptr().unsafe_origin_cast[MutAnyOrigin]()");
+                    ptrs.push(format!("p{stage_no}_{name}"));
+                }
+                let _ = writeln!(
+                    s,
+                    "            def stage{stage_no}_body(i: Int) {{imm}}:\n                stage{stage_no}_at(i, {})\n            \
+                     ctx.enqueue_cpu_range(stage{stage_no}_body, N)\n        else:",
+                    ptrs.join(", ")
+                );
                 args.push("Int32(N)".to_string());
                 let _ = writeln!(
                     s,
-                    "        # stage {stage_no}\n        ctx.enqueue_function[stage{stage_no}]({}, grid_dim=BLOCKS, block_dim=TPB)",
+                    "            ctx.enqueue_function[stage{stage_no}]({}, grid_dim=BLOCKS, block_dim=TPB)",
                     args.join(", ")
                 );
                 stage_no += 1;
@@ -555,14 +605,28 @@ def xir_run(
                 if let Op::Reduce(op, a) = &p.values[*i].op {
                     let name = &p.values[*i].name;
                     let src = &p.values[*a].name;
+                    let (identity, combine) = reduce_parts(*op);
                     let _ = writeln!(
                         s,
-                        "        # reduce {op} %{src} -> %{name}: a partial per block, then one block over the partials\n        \
-                         ctx.enqueue_function[reduce_{op}](b_{src}, b_{name}_partial, Int32(N), grid_dim=BLOCKS, block_dim=TPB)\n        \
+                        "        # reduce {op} %{src} -> %{name}: a partial per block, then one block over the partials (a fold on the CPU)\n        \
+                         comptime if XIR_CPU:\n            \
+                         ctx.synchronize()\n            \
+                         var src = b_{src}.unsafe_ptr().as_imm().unsafe_origin_cast[ImmutAnyOrigin]()\n            \
+                         var dst = b_{name}.unsafe_ptr().unsafe_origin_cast[MutAnyOrigin]()\n            \
+                         var acc: Float32 = {identity}\n            \
+                         for i in range(N):\n                \
+                         var lhs = acc\n                \
+                         var rhs = src[unsafe_offset=i]\n                \
+                         acc = {combine}\n            \
+                         dst[unsafe_offset=0] = acc\n        \
+                         else:\n            \
+                         ctx.enqueue_function[reduce_{op}](b_{src}, b_{name}_partial, Int32(N), grid_dim=BLOCKS, block_dim=TPB)\n            \
                          ctx.enqueue_function[reduce_{op}](b_{name}_partial, b_{name}, Int32(BLOCKS), grid_dim=1, block_dim=TPB)",
                         op = op.name(),
                         src = src,
-                        name = name
+                        name = name,
+                        identity = identity,
+                        combine = combine
                     );
                 }
             }

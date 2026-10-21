@@ -32,13 +32,17 @@ pub fn lib_ext() -> &'static str {
 
 /// `mojo build SRC --emit shared-lib -o OUT`, with the GPU assembly dump
 /// switched on when asked (the kernel's Metal AIR or PTX is then printed when
-/// the kernel is first compiled, which happens inside this process at run time).
-pub fn build(mojo: &Path, src: &Path, out: &Path, dump_asm: bool) -> Result<Duration, String> {
+/// the kernel is first compiled, which happens inside this process at run time),
+/// and `-D XIR_CPU=true` for the CPU build of the same source.
+pub fn build(mojo: &Path, src: &Path, out: &Path, dump_asm: bool, cpu: bool) -> Result<Duration, String> {
     let start = Instant::now();
     let mut cmd = Command::new(mojo);
     cmd.arg("build").arg(src).args(["--emit", "shared-lib", "-o"]).arg(out);
     if dump_asm {
         cmd.args(["-D", "DUMP_GPU_ASM=true"]);
+    }
+    if cpu {
+        cmd.args(["-D", "XIR_CPU=true"]);
     }
     let output = cmd
         .output()

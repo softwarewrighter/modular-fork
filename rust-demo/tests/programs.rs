@@ -38,14 +38,25 @@ fn every_program_parses_plans_and_emits() {
         assert!(text.contains("@export(\"xir_trace\")"), "{stem}: no provenance export");
         if plan.kernels() > 0 {
             assert!(text.contains("def stage0("), "{stem}: no fused kernel");
+            assert!(text.contains("def stage0_at("), "{stem}: no per-element body for the kernel");
         }
-        assert_eq!(text.matches("def stage").count(), plan.kernels(), "{stem}: one def per kernel stage");
+        assert_eq!(text.matches("\ndef stage").count(), 2 * plan.kernels(), "{stem}: a body and a kernel per stage");
         assert_eq!(
             text.matches("ctx.enqueue_function[reduce_").count(),
             2 * plan.reductions(),
             "{stem}: two launches per reduction"
         );
         assert!(!text.contains("b_x[i]"), "{stem}: positional pointer indexing is deprecated in Mojo");
+        // The CPU build of the same file: a context, a range per stage, a fold per reduction.
+        assert!(text.contains("comptime XIR_CPU = get_defined_bool[\"XIR_CPU\"]()"), "{stem}: no XIR_CPU define");
+        assert!(text.contains("var ctx = xir_context()"), "{stem}: the host code does not go through xir_context");
+        assert_eq!(text.matches("ctx.enqueue_cpu_range(stage").count(), plan.kernels(), "{stem}: one CPU range per stage");
+        assert_eq!(
+            text.matches("ctx.enqueue_function[stage").count(),
+            plan.kernels(),
+            "{stem}: one GPU launch per stage"
+        );
+        assert_eq!(text.matches("var acc: Float32 = ").count(), plan.reductions(), "{stem}: one CPU fold per reduction");
     }
     assert!(count >= 5, "expected the five example programs, found {count}");
 }
@@ -125,7 +136,7 @@ fn stats_single_value_maps_are_written_by_thread_zero() {
     let p = program("stats");
     let plan = emit::plan(&p);
     let text = emit::emit(&p, &plan, "stats");
-    assert!(text.contains("if i == 0:\n            b_mean[unsafe_offset=0] = v_mean"));
+    assert!(text.contains("if i == 0:\n        b_mean[unsafe_offset=0] = v_mean"));
     let mut inputs = HashMap::new();
     inputs.insert("x".to_string(), ramp(1000, 0.5));
     let out = eval::run(&p, &inputs).unwrap();

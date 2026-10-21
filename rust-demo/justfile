@@ -71,6 +71,14 @@ capture-metal out="work/metal-evidence":
 capture-amd out="work/amd-evidence" arch="gfx1100":
     bash scripts/capture-amd.sh {{out}} {{arch}}
 
+# the same program on the CPU: the generated Mojo built with -D XIR_CPU=true (a parallel range, not a grid)
+cpu prog="saxpy": build
+    target/release/xir-mojo run programs/{{prog}}.xir --cpu
+
+# CPU evidence for the lowered threshold program: the host assembly of the kernel body and the checked run
+capture-cpu out="work/cpu-evidence":
+    bash scripts/capture-cpu.sh {{out}}
+
 # build any hand-written Mojo file as a C-callable shared library
 lib src out="":
     scripts/build-mojo-lib.sh {{src}} {{out}}
