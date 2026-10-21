@@ -9,7 +9,7 @@
 //! X_eTaL evaluator printed for the same program, one line per output; the
 //! device is then checked against it too, as X_eTaL-gpu's gate checks OpenCL.
 
-use xir_mojo::{emit, eval, host, ir};
+use xir_mojo::{cuda, emit, eval, host, ir};
 
 use std::collections::{BTreeMap, HashMap};
 use std::fs;
@@ -29,7 +29,7 @@ struct Args {
 
 fn usage() -> ! {
     eprintln!(
-        "usage: xir-mojo run PROGRAM.xir [--inputs FILE] [--expect FILE] [--show-mojo] [--emit-only] [--dump-asm] [--work DIR]\n       xir-mojo check PROGRAM.xir [--inputs FILE] [--expect FILE]"
+        "usage: xir-mojo run PROGRAM.xir [--inputs FILE] [--expect FILE] [--show-mojo] [--emit-only] [--dump-asm] [--work DIR]\n       xir-mojo check PROGRAM.xir [--inputs FILE] [--expect FILE]\n       xir-mojo emit-cuda PROGRAM.xir [--inputs FILE] [--expect FILE] [--work DIR]"
     );
     exit(2)
 }
@@ -37,7 +37,7 @@ fn usage() -> ! {
 fn parse_args() -> Args {
     let mut it = std::env::args().skip(1);
     let command = it.next().unwrap_or_else(|| usage());
-    if command != "run" && command != "check" {
+    if command != "run" && command != "check" && command != "emit-cuda" {
         usage();
     }
     let mut args = Args {
@@ -213,6 +213,28 @@ fn real_main(args: &Args) -> Result<(), String> {
         None
     };
     let plan = emit::plan(&program);
+
+    if args.command == "emit-cuda" {
+        if let Some(expected) = &expected {
+            for (j, &o) in program.outputs.iter().enumerate() {
+                if !compare(&reference[j], &expected[j], program.values[o].ty).0 {
+                    return Err("the Rust reference disagrees with the X_eTaL evaluator".into());
+                }
+            }
+        }
+        let text = cuda::emit(&program, &bound, expected.as_deref().unwrap_or(&reference))?;
+        let dir = args
+            .work
+            .clone()
+            .unwrap_or_else(|| host::experiment_root().join("work"))
+            .join(&stem);
+        fs::create_dir_all(&dir).map_err(|e| e.to_string())?;
+        let path = dir.join(format!("{stem}.cu"));
+        fs::write(&path, text).map_err(|e| e.to_string())?;
+        println!("generated: {}", path.display());
+        return Ok(());
+    }
+
 
     println!("program: {} ({})", stem, args.program.display());
     println!(

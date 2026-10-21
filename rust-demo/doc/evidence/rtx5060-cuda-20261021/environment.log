@@ -1,0 +1,30 @@
+Wed Oct 21 07:49:49 PM UTC 2026
+2b205e737702ff8e9c86d3944390b2d128bd48d1
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2026 NVIDIA Corporation
+Built on Tue_Sep_01_08:45:21_PDT_2026
+Cuda compilation tools, release 13.4, V13.4.92
+Build cuda_13.4.r13.4/compiler.38855100_0
+Wed Oct 21 12:49:49 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 615.78.08              KMD Version: 615.78.08     CUDA UMD Version: 13.4     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA GeForce RTX 5060 Ti     Off |   00000000:65:00.0 Off |                  N/A |
+|  0%   30C    P8              3W /  180W |     506MiB /  16311MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|    0   N/A  N/A           97877      G   /usr/lib/Xorg                           437MiB |
+|    0   N/A  N/A           98129      G   xfwm4                                     2MiB |
+|    0   N/A  N/A           98635      G   ...rack-uuid=3190708988185955192         29MiB |
++-----------------------------------------------------------------------------------------+
+Mojo 1.2.0.dev2026101305 (bb6fedb4)

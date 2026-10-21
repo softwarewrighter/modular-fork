@@ -17,6 +17,10 @@ The blog post
 [Array Languages #10: X_eTaL on Metal and CUDA, Through Mojo](https://blog.softwarewrighter.com/2026/10/16/array-languages-xetal-mojo-metal/)
 tells the story.
 
+For the follow-up GPU deep dive, [the CUDA blog handoff](doc/cuda-blog-handoff.md)
+contains generated CUDA C++ and Mojo, nvcc PTX, native NVIDIA assembly,
+and a checked RTX 5060 Ti run of the lowered threshold program.
+
 It is a simpler cousin of [X_eTaL-gpu](https://github.com/softwarewrighter/X_eTaL-gpu)'s
 `gp:a_ccel<` macro and OpenCL emitter: the same shape of pipeline, with a
 tiny IR in XIR's text form, a Mojo emitter in place of the OpenCL one,

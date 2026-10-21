@@ -1,0 +1,25 @@
+   Compiling xir-mojo v0.1.0 (/disk1/github/softwarewrighter/modular-fork/rust-demo)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.24s
+     Running tests/cuda.rs (rust-demo/target/debug/deps/cuda-0bdbb4bc758d3d8a)
+
+running 2 tests
+test cuda_refuses_reductions ... ok
+test generated_cpp_checks_signed_mod_bools_scalar_outputs_and_casts ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.58s
+
+     Running tests/programs.rs (rust-demo/target/debug/deps/programs-241dbabed0316baa)
+
+running 9 tests
+test reductions_fold_from_the_right_like_xetal ... ok
+test the_checker_refuses_what_the_device_could_not_run ... ok
+test saxpy_reference_and_plan ... ok
+test ints_cast_and_mod ... ok
+test threshold_bools_round_trip_as_zero_and_one ... ok
+test every_program_parses_plans_and_emits ... ok
+test stats_single_value_maps_are_written_by_thread_zero ... ok
+test softmax_stages_split_at_reductions ... ok
+test lowered_xetal_programs_match_the_evaluator ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

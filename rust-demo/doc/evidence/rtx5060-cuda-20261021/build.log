@@ -1,0 +1,6 @@
++ nvcc -O3 -arch=compute_120a -ptx /disk1/github/softwarewrighter/modular-fork/rust-demo/work/accel-threshold/accel-threshold.cu -o /disk1/github/softwarewrighter/modular-fork/rust-demo/doc/evidence/rtx5060-cuda-20261021/accel-threshold.ptx
++ nvcc -O3 --fmad=false -arch=compute_120a -ptx /disk1/github/softwarewrighter/modular-fork/rust-demo/work/accel-threshold/accel-threshold.cu -o /disk1/github/softwarewrighter/modular-fork/rust-demo/doc/evidence/rtx5060-cuda-20261021/accel-threshold-no-fma.ptx
++ nvcc -O3 -arch=sm_120a -cubin /disk1/github/softwarewrighter/modular-fork/rust-demo/work/accel-threshold/accel-threshold.cu -o /disk1/github/softwarewrighter/modular-fork/rust-demo/work/accel-threshold/accel-threshold.cubin
++ nvdisasm /disk1/github/softwarewrighter/modular-fork/rust-demo/work/accel-threshold/accel-threshold.cubin
++ nvcc -O3 -arch=sm_120a /disk1/github/softwarewrighter/modular-fork/rust-demo/work/accel-threshold/accel-threshold.cu -o /disk1/github/softwarewrighter/modular-fork/rust-demo/work/accel-threshold/threshold-cuda
++ c++ -O3 -DXIR_CPU_ONLY -x c++ /disk1/github/softwarewrighter/modular-fork/rust-demo/work/accel-threshold/accel-threshold.cu -o /disk1/github/softwarewrighter/modular-fork/rust-demo/work/accel-threshold/threshold-cpu
