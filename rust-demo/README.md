@@ -26,7 +26,10 @@ handoff](doc/amd-blog-handoff.md) has Mojo's gfx1100 assembly for it,
 cross-compiled with no AMD GPU (listings only, nothing run); [the CPU
 blog handoff](doc/cpu-blog-handoff.md) has the same Mojo built with
 `-D XIR_CPU=true`, its arm64 kernel body, and the checked run on the
-M1 Max's CPU.
+M1 Max's CPU. [doc/top-down.md](doc/top-down.md) walks one program
+through every level, X_eTaL source to Core to XIR to Mojo to PTX, AIR,
+AMDGCN and arm64, with the program or call at each step and a link to
+every listing.
 
 It is a simpler cousin of [X_eTaL-gpu](https://github.com/softwarewrighter/X_eTaL-gpu)'s
 `gp:a_ccel<` macro and OpenCL emitter: the same shape of pipeline, with a

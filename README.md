@@ -37,6 +37,7 @@ OpenCL path is not replaced; Mojo is a second backend beside it.
 | The demo | [rust-demo/README.md](rust-demo/README.md) |
 | Results, per device | [rust-demo/doc/results.md](rust-demo/doc/results.md) |
 | RTX 5060 Ti evidence (raw logs, 2026-10-16) | [five programs](rust-demo/doc/evidence/rtx5060-20261016/) · [all ten, with the X_eTaL-lowered five](rust-demo/doc/evidence/rtx5060-20261016-ten-programs/) · [what they establish](rust-demo/doc/rtx5060-handoff.md) |
+| One program, top down: X_eTaL → Core → XIR → Mojo → PTX, AIR, AMDGCN, arm64 | [rust-demo/doc/top-down.md](rust-demo/doc/top-down.md) · handoffs: [CUDA](rust-demo/doc/cuda-blog-handoff.md) · [Metal](rust-demo/doc/metal-blog-handoff.md) · [AMD](rust-demo/doc/amd-blog-handoff.md) · [CPU](rust-demo/doc/cpu-blog-handoff.md) |
 | Proving the GPU ran it | [rust-demo/doc/proving-gpu-execution.md](rust-demo/doc/proving-gpu-execution.md) |
 | Mojo as a C-callable library | [rust-demo/doc/mojo-as-a-library.md](rust-demo/doc/mojo-as-a-library.md) |
 | Linux and NVIDIA setup | [rust-demo/doc/porting-arch-rtx5060.md](rust-demo/doc/porting-arch-rtx5060.md) |
