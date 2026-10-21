@@ -67,6 +67,10 @@ capture:
 capture-metal out="work/metal-evidence":
     bash scripts/capture-metal.sh {{out}}
 
+# AMD listings with no AMD GPU: Mojo cross-compiles the threshold kernels for ARCH (listings only)
+capture-amd out="work/amd-evidence" arch="gfx1100":
+    bash scripts/capture-amd.sh {{out}} {{arch}}
+
 # build any hand-written Mojo file as a C-callable shared library
 lib src out="":
     scripts/build-mojo-lib.sh {{src}} {{out}}

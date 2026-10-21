@@ -1,0 +1,7 @@
+Wed Oct 21 22:29:43 UTC 2026
+d8aff0f101c2b70e2f42748db904200c485e1dac
+Darwin 25.5.0 arm64
+Apple M1 Max
+Mojo 1.2.0.dev2026101305 (bb6fedb4)
+rustc 1.96.0 (ac68faa20 2026-05-25)
+AMD GPU present: none (cross-compiled for gfx1100)

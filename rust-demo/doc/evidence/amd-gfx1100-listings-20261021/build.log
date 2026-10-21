@@ -1,0 +1,6 @@
++ /Users/mike/github/softwarewrighter/modular-fork/rust-demo/target/release/xir-mojo run /Users/mike/github/softwarewrighter/modular-fork/rust-demo/programs/accel-threshold.xir --emit-only
+program: accel-threshold (/Users/mike/github/softwarewrighter/modular-fork/rust-demo/programs/accel-threshold.xir)
+  N = 8 elements; 19 value(s), 0 input(s), 5 output(s); 1 fused kernel stage(s), 0 reduction(s), 7 device buffer(s)
+generated: /Users/mike/github/softwarewrighter/modular-fork/rust-demo/work/accel-threshold/accel-threshold.mojo (196 lines of Mojo)
++ /Users/mike/github/softwarewrighter/modular-fork/rust-demo/.venv/bin/mojo build /Users/mike/github/softwarewrighter/modular-fork/rust-demo/work/accel-threshold/accel-threshold.mojo --target-accelerator=gfx1100 --emit asm -o /Users/mike/github/softwarewrighter/modular-fork/rust-demo/work/accel-threshold/accel-threshold-gfx1100.s
+Failed to initialize Crashpad.  Crash reporting will not be available.  Cause: while locating crashpad handler: unable to locate crashpad handler executable
