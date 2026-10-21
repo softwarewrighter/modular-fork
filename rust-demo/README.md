@@ -19,7 +19,9 @@ tells the story.
 
 For the follow-up GPU deep dive, [the CUDA blog handoff](doc/cuda-blog-handoff.md)
 contains generated CUDA C++ and Mojo, nvcc PTX, native NVIDIA assembly,
-and a checked RTX 5060 Ti run of the lowered threshold program.
+and a checked RTX 5060 Ti run of the lowered threshold program; [the
+Metal blog handoff](doc/metal-blog-handoff.md) has Mojo's Metal AIR for
+the same program and its checked run on the M1 Max.
 
 It is a simpler cousin of [X_eTaL-gpu](https://github.com/softwarewrighter/X_eTaL-gpu)'s
 `gp:a_ccel<` macro and OpenCL emitter: the same shape of pipeline, with a

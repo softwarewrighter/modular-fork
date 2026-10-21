@@ -63,6 +63,10 @@ gate: build
 capture:
     bash scripts/capture-results.sh
 
+# Apple silicon evidence for the lowered threshold program: Mojo's Metal AIR and the checked run
+capture-metal out="work/metal-evidence":
+    bash scripts/capture-metal.sh {{out}}
+
 # build any hand-written Mojo file as a C-callable shared library
 lib src out="":
     scripts/build-mojo-lib.sh {{src}} {{out}}

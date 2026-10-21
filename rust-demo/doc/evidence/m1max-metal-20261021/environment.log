@@ -1,0 +1,13 @@
+Wed Oct 21 22:23:18 UTC 2026
+4d6801bcfef3cfd2effe8b16cf7af23a40f481de
+ProductName:		macOS
+ProductVersion:		26.5
+BuildVersion:		25F71
+Xcode 26.6
+Build version 17F113
+Apple M1 Max
+Chipset Model: Apple M1 Max
+Total Number of Cores: 32
+Metal Support: Metal 4
+Mojo 1.2.0.dev2026101305 (bb6fedb4)
+rustc 1.96.0 (ac68faa20 2026-05-25)

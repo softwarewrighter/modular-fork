@@ -1,0 +1,153 @@
+; ModuleID = '<split-module>'
+source_filename = "accel-threshold.metal"
+target datalayout = "e-p:64:64:64-i1:8:8-i8:8:8-i16:16:16-i32:32:32-i64:64:64-f32:32:32-f64:64:64-v16:16:16-v24:32:32-v32:32:32-v48:64:64-v64:64:64-v96:128:128-v128:128:128-v192:256:256-v256:256:256-v512:512:512-v1024:1024:1024-n8:16:32"
+target triple = "air64-apple-macosx15.0.0"
+
+declare float @air.convert.f.f32.s.i64(i64)
+
+declare i64 @air.convert.s.i64.f.f32(float)
+
+declare float @air.fmax.f32(float, float)
+
+declare i32 @air.thread_position_in_threadgroup.x()
+
+declare i32 @air.threads_per_threadgroup.x()
+
+declare i32 @air.threadgroup_position_in_grid.x()
+
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn
+define void @accel_threshold_stage0_PointetA6A6AoA6A6A_71249f9d18c284f8(ptr addrspace(1) noundef nonnull "air-buffer-no-alias" "nocapture" "noundef" "readonly" %0, ptr addrspace(1) noundef nonnull "air-buffer-no-alias" "nocapture" "noundef" "readonly" %1, ptr addrspace(1) noundef nonnull "air-buffer-no-alias" "nocapture" "noundef" "writeonly" %2, ptr addrspace(1) noundef nonnull "air-buffer-no-alias" "nocapture" "noundef" %3, ptr addrspace(1) noundef nonnull "air-buffer-no-alias" "nocapture" "noundef" %4, ptr addrspace(1) noundef nonnull "air-buffer-no-alias" "nocapture" "noundef" %5, ptr addrspace(1) noundef nonnull "air-buffer-no-alias" "nocapture" "noundef" %6, ptr addrspace(2) noundef "air-buffer-no-alias" "nocapture" "noundef" %7, <3 x i32> %threadgroup_position_in_grid, <3 x i32> %thread_position_in_threadgroup, <3 x i32> %threads_per_threadgroup, <3 x i32> %threads_per_grid, i32 %thread_index_in_simdgroup) local_unnamed_addr #0 {
+  %9 = bitcast ptr addrspace(2) %7 to ptr addrspace(2)
+  %.loaded = load i32, ptr addrspace(2) %9, align 4
+  %10 = bitcast ptr addrspace(1) %6 to ptr addrspace(1)
+  %11 = load ptr addrspace(1), ptr addrspace(1) %10, align 8
+  %12 = bitcast ptr addrspace(1) %5 to ptr addrspace(1)
+  %13 = load ptr addrspace(1), ptr addrspace(1) %12, align 8
+  %14 = bitcast ptr addrspace(1) %4 to ptr addrspace(1)
+  %15 = load ptr addrspace(1), ptr addrspace(1) %14, align 8
+  %16 = bitcast ptr addrspace(1) %3 to ptr addrspace(1)
+  %17 = load ptr addrspace(1), ptr addrspace(1) %16, align 8
+  %18 = bitcast ptr addrspace(1) %2 to ptr addrspace(1)
+  %19 = load ptr addrspace(1), ptr addrspace(1) %18, align 8
+  %20 = bitcast ptr addrspace(1) %1 to ptr addrspace(1)
+  %21 = load ptr addrspace(1), ptr addrspace(1) %20, align 8
+  %22 = bitcast ptr addrspace(1) %0 to ptr addrspace(1)
+  %23 = load ptr addrspace(1), ptr addrspace(1) %22, align 8
+  %24 = extractelement <3 x i32> %threadgroup_position_in_grid, i64 0
+  %25 = zext i32 %24 to i64
+  %26 = extractelement <3 x i32> %threads_per_threadgroup, i64 0
+  %27 = sext i32 %26 to i64
+  %28 = mul i64 %25, %27
+  %29 = extractelement <3 x i32> %thread_position_in_threadgroup, i64 0
+  %30 = zext i32 %29 to i64
+  %31 = add i64 %28, %30
+  %32 = bitcast ptr addrspace(1) %11 to ptr addrspace(1)
+  %33 = getelementptr inbounds float, ptr addrspace(1) %32, i64 %31
+  %34 = bitcast ptr addrspace(1) %33 to ptr addrspace(1)
+  %35 = bitcast ptr addrspace(1) %13 to ptr addrspace(1)
+  %36 = getelementptr inbounds float, ptr addrspace(1) %35, i64 %31
+  %37 = bitcast ptr addrspace(1) %36 to ptr addrspace(1)
+  %38 = bitcast ptr addrspace(1) %15 to ptr addrspace(1)
+  %39 = getelementptr inbounds float, ptr addrspace(1) %38, i64 %31
+  %40 = bitcast ptr addrspace(1) %39 to ptr addrspace(1)
+  %41 = bitcast ptr addrspace(1) %17 to ptr addrspace(1)
+  %42 = getelementptr inbounds float, ptr addrspace(1) %41, i64 %31
+  %43 = bitcast ptr addrspace(1) %42 to ptr addrspace(1)
+  %44 = bitcast ptr addrspace(1) %19 to ptr addrspace(1)
+  %45 = getelementptr inbounds float, ptr addrspace(1) %44, i64 %31
+  %46 = bitcast ptr addrspace(1) %45 to ptr addrspace(1)
+  %47 = bitcast ptr addrspace(1) %21 to ptr addrspace(1)
+  %48 = getelementptr inbounds float, ptr addrspace(1) %47, i64 %31
+  %49 = bitcast ptr addrspace(1) %48 to ptr addrspace(1)
+  %50 = bitcast ptr addrspace(1) %23 to ptr addrspace(1)
+  %51 = getelementptr inbounds float, ptr addrspace(1) %50, i64 %31
+  %52 = bitcast ptr addrspace(1) %51 to ptr addrspace(1)
+  %53 = sext i32 %.loaded to i64
+  %54 = icmp slt i64 %31, %53
+  br i1 %54, label %55, label %84
+
+55:                                               ; preds = %8
+  %56 = bitcast ptr addrspace(1) %52 to ptr addrspace(1)
+  %57 = load float, ptr addrspace(1) %56, align 4
+  %58 = bitcast ptr addrspace(1) %49 to ptr addrspace(1)
+  %59 = load float, ptr addrspace(1) %58, align 4
+  %60 = fdiv float %57, 4.000000e+00
+  %61 = fsub contract float %60, 1.000000e+00
+  %62 = fcmp ogt float %61, 5.000000e-01
+  %63 = select i1 %62, float 1.000000e+00, float 0.000000e+00
+  %64 = fmul contract float %61, %63
+  %65 = call float @air.fmax.f32(float %61, float 0.000000e+00)
+  %66 = fsub contract float %59, 4.000000e+00
+  %67 = call float @air.fmax.f32(float %66, float 0.000000e+00)
+  %68 = call i64 @air.convert.s.i64.f.f32(float %66)
+  %69 = sdiv i64 %68, 2
+  %70 = mul i64 %69, 2
+  %71 = sub i64 %68, %70
+  %72 = icmp slt i64 %68, 0
+  %73 = icmp ne i64 %71, 0
+  %74 = and i1 %72, %73
+  %75 = select i1 %74, i64 2, i64 0
+  %76 = add i64 %71, %75
+  %77 = call float @air.convert.f.f32.s.i64(i64 %76)
+  %78 = fmul contract float %66, %77
+  %79 = bitcast ptr addrspace(1) %46 to ptr addrspace(1)
+  store float %61, ptr addrspace(1) %79, align 4
+  %80 = bitcast ptr addrspace(1) %43 to ptr addrspace(1)
+  store float %64, ptr addrspace(1) %80, align 4
+  %81 = bitcast ptr addrspace(1) %40 to ptr addrspace(1)
+  store float %65, ptr addrspace(1) %81, align 4
+  %82 = bitcast ptr addrspace(1) %37 to ptr addrspace(1)
+  store float %67, ptr addrspace(1) %82, align 4
+  %83 = bitcast ptr addrspace(1) %34 to ptr addrspace(1)
+  store float %78, ptr addrspace(1) %83, align 4
+  br label %85
+
+84:                                               ; preds = %8
+  br label %85
+
+85:                                               ; preds = %84, %55
+  ret void
+}
+
+attributes #0 = { mustprogress nofree norecurse nosync nounwind willreturn "approx-func-fp-math"="true" "frame-pointer"="all" "memory"="argmem: readwrite" "metal.kernel"="true" "metal.thread_args_added"="true" "metal.thread_index_in_simdgroup_idx"="12" "metal.thread_position_in_threadgroup_idx"="9" "metal.threadgroup_position_in_grid_idx"="8" "metal.threads_per_grid_idx"="11" "metal.threads_per_threadgroup_idx"="10" "min-legal-vector-width"="0" "no-builtins" "no-infs-fp-math"="true" "no-nans-fp-math"="true" "no-signed-zeros-fp-math"="true" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "unsafe-fp-math"="true" }
+
+!air.kernel = !{!34}
+!air.compile_options = !{!3, !4, !5}
+!air.language_version = !{!6}
+!air.source_file_name = !{!7}
+!llvm.ident = !{!8}
+!air.version = !{!18}
+!llvm.module.flags = !{!9, !10, !11, !12, !13, !14, !15, !16, !17}
+
+!3 = !{!"air.compile.denorms_disable"}
+!4 = !{!"air.compile.fast_math_disable"}
+!5 = !{!"air.compile.framebuffer_fetch_enable"}
+!6 = !{!"Metal", i32 3, i32 2, i32 0}
+!7 = !{!"accel-threshold.metal"}
+!8 = !{!"Apple metal version 32023.620 (metalfe-32023.620)"}
+!9 = !{i32 1, !"SDK Version", [2 x i32] [i32 15, i32 5]}
+!10 = !{i32 2, !"wchar_size", i32 4}
+!11 = !{i32 4, !"frame-pointer", i32 2}
+!12 = !{i32 7, !"air.max_device_buffers", i32 31}
+!13 = !{i32 7, !"air.max_constant_buffers", i32 31}
+!14 = !{i32 7, !"air.max_threadgroup_buffers", i32 31}
+!15 = !{i32 7, !"air.max_textures", i32 128}
+!16 = !{i32 7, !"air.max_read_write_textures", i32 8}
+!17 = !{i32 7, !"air.max_samplers", i32 16}
+!18 = !{i32 2, i32 7, i32 0}
+!19 = !{}
+!20 = !{i32 0, !"air.buffer", !"air.location_index", i32 0, i32 1, !"air.read", !"air.address_space", i32 1, !"air.arg_type_name", !"void"}
+!21 = !{i32 1, !"air.buffer", !"air.location_index", i32 1, i32 1, !"air.read", !"air.address_space", i32 1, !"air.arg_type_name", !"void"}
+!22 = !{i32 2, !"air.buffer", !"air.location_index", i32 2, i32 1, !"air.write", !"air.address_space", i32 1, !"air.arg_type_name", !"void"}
+!23 = !{i32 3, !"air.buffer", !"air.location_index", i32 3, i32 1, !"air.read_write", !"air.address_space", i32 1, !"air.arg_type_name", !"void"}
+!24 = !{i32 4, !"air.buffer", !"air.location_index", i32 4, i32 1, !"air.read_write", !"air.address_space", i32 1, !"air.arg_type_name", !"void"}
+!25 = !{i32 5, !"air.buffer", !"air.location_index", i32 5, i32 1, !"air.read_write", !"air.address_space", i32 1, !"air.arg_type_name", !"void"}
+!26 = !{i32 6, !"air.buffer", !"air.location_index", i32 6, i32 1, !"air.read_write", !"air.address_space", i32 1, !"air.arg_type_name", !"void"}
+!27 = !{i32 7, !"air.buffer", !"air.location_index", i32 7, i32 1, !"air.read", !"air.address_space", i32 2, !"air.arg_type_name", !"int"}
+!28 = !{i32 8, !"air.threadgroup_position_in_grid", !"air.arg_type_name", !"uint3", !"air.arg_name", !"threadgroup_position_in_grid", !"air.arg_unused"}
+!29 = !{i32 9, !"air.thread_position_in_threadgroup", !"air.arg_type_name", !"uint3", !"air.arg_name", !"thread_position_in_threadgroup", !"air.arg_unused"}
+!30 = !{i32 10, !"air.threads_per_threadgroup", !"air.arg_type_name", !"uint3", !"air.arg_name", !"threads_per_threadgroup", !"air.arg_unused"}
+!31 = !{i32 11, !"air.threads_per_grid", !"air.arg_type_name", !"uint3", !"air.arg_name", !"threads_per_grid", !"air.arg_unused"}
+!32 = !{i32 12, !"air.thread_index_in_simdgroup", !"air.arg_type_name", !"uint", !"air.arg_name", !"thread_index_in_simdgroup"}
+!33 = !{!20, !21, !22, !23, !24, !25, !26, !27, !28, !29, !30, !31, !32}
+!34 = !{ptr @accel_threshold_stage0_PointetA6A6AoA6A6A_71249f9d18c284f8, !19, !33}
