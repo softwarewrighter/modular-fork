@@ -7,7 +7,9 @@ This fork of [modular/modular](https://github.com/modular/modular) adds
 the [X_eTaL](https://github.com/softwarewrighter/X_eTaL) ecosystem, run on
 Apple and NVIDIA GPUs through a Mojo library instead of OpenCL. The story
 is on the blog:
-[Array Languages #10: X_eTaL on Metal and CUDA, Through Mojo](https://blog.softwarewrighter.com/2026/10/16/array-languages-xetal-mojo-metal/).
+[Array Languages #10: X_eTaL on Metal and CUDA, Through Mojo](https://blog.softwarewrighter.com/2026/10/16/array-languages-xetal-mojo-metal/),
+and the follow-up reads one kernel down every toolchain:
+[Rabbit-hole #8: From X_eTaL to the Metal, One Kernel Down Every GPU Toolchain](https://blog.softwarewrighter.com/2026/10/21/rabbit-hole-xetal-to-the-metal/).
 
 [X_eTaL-gpu](https://github.com/softwarewrighter/X_eTaL-gpu) lowers X_eTaL
 array programs to an accelerator IR (XIR) and emits OpenCL C for it. Here a
@@ -44,6 +46,7 @@ OpenCL path is not replaced; Mojo is a second backend beside it.
 | Older NVIDIA cards | [rust-demo/doc/older-gpus.md](rust-demo/doc/older-gpus.md) |
 | X_eTaL, X_eTaL-gpu, X_eTaL-ML | [X_eTaL](https://github.com/softwarewrighter/X_eTaL) · [X_eTaL-gpu](https://github.com/softwarewrighter/X_eTaL-gpu) · [X_eTaL-ML](https://github.com/softwarewrighter/X_eTaL-ML) |
 | This work, on the blog | [Array Languages #10: X_eTaL on Metal and CUDA, Through Mojo](https://blog.softwarewrighter.com/2026/10/16/array-languages-xetal-mojo-metal/) |
+| The GPU deep dive, on the blog | [Rabbit-hole #8: From X_eTaL to the Metal, One Kernel Down Every GPU Toolchain](https://blog.softwarewrighter.com/2026/10/21/rabbit-hole-xetal-to-the-metal/) |
 | The OpenCL work, on the blog | [Array Programs on GPUs Old and New](https://blog.softwarewrighter.com/2026/10/13/array-languages-xetal-gpu/) |
 | Upstream | [modular/modular](https://github.com/modular/modular) · [Mojo docs](https://mojolang.org/docs/) · [GPU compatibility](docs/max/packages.mdx) |
 

@@ -15,7 +15,9 @@ and the GPU's answer is checked against X_eTaL's own evaluator
 
 The blog post
 [Array Languages #10: X_eTaL on Metal and CUDA, Through Mojo](https://blog.softwarewrighter.com/2026/10/16/array-languages-xetal-mojo-metal/)
-tells the story.
+tells the story, and
+[Rabbit-hole #8: From X_eTaL to the Metal, One Kernel Down Every GPU Toolchain](https://blog.softwarewrighter.com/2026/10/21/rabbit-hole-xetal-to-the-metal/)
+follows one kernel down every toolchain.
 
 For the follow-up GPU deep dive, [the CUDA blog handoff](doc/cuda-blog-handoff.md)
 contains generated CUDA C++ and Mojo, nvcc PTX, native NVIDIA assembly,
