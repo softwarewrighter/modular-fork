@@ -89,9 +89,16 @@ libs/Accel/demos/saxpy.xtl ──xetal-gpu lower──▶ accel-saxpy.xir ──
 libs/Accel/tests/demo-saxpy.out (what xetal printed) ──────────────── compared ─────────┘
 ```
 
+The source is
+[libs/Accel/demos/saxpy.xtl](https://github.com/softwarewrighter/X_eTaL-gpu/blob/main/libs/Accel/demos/saxpy.xtl)
+in X_eTaL-gpu, seven lines of X_eTaL; the evaluator's output it is
+checked against is
+[libs/Accel/tests/demo-saxpy.out](https://github.com/softwarewrighter/X_eTaL-gpu/blob/main/libs/Accel/tests/demo-saxpy.out).
 `just xtl ../../X_eTaL-gpu/libs/Accel/demos/saxpy.xtl` runs that chain
 for any X_eTaL program whose lowering stays in this tool's subset. Five
-of X_eTaL-gpu's thirteen Accel demos do (`saxpy`, `threshold`,
+of X_eTaL-gpu's thirteen
+[Accel demos](https://github.com/softwarewrighter/X_eTaL-gpu/tree/main/libs/Accel/demos)
+do (`saxpy`, `threshold`,
 `reduce-sum`, `pipeline`, `vector-add`); their lowered XIR and X_eTaL's
 evaluator output are committed as `programs/accel-*.xir` and `.expect`
 (`just refresh-xtl` rewrites them from the sibling repository), so the
