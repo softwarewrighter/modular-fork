@@ -1,0 +1,63 @@
+Tue Sep  9 08:59:16 AM UTC 2025
+uid=1000(arduino) gid=1000(arduino) groups=1000(arduino),4(adm),20(dialout),27(sudo),29(audio),44(video),100(users),101(netdev),102(bluetooth),103(docker),987(sysupgrade),991(render),995(input),1001(gpiod)
+clinfo	3.0.25.02.14-1
+libc6:arm64	2.41-12
+libvulkan1:arm64	1.4.309.0-1
+mesa-opencl-icd:arm64	25.2.6-1~bpo13+1
+mesa-vulkan-drivers:arm64	25.2.6-1~bpo13+1
+vulkan-tools	1.4.304.0+dfsg1-1
+	libvulkan_virtio.so (libc6,AArch64) => /lib/aarch64-linux-gnu/libvulkan_virtio.so
+	libvulkan_radeon.so (libc6,AArch64) => /lib/aarch64-linux-gnu/libvulkan_radeon.so
+	libvulkan_panfrost.so (libc6,AArch64) => /lib/aarch64-linux-gnu/libvulkan_panfrost.so
+	libvulkan_nouveau.so (libc6,AArch64) => /lib/aarch64-linux-gnu/libvulkan_nouveau.so
+	libvulkan_lvp.so (libc6,AArch64) => /lib/aarch64-linux-gnu/libvulkan_lvp.so
+	libvulkan_intel.so (libc6,AArch64) => /lib/aarch64-linux-gnu/libvulkan_intel.so
+	libvulkan_gfxstream.so (libc6,AArch64) => /lib/aarch64-linux-gnu/libvulkan_gfxstream.so
+	libvulkan_freedreno.so (libc6,AArch64) => /lib/aarch64-linux-gnu/libvulkan_freedreno.so
+	libvulkan_broadcom.so (libc6,AArch64) => /lib/aarch64-linux-gnu/libvulkan_broadcom.so
+	libvulkan_asahi.so (libc6,AArch64) => /lib/aarch64-linux-gnu/libvulkan_asahi.so
+	libvulkan.so.1 (libc6,AArch64) => /lib/aarch64-linux-gnu/libvulkan.so.1
+	libRusticlOpenCL.so.1 (libc6,AArch64) => /lib/aarch64-linux-gnu/libRusticlOpenCL.so.1
+	libRusticlOpenCL.so (libc6,AArch64) => /lib/aarch64-linux-gnu/libRusticlOpenCL.so
+	libOpenCL.so.1 (libc6,AArch64) => /lib/aarch64-linux-gnu/libOpenCL.so.1
+	libGLESv2.so.2 (libc6,AArch64) => /lib/aarch64-linux-gnu/libGLESv2.so.2
+Architecture:                            aarch64
+CPU op-mode(s):                          32-bit, 64-bit
+Byte Order:                              Little Endian
+CPU(s):                                  4
+On-line CPU(s) list:                     0-3
+Vendor ID:                               Qualcomm
+Model name:                              Kryo-V2
+Model:                                   4
+Thread(s) per core:                      1
+Core(s) per cluster:                     4
+Socket(s):                               -
+Cluster(s):                              1
+Stepping:                                0xa
+Frequency boost:                         disabled
+CPU(s) scaling MHz:                      50%
+CPU max MHz:                             2016.0000
+CPU min MHz:                             300.0000
+BogoMIPS:                                38.40
+Flags:                                   fp asimd evtstrm aes pmull sha1 sha2 crc32 cpuid
+NUMA node(s):                            1
+NUMA node0 CPU(s):                       0-3
+Vulnerability Gather data sampling:      Not affected
+Vulnerability Ghostwrite:                Not affected
+Vulnerability Indirect target selection: Not affected
+Vulnerability Itlb multihit:             Not affected
+Vulnerability L1tf:                      Not affected
+Vulnerability Mds:                       Not affected
+Vulnerability Meltdown:                  Not affected
+Vulnerability Mmio stale data:           Not affected
+Vulnerability Old microcode:             Not affected
+Vulnerability Reg file data sampling:    Not affected
+Vulnerability Retbleed:                  Not affected
+Vulnerability Spec rstack overflow:      Not affected
+Vulnerability Spec store bypass:         Not affected
+Vulnerability Spectre v1:                Mitigation; __user pointer sanitization
+Vulnerability Spectre v2:                Not affected
+Vulnerability Srbds:                     Not affected
+Vulnerability Tsa:                       Not affected
+Vulnerability Tsx async abort:           Not affected
+Vulnerability Vmscape:                   Not affected

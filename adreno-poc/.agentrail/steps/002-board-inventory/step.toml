@@ -6,4 +6,3 @@ role = "production"
 context_files = []
 created_at = "2026-10-23T08:57:41"
 commits = []
-reserved_for = "UNO Q board session (waiting for user to connect board)"

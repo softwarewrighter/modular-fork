@@ -16,6 +16,9 @@ evaluator and Mojo emitter; Mojo's published aarch64 Linux wheels.
 The scaffold and Vulkan vector addition are validated on Arch's RTX 5060 Ti,
 with every element checked from 1K through 1M. No board dispatch has run yet.
 See [the host Vulkan results](docs/host-vulkan-handoff.md).
+The [UNO Q inventory](docs/uno-q-capabilities.md) now confirms the physical
+Adreno in Turnip and rusticl. OpenCL is the first path to test; Turnip
+reports Vulkan 1.0, requiring a compatibility change to the host demo.
 Start with
 `just setup` and `just gate`. Run `bash scripts/inventory.sh OUTPUT_DIRECTORY`
 on the UNO Q and return the complete output directory. See

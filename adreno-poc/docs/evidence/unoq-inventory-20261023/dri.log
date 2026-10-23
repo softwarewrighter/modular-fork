@@ -1,0 +1,8 @@
+command: ls -la /dev/dri
+total 0
+drwxr-xr-x   3 root root        100 Sep  9 08:38 .
+drwxr-xr-x  17 root root       5620 Sep  9 08:38 ..
+drwxr-xr-x   2 root root         80 Sep  9 08:38 by-path
+crw-rw----+  1 root video  226,   0 Sep  9 08:38 card0
+crw-rw----+  1 root render 226, 128 Sep  9 08:38 renderD128
+exit: 0

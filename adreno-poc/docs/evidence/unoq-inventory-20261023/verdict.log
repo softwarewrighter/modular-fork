@@ -1,0 +1,5 @@
+Driver and device names: review full vulkan.log and opencl.log.
+software Vulkan detected; physical GPU NOT established
+Mixed hardware/software listings require per-device inspection.
+rusticl listed; inspect device name and type before claiming GPU execution.
+Inventory only: no dispatch or numerical correctness established.

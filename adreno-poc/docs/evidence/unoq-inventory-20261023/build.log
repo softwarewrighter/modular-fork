@@ -1,0 +1,53 @@
+cargo fmt --check
+cargo test --offline
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.21s
+     Running unittests src/lib.rs (target/debug/deps/adreno_vk-e1fbfabcd73e47db)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/adreno_vk-3acce17e7cde1f8f)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/vector_add.rs (target/debug/deps/vector_add-47323d39e37a4c27)
+
+running 3 tests
+test physical_gpu_checks_aligned_and_partial_workgroups ... ignored, requires a physical Vulkan GPU; run explicitly
+test invalid_counts_fail_before_loading_a_driver ... ok
+test oracle_checks_every_element_and_rejects_nonfinite_results ... ok
+
+test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests adreno_vk
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+cargo clippy --offline --all-targets -- -D warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.10s
+for script in scripts/*.sh tests/*.sh; do bash -n "$script"; done
+bash tests/scaffold.sh
+Driver and device names: review full vulkan.log and opencl.log.
+software Vulkan detected; physical GPU NOT established
+Mixed hardware/software listings require per-device inspection.
+rusticl NOT established.
+Inventory only: no dispatch or numerical correctness established.
+Driver and device names: review full vulkan.log and opencl.log.
+Adreno/Turnip candidate; verify physical device, COMPUTE queue and storage limits.
+rusticl NOT established.
+Inventory only: no dispatch or numerical correctness established.
+Prepared /disk1/github/softwarewrighter/modular-fork/adreno-poc/work/host.env (arch).
+Source it before builds. See work/environment.log for installed/missing tools.
+Cross compilation is not ready until the aarch64 Rust standard library and
+linker are present. System packages and shared toolchains are never modified.
+Use --prepare-cross to install a project-local Rust target (network required).
+Mac: place MoltenVK under work/MoltenVK; install cargo-zigbuild under
+work/ and ziglang in work/.venv when cross-build step 004 needs them.
+See docs/scaffold-handoff.md for local toolchain preparation instructions.
+scaffold checks passed
+git diff --check
