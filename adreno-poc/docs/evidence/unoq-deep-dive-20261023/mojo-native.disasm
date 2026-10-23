@@ -1,0 +1,260 @@
+Native code for unnamed CL shader (null) with sha1 f4b5a2cc2ccee83ca10ec9d03523d55bc54e3431:
+; num_ubos:           0
+; num_driver_params:  12
+; offsets:
+;   driver_params              c0.x (4 vec4)
+;   ubo_ranges                 c8.x (8 vec4)
+;   preamble                   c4.x (4 vec4)
+; ubo_state:
+;   num_enabled:      1
+;   range[0]:
+;     block:          0
+;     offset:         c8.x
+;     size:           8 vec4 (0b -> 128b)
+@in(r48.x)	in0 (wrmask=0x7)
+@in(r0.x)	in1 (wrmask=0x7)
+@const(c16.x)	0x0000ffff, 0xd0d0d0d0, 0xd0d0d0d0, 0xd0d0d0d0
+shps #l9
+getone #l9
+mov.u32u32 r0.w, 0xffff
+(nop2) shr.b r1.x, c2.x, 16
+(nop3) and.b r0.w, c2.x, r0.w
+stc.u32 c[17], r1.x, 1
+(rpt2)nop
+stc.u32 c[16], r0.w, 1
+(sy)(ss)shpe
+l9:
+(jp)mov.f32f32 r1.y, c12.x
+mov.f32f32 r2.x, c2.x
+mov.f32f32 r1.z, c4.x
+mov.f32f32 r1.w, c4.y
+(nop3) add.u r1.y, r48.x, r1.y
+mull.u r0.z, r1.y, c2.x
+cmps.u.lt hr4.z, r1.y, r48.x
+madsh.m16 r0.z, r1.y, r2.x, r0.z
+and.b r2.w, r1.y, c16.x
+shr.b r0.y, r1.y, 16
+madsh.m16 r1.y, c2.x, r1.y, r0.z
+cov.u16s32 r2.z, hr4.z
+mull.u r1.x, r2.w, c4.x
+mull.u r2.y, r0.y, c4.x
+add.u r0.x, r1.y, r0.x
+madsh.m16 r1.x, r2.w, r1.z, r1.x
+madsh.m16 r1.z, r0.y, r1.z, r2.y
+madsh.m16 r1.x, c4.x, r2.w, r1.x
+cmps.u.lt hr2.z, r0.x, r1.y
+madsh.m16 r1.z, c4.x, r0.y, r1.z
+mull.u r0.z, r0.y, c4.y
+add.u r2.z, r2.z, c12.y
+cov.u16s32 r0.w, hr2.z
+mull.u r1.y, r2.w, c4.y
+shl.b r2.y, r1.z, 16
+madsh.m16 r1.y, r2.w, r1.w, r1.y
+madsh.m16 r1.w, r0.y, r1.w, r0.z
+madsh.m16 r2.w, c4.y, r2.w, r1.y
+madsh.m16 r0.y, c4.y, r0.y, r1.w
+shr.b r1.z, r1.z, 16
+mull.u r0.z, r2.z, c2.x
+shl.b r1.y, r2.w, 16
+shr.b r2.w, r2.w, 16
+(nop1) madsh.m16 r2.x, r2.z, r2.x, r0.z
+add.u r1.y, r1.x, r1.y
+(nop2) madsh.m16 r2.z, c2.x, r2.z, r2.x
+cmps.u.lt hr2.x, r1.y, r1.x
+(nop2) add.u r2.y, r1.y, r2.y
+cov.u16s32 r1.w, hr2.x
+cmps.u.lt hr4.z, r2.y, r1.y
+(nop1) add.u r1.x, r0.x, c10.x
+(nop1) add.u r0.y, r0.y, r1.w
+cmps.u.lt hr0.x, r1.x, r0.x
+cmps.u.lt p0.x, r1.x, 8
+add.u r0.y, r0.y, r2.w
+cov.u16s32 r2.w, hr4.z
+cov.u16s32 r1.y, hr0.x
+(rpt1)nop
+(nop3) add.u r0.y, r0.y, r2.w
+(nop3) add.u r0.y, r0.y, r1.z
+(nop3) add.u r0.y, r0.y, r2.z
+(nop3) add.u r0.w, r0.w, r0.y
+(nop3) add.u r0.w, r0.w, c10.y
+(nop3) add.u r1.y, r1.y, r0.w
+(nop3) cmps.s.eq p0.y, r1.y, 0
+(rpt2)nop
+brao !p0.y, !p0.x, #l97
+shl.b r1.z, r1.x, 2
+(nop2) shr.b r1.x, r1.x, 30
+add.u r1.w, c8.x, r1.z
+add.u r0.x, c8.y, r1.x
+add.u r2.y, c8.z, r1.z
+add.u r0.y, c8.w, r1.x
+cmps.u.lt hr1.x, r1.w, c8.x
+(nop2) add.u r1.x, c9.y, r1.x
+cov.u16s32 r0.w, hr1.x
+(rpt2)nop
+(nop3) add.u r2.x, r0.w, r0.x
+(rpt2)nop
+ldg.u32 r1.y, g[r1.w], 1
+(ss)(nop3) cmps.u.lt hr3.z, r2.y, c8.z
+cov.u16s32 r2.x, hr3.z
+(rpt2)nop
+add.u r2.z, r2.x, r0.y
+(nop3) add.u r0.y, c9.x, r1.z
+(nop3) cmps.u.lt hr1.z, r0.y, c9.x
+cov.u16s32 r1.z, hr1.z
+(rpt2)nop
+add.u r0.z, r1.z, r1.x
+(sy)(nop3) cmps.f.lt hr5.z, (0.5), r1.y
+cov.u16f32 (even)r0.x, hr5.z
+(rpt2)nop
+mul.f r0.x, r1.y, r0.x
+(nop3) max.f r1.y, r1.y, (0.0)
+(rpt1)nop
+stg.u32 g[r2.y], r0.x, 1
+nop
+stg.u32 g[r0.y], r1.y, 1
+l97:
+(jp)end
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+; CL: outputs:
+; CL: inputs: r48.x (SYSTEM_VALUE_WORKGROUP_ID slot=47 cm=7,il=0,b=0) r0.x (SYSTEM_VALUE_LOCAL_INVOCATION_ID slot=42 cm=7,il=0,b=0)
+; CL prog 1/1: 156 instr, 76 nops, 80 non-nops, 4 mov, 9 cov, 224 dwords
+; CL prog 1/1: 0 last-baryf, 0 last-helper, 0 half, 3 full, 20 constlen
+; CL prog 1/1: 78 cat0, 13 cat1, 50 cat2, 12 cat3, 0 cat4, 0 cat5, 3 cat6, 0 cat7
+; CL prog 1/1: 0 sstall, 1 (ss), 88 systall, 1 (sy), 0 loops
+; CL prog 1/1: 8 max_waves, 1 double_threadsize
+; 16 preamble-instr, 0 early-preamble
+
+Native code for unnamed CL shader (null) with sha1 a5a367beab9e29d9ef1af8e804fd89b347d54a5f:
+; num_ubos:           0
+; num_driver_params:  12
+; offsets:
+;   driver_params              c0.x (4 vec4)
+;   ubo_ranges                 c8.x (4 vec4)
+;   preamble                   c4.x (4 vec4)
+; ubo_state:
+;   num_enabled:      1
+;   range[0]:
+;     block:          0
+;     offset:         c8.x
+;     size:           4 vec4 (0b -> 64b)
+@in(r48.x)	in0 (wrmask=0x7)
+@in(r0.x)	in1 (wrmask=0x7)
+shps #l9
+getone #l9
+mov.u32u32 r0.w, 0xffff
+(nop2) shr.b r1.x, c2.x, 16
+(nop3) and.b r0.w, c2.x, r0.w
+stc.u32 c[17], r1.x, 1
+(rpt2)nop
+stc.u32 c[16], r0.w, 1
+(sy)(ss)shpe
+l9:
+(jp)mov.f32f32 r0.y, c2.x
+mov.u32u32 r0.w, r48.x
+mov.u32u32 r1.y, 0xffff
+mov.f32f32 r1.z, c4.x
+mull.u r1.x, r48.x, r0.y
+mov.f32f32 r1.w, c4.y
+madsh.m16 r0.y, r48.x, r0.y, r1.x
+and.b r1.y, r48.x, r1.y
+madsh.m16 r0.w, c2.x, r0.w, r0.y
+(nop1) shr.b r0.z, r48.x, 16
+mull.u r1.x, r1.y, c4.y
+add.u r0.x, r0.w, r0.x
+(nop2) madsh.m16 r1.x, r1.y, r1.w, r1.x
+cmps.u.lt hr1.z, r0.x, r0.w
+(nop2) cmps.u.lt p0.x, r0.x, 8
+cov.u16s32 r0.y, hr1.z
+(nop1) mull.u r0.w, r1.y, c4.x
+(nop1) madsh.m16 r0.w, r1.y, r1.z, r0.w
+madsh.m16 r0.w, c4.x, r1.y, r0.w
+madsh.m16 r1.y, c4.y, r1.y, r1.x
+(nop1) mull.u r1.x, r0.z, c4.x
+madsh.m16 r1.z, r0.z, r1.z, r1.x
+mull.u r1.x, r0.z, c4.y
+madsh.m16 r1.z, c4.x, r0.z, r1.z
+(nop1) madsh.m16 r1.w, r0.z, r1.w, r1.x
+madsh.m16 r0.z, c4.y, r0.z, r1.w
+shl.b r1.w, r1.y, 16
+shl.b r1.x, r1.z, 16
+shr.b r1.y, r1.y, 16
+shr.b r1.z, r1.z, 16
+(nop3) add.u r1.w, r0.w, r1.w
+cmps.u.lt hr1.z, r1.w, r0.w
+(nop2) add.u r1.x, r1.w, r1.x
+cov.u16s32 r0.w, hr1.z
+(nop2) cmps.u.lt hr2.x, r1.x, r1.w
+(nop3) add.u r0.z, r0.z, r0.w
+add.u r0.z, r0.z, r1.y
+cov.u16s32 r1.y, hr2.x
+(rpt2)nop
+(nop3) add.u r0.z, r0.z, r1.y
+(nop3) add.u r0.z, r0.z, r1.z
+(nop3) add.u r0.y, r0.y, r0.z
+(nop3) cmps.s.eq p0.y, r0.y, 0
+(rpt2)nop
+brao !p0.y, !p0.x, #l86
+shl.b r1.z, r0.x, 2
+(nop2) shr.b r0.x, r0.x, 30
+add.u r0.y, c8.x, r1.z
+add.u r1.x, c8.y, r0.x
+add.u r0.w, c8.z, r1.z
+add.u r1.y, c8.w, r0.x
+cmps.u.lt hr3.z, r0.y, c8.x
+(nop2) add.u r0.x, c9.y, r0.x
+cov.u16s32 r0.z, hr3.z
+(nop2) cmps.u.lt hr3.z, r0.w, c8.z
+(nop3) add.u r0.z, r0.z, r1.x
+(rpt2)nop
+ldg.u32 r1.x, g[r0.y], 1
+(ss)cov.u16s32 r0.y, hr3.z
+mov.u32u32 r0.z, r0.w
+(rpt1)nop
+(nop3) add.u r0.y, r0.y, r1.y
+mov.u32u32 r0.w, r0.y
+add.u r0.y, c9.x, r1.z
+(sy)(nop3) cmps.f.lt hr2.z, (0.5), r1.x
+cov.u16f32 (even)r1.w, hr2.z
+(rpt2)nop
+mul.f r1.w, r1.x, r1.w
+(nop3) max.f r1.x, r1.x, (0.0)
+(rpt1)nop
+stg.u32 g[r0.z], r1.w, 1
+(ss)(nop3) cmps.u.lt hr1.z, r0.y, c9.x
+cov.u16s32 r1.y, hr1.z
+(rpt2)nop
+(nop3) add.u r0.z, r1.y, r0.x
+(rpt2)nop
+stg.u32 g[r0.y], r1.x, 1
+l86:
+(jp)end
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+; CL: outputs:
+; CL: inputs: r48.x (SYSTEM_VALUE_WORKGROUP_ID slot=47 cm=7,il=0,b=0) r0.x (SYSTEM_VALUE_LOCAL_INVOCATION_ID slot=42 cm=7,il=0,b=0)
+; CL prog 2/1: 147 instr, 77 nops, 70 non-nops, 7 mov, 7 cov, 192 dwords
+; CL prog 2/1: 0 last-baryf, 0 last-helper, 0 half, 2 full, 12 constlen
+; CL prog 2/1: 79 cat0, 14 cat1, 41 cat2, 10 cat3, 0 cat4, 0 cat5, 3 cat6, 0 cat7
+; CL prog 2/1: 0 sstall, 2 (ss), 100 systall, 1 (sy), 0 loops
+; CL prog 2/1: 12 max_waves, 1 double_threadsize
+; 16 preamble-instr, 0 early-preamble

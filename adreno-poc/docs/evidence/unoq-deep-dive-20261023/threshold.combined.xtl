@@ -1,0 +1,270 @@
+## Accel: the acceleratable subset of X_eTaL: elementwise arithmetic, masks, reductions, products, transposes, windows, lookups, choices, a layer
+##
+## Import it with an alias of your choice: "ac:" u_se< "Accel".
+## Put libs/Accel/src on XETAL_PATH ("just path"); the reference is libs/Accel/docs.
+##
+## Every function here is one whole-array expression in the subset a
+## GPU (or an FPGA) can take on directly: static scalar types, pure
+## functions, arithmetic and comparisons item by item with scalar
+## extension, a select by mask, reductions, inner products, tables and
+## transposes.
+## No recursion, no nested arrays, no input or output. The X_eTaL
+## evaluator is the reference: X_eTaL-gpu runs the same functions on a
+## GPU and must give the same answers (the demos are the programs it
+## checks). Names with l: are exported; the others are private.
+
+### Elementwise
+
+## The sum, item by item: the first kernel, one work-item per element.
+## >> "ac:" u_se< "Accel"
+## >> 1 2 3 4 ac:v_add 10 20 30 40
+## 11 22 33 44
+LA:v_add := { x y -> x + y }
+
+## Every item of the right times the number on the left.
+## >> "ac:" u_se< "Accel"
+## >> 3 ac:s_cale 1 2 3
+## 3 6 9
+LA:s_cale := { a x -> a * x }
+
+## The items where positive, 0 elsewhere (a select by comparison with
+## a constant), for Ints or Floats.
+## >> "ac:" u_se< "Accel"
+## >> ac:r_elu 1 -2 3 -4
+## 1 0 3 0
+LA:r_elu := { x -> x m_ax 0 }
+
+### Masks and select
+
+## t ac:t_hreshold x: x where x > t, 0.0 elsewhere, for Floats: the
+## mask `x > t` made Float and multiplied in, the select a GPU does
+## with a conditional move. A masked-out negative comes back as -0.0.
+## >> "ac:" u_se< "Accel"
+## >> 0.5 ac:t_hreshold 0.25 0.5 0.75 1.0
+## 0.0 0.0 0.75 1.0
+LA:t_hreshold := { t x -> x * f_loat x > t }
+
+## m ac:k_eep x: x where the Int mask m is 1, 0 elsewhere.
+## >> "ac:" u_se< "Accel"
+## >> (1 0 1 0) ac:k_eep 5 6 7 8
+## 5 0 7 0
+LA:k_eep := { m x -> x * m }
+
+### Reductions
+
+## The sum of the items of a vector: a parallel reduction on a GPU
+## (work-group partials, then a second pass).
+## >> "ac:" u_se< "Accel"
+## >> ac:s_um 1 2 3 4
+## 10
+LA:s_um := { x -> '+ r_/ x }
+
+## The largest item of a vector.
+## >> "ac:" u_se< "Accel"
+## >> ac:l_argest 3 9 2
+## 9
+LA:l_argest := { x -> 'm_ax r_/ x }
+
+## The inner product of two vectors: a multiply, then a reduce.
+## >> "ac:" u_se< "Accel"
+## >> 1 2 3 ac:d_ot 4 5 6
+## 32
+LA:d_ot := { x y -> '+ r_/ x * y }
+
+### Along an axis
+
+## The sum of each row of a matrix (along axis 2: one work-item per
+## row on a GPU).
+## >> "ac:" u_se< "Accel"
+## >> ac:r_owSums 2 3 r_eshape 1 20 3 4 5 60
+## 24 69
+LA:r_owSums := { m -> '+ r_/_2 m }
+
+## The sum of each column (along axis 1, the default of r_/).
+## >> "ac:" u_se< "Accel"
+## >> ac:c_olSums 2 3 r_eshape 1 20 3 4 5 60
+## 5 25 63
+LA:c_olSums := { m -> '+ r_/ m }
+
+## The largest item of each row.
+## >> "ac:" u_se< "Accel"
+## >> ac:r_owMax 2 3 r_eshape 1 20 3 4 5 60
+## 20 60
+LA:r_owMax := { m -> 'm_ax r_/_2 m }
+
+### Inner products
+
+## x ac:m_atmul w: the inner product of x's last axis with w's first
+## (APL's +.x): a matrix times a matrix, a matrix times a vector, a
+## vector times a matrix. Each result item is a sum of products, one
+## GPU work-item each (or a tile of them, as the schedule says).
+## >> "ac:" u_se< "Accel"
+## >> (2 3 r_eshape r_ange 6) ac:m_atmul 3 2 r_eshape r_ange 6
+## 22 28
+## 49 64
+## >> (2 3 r_eshape r_ange 6) ac:m_atmul 1 0 2
+## 7 16
+LA:m_atmul := { x w -> x '+ '* i_nner w }
+
+### Transposes
+
+## q ac:s_cores k: attention scores, every query row against every
+## key row (q k^T): the inner product of q with the transpose of k. On
+## a GPU the transpose is a gather, one work-item per item, and the
+## product follows (research7: attention decomposes into array
+## operations; it is not an intrinsic).
+## >> "ac:" u_se< "Accel"
+## >> (2 3 r_eshape r_ange 6) ac:s_cores 4 3 r_eshape r_ange 12
+## 14 32  50  68
+## 32 77 122 167
+LA:s_cores := { q k -> q '+ '* i_nner o_\ k }
+
+## x ac:w_eightGrad dy: the gradient of a dense layer's weights, for
+## a batch x (a row per example) and the gradient dy at the layer's
+## output: x^T dy, the product every backward pass is made of.
+## >> "ac:" u_se< "Accel"
+## >> (4 2 r_eshape r_ange 8) ac:w_eightGrad 4 3 r_eshape r_ange 12
+## 118 134 150
+## 140 160 180
+LA:w_eightGrad := { x dy -> (o_\ x) '+ '* i_nner dy }
+
+### Lookups
+
+## t ac:e_mbed ids: the rows of the table t at the positions ids
+## (Ints from 1), in the shape of ids: a batch of token ids picks a
+## batch of embeddings (ids s_elect t). On a GPU a gather, one
+## work-item per item of the result, the table resident; the ids are
+## all that a prompt uploads.
+## >> "ac:" u_se< "Accel"
+## >> t := 4 3 r_eshape 0.0 0.1 0.2 1.0 1.1 1.2 2.0 2.1 2.2 3.0 3.1 3.2
+## >> t ac:e_mbed 4 1 2
+## 3.0 3.1 3.2
+## 0.0 0.1 0.2
+## 1.0 1.1 1.2
+LA:e_mbed := { t ids -> ids s_elect t }
+
+### Windows
+
+## ac:w_indows x: every 3 by 3 window of every picture of the batch x
+## (n pictures of h by w) as 9 rows, a column per picture and place:
+## the picture's nine shifted copies (a rotation along each of the
+## last two axes, one copy per shift), their wrapped edges dropped,
+## reshaped; the expression is X_eTaL-ML's Conv (cv:w_indows). On a
+## GPU each rotation and each drop is a gather of its own and the
+## reshape is nothing.
+## >> "ac:" u_se< "Accel"
+## >> ac:w_indows 1 3 4 r_eshape r_ange 12
+##  1  2
+##  2  3
+##  3  4
+##  5  6
+##  6  7
+##  7  8
+##  9 10
+## 10 11
+## 11 12
+LA:w_indows := { x ->
+  places := ((2 s_elect s_hape x) - 2) * (3 s_elect s_hape x) - 2
+  (9 c_at places * t_ally x) r_eshape 1 d_rop_5 -1 d_rop_5 1 d_rop_4 -1 d_rop_4 -1 0 1 o_-_3 -1 0 1 o_-_3 x
+}
+
+## k ac:c_onv x: the f filters k (f rows of 9, a 3 by 3 filter row by
+## row) over every window of every picture of x, as one matrix
+## product: the maps, n by f by (h - 2) by (w - 2) (a valid
+## convolution without the bias; X_eTaL-ML's Conv adds its biases).
+## >> "ac:" u_se< "Accel"
+## >> (1 9 r_eshape 0 0 0 0 1 0 0 0 0) ac:c_onv 1 3 4 r_eshape r_ange 12
+## 6 7
+LA:c_onv := { k x ->
+  n := t_ally x
+  h := (2 s_elect s_hape x) - 2
+  w := (3 s_elect s_hape x) - 2
+  (n c_at (t_ally k) c_at h c_at w) r_eshape 2 1 3 t_ranspose ((t_ally k) c_at n c_at h * w) r_eshape k '+ '* i_nner LA:w_indows x
+}
+
+### Choices
+
+## ac:a_rgmax m: for each row of m, the position (from 1) of its
+## largest item, the first on a tie: the decision of a classifier,
+## the next token of a greedy sampler. X_eTaL-ML's nn:a_rgmax, as
+## array operations the IR has: the row's largest spread along the
+## row, a mask where the row equals it, the smallest position under
+## the mask (n + 1 elsewhere). No new GPU operation: a row reduction,
+## a table, a fused mask and a second row reduction.
+## >> "ac:" u_se< "Accel"
+## >> ac:a_rgmax 3 4 r_eshape 5.0 1.0 9.0 9.0 2.0 2.0 2.0 2.0 7.0 8.0 6.0 8.0
+## 3 1 2
+LA:a_rgmax := { m ->
+  n := f_irst -1 t_ake s_hape m
+  hit := f_loat m = ('m_ax r_/_2 m) 'l_eft t_able o_ffsets n
+  f_loor 'm_in r_/_2 (hit * (o_ffsets t_ally m) 'r_ight t_able f_loat r_ange n) + (1.0 - hit) * f_loat n + 1
+}
+
+## k ac:t_opk m: a mask of each row's k largest items (1.0 there,
+## 0.0 elsewhere): the row's largest taken out k times, as X_eTaL-ML's
+## Sample (sm:t_op) and its mixture-of-experts router choose; items
+## tied with a taken one go with it, so a tie at the k-th keeps all
+## tied. The choice of a router, the candidates of a retrieval. A
+## taken item is pushed below its row by more than the row's range
+## (Sample subtracts 1e300, which is infinity in a GPU's f32 and
+## poisons the row with NaN).
+## >> "ac:" u_se< "Accel"
+## >> 2 ac:t_opk 2 4 r_eshape 0.1 0.5 0.15 0.25 7.0 8.0 6.0 8.0
+## 0.0 1.0 0.0 1.0
+## 1.0 1.0 0.0 1.0
+LA:t_opk := { k m ->
+  n := f_irst -1 t_ake s_hape m
+  shift := (1.0 + ('m_ax r_/_2 m) - 'm_in r_/_2 m) 'l_eft t_able o_ffsets n
+  left := k '{ q -> q - shift * f_loat q = ('m_ax r_/_2 q) 'l_eft t_able o_ffsets n } p_ower m
+  f_loat (m - left) > 0.0
+}
+
+### A layer of a network
+
+## x ac:d_ense wb: the layer x W + b for a batch x (one example per
+## row), the weights W (a row per input, a column per output) with the
+## bias b as one more row at the bottom of wb, as X_eTaL-ML's NN has
+## it. The bias row is spread down the batch by a table (r_ight).
+## >> "ac:" u_se< "Accel"
+## >> x := 2 3 r_eshape 1.0 2.0 3.0 -1.0 0.5 0.0
+## >> wb := 4 2 r_eshape 0.5 -1.0 1.0 0.25 -0.5 2.0 0.1 0.2
+## >> x ac:d_ense wb
+## 1.1   5.7
+## 0.1 1.325
+LA:d_ense := { x wb -> (x '+ '* i_nner -1 d_rop wb) + (o_ffsets t_ally x) 'r_ight t_able r_avel -1 t_ake wb }
+
+## Each row of a matrix into probabilities: the row's largest taken
+## off (the same result, no overflow), e to each, each divided by its
+## row's sum; a row's value spread across the row by a table (l_eft).
+## >> "ac:" u_se< "Accel"
+## >> ac:s_oftmax 2 3 r_eshape 0.0 0.0 0.0 1.0 2.0 3.0
+##  0.3333333333333333  0.3333333333333333 0.3333333333333333
+## 0.09003057317038046 0.24472847105479764 0.6652409557748218
+LA:s_oftmax := { m ->
+  c := o_ffsets f_irst -1 t_ake s_hape m
+  e := e_xp m - ('m_ax r_/_2 m) 'l_eft t_able c
+  e / ('+ r_/_2 e) 'l_eft t_able c
+}
+
+### The acceptance pipeline
+
+## x ac:p_ipeline w: multiply, add, select, reduce in one expression,
+## the sum of the positive items of x + x * w: the first end-to-end
+## test research7 asks for (arithmetic, map, zip, comparison,
+## selection, reduction), for Ints or Floats.
+## >> "ac:" u_se< "Accel"
+## >> 1 2 3 4 ac:p_ipeline 1 -2 1 -2
+## 8
+LA:p_ipeline := { x w -> LA:s_um LA:r_elu x + x * w }
+#!/usr/bin/env xetal
+# Threshold: a select by mask, item by item: x where x > t, else 0;
+# relu is the same with t = 0; k_eep takes any Int mask.
+# Run with "just demo-lib Accel threshold".
+
+x := ((r_ange 8) / 4) - 1.0
+x
+0.5 LA:t_hreshold x
+LA:r_elu x
+n := (r_ange 8) - 4
+LA:r_elu n
+(n m_od 2) LA:k_eep n

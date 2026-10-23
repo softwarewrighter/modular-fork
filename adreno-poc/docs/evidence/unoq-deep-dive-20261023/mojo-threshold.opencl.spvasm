@@ -1,0 +1,344 @@
+; SPIR-V
+; Version: 1.4
+; Generator: Khronos SPIR-V Tools Linker; 0
+; Bound: 166
+; Schema: 0
+               OpCapability Addresses
+               OpCapability Kernel
+               OpCapability Int64
+          %1 = OpExtInstImport "OpenCL.std"
+               OpMemoryModel Physical64 OpenCL
+               OpEntryPoint Kernel %2 "k0" %__spirv_BuiltInGlobalInvocationId
+          %4 = OpString "kernel_arg_type.k0.float*,float*,float*,"
+          %5 = OpString "kernel_arg_type_qual.k0.const,,,"
+               OpSource OpenCL_C 102000
+               OpName %__spirv_BuiltInGlobalInvocationId "__spirv_BuiltInGlobalInvocationId"
+               OpName %xetal_idiv_long "xetal_idiv_long"
+               OpName %a "a"
+               OpName %b "b"
+               OpName %entry "entry"
+               OpName %land_lhs_true "land.lhs.true"
+               OpName %cond_true "cond.true"
+               OpName %cond_false "cond.false"
+               OpName %cond_end "cond.end"
+               OpName %a_addr "a.addr"
+               OpName %b_addr "b.addr"
+               OpName %q "q"
+               OpName %div "div"
+               OpName %rem "rem"
+               OpName %cmp "cmp"
+               OpName %cmp1 "cmp1"
+               OpName %conv "conv"
+               OpName %cmp2 "cmp2"
+               OpName %conv3 "conv3"
+               OpName %cmp4 "cmp4"
+               OpName %sub "sub"
+               OpName %cond "cond"
+               OpName %xetal_imod_long "xetal_imod_long"
+               OpName %a_0 "a"
+               OpName %b_0 "b"
+               OpName %entry_0 "entry"
+               OpName %a_addr_0 "a.addr"
+               OpName %b_addr_0 "b.addr"
+               OpName %call "call"
+               OpName %mul "mul"
+               OpName %sub_0 "sub"
+               OpName %xetal_idiv_int "xetal_idiv_int"
+               OpName %a_1 "a"
+               OpName %b_1 "b"
+               OpName %entry_1 "entry"
+               OpName %land_lhs_true_0 "land.lhs.true"
+               OpName %cond_true_0 "cond.true"
+               OpName %cond_false_0 "cond.false"
+               OpName %cond_end_0 "cond.end"
+               OpName %a_addr_1 "a.addr"
+               OpName %b_addr_1 "b.addr"
+               OpName %q_0 "q"
+               OpName %div_0 "div"
+               OpName %rem_0 "rem"
+               OpName %cmp_0 "cmp"
+               OpName %cmp1_0 "cmp1"
+               OpName %conv_0 "conv"
+               OpName %cmp2_0 "cmp2"
+               OpName %conv3_0 "conv3"
+               OpName %cmp4_0 "cmp4"
+               OpName %sub_1 "sub"
+               OpName %cond_0 "cond"
+               OpName %xetal_imod_int "xetal_imod_int"
+               OpName %a_2 "a"
+               OpName %b_2 "b"
+               OpName %entry_2 "entry"
+               OpName %a_addr_2 "a.addr"
+               OpName %b_addr_2 "b.addr"
+               OpName %call_0 "call"
+               OpName %mul_0 "mul"
+               OpName %sub_2 "sub"
+               OpName %k0 "k0"
+               OpName %b_x "b_x"
+               OpName %b_threshold "b_threshold"
+               OpName %b_relu "b_relu"
+               OpName %entry_3 "entry"
+               OpName %if_then "if.then"
+               OpName %if_end "if.end"
+               OpName %return "return"
+               OpName %b_x_addr "b_x.addr"
+               OpName %b_threshold_addr "b_threshold.addr"
+               OpName %b_relu_addr "b_relu.addr"
+               OpName %i "i"
+               OpName %t_gt "t_gt"
+               OpName %t_mask "t_mask"
+               OpName %t_threshold "t_threshold"
+               OpName %t_relu "t_relu"
+               OpName %call_1 "call"
+               OpName %cmp_1 "cmp"
+               OpName %arrayidx "arrayidx"
+               OpName %cmp1_1 "cmp1"
+               OpName %conv_1 "conv"
+               OpName %conv2 "conv2"
+               OpName %arrayidx3 "arrayidx3"
+               OpName %mul_1 "mul"
+               OpName %arrayidx4 "arrayidx4"
+               OpName %call5 "call5"
+               OpName %arrayidx6 "arrayidx6"
+               OpName %arrayidx7 "arrayidx7"
+               OpName %b_x_0 "b_x"
+               OpName %b_threshold_0 "b_threshold"
+               OpName %b_relu_0 "b_relu"
+               OpModuleProcessed "Linked by SPIR-V Tools Linker"
+               OpDecorate %__spirv_BuiltInGlobalInvocationId Constant
+               OpDecorate %__spirv_BuiltInGlobalInvocationId BuiltIn GlobalInvocationId
+               OpDecorate %a_addr Alignment 8
+               OpDecorate %b_addr Alignment 8
+               OpDecorate %q Alignment 8
+               OpDecorate %sub NoSignedWrap
+               OpDecorate %a_addr_0 Alignment 8
+               OpDecorate %b_addr_0 Alignment 8
+               OpDecorate %mul NoSignedWrap
+               OpDecorate %sub_0 NoSignedWrap
+               OpDecorate %a_addr_1 Alignment 4
+               OpDecorate %b_addr_1 Alignment 4
+               OpDecorate %q_0 Alignment 4
+               OpDecorate %sub_1 NoSignedWrap
+               OpDecorate %a_addr_2 Alignment 4
+               OpDecorate %b_addr_2 Alignment 4
+               OpDecorate %mul_0 NoSignedWrap
+               OpDecorate %sub_2 NoSignedWrap
+               OpDecorate %b_x Alignment 4
+               OpDecorate %b_threshold Alignment 4
+               OpDecorate %b_relu Alignment 4
+               OpDecorate %b_x_addr Alignment 8
+               OpDecorate %b_threshold_addr Alignment 8
+               OpDecorate %b_relu_addr Alignment 8
+               OpDecorate %i Alignment 8
+               OpDecorate %t_gt Alignment 4
+               OpDecorate %t_mask Alignment 4
+               OpDecorate %t_threshold Alignment 4
+               OpDecorate %t_relu Alignment 4
+               OpDecorate %b_x_0 Alignment 4
+               OpDecorate %b_threshold_0 Alignment 4
+               OpDecorate %b_relu_0 Alignment 4
+      %ulong = OpTypeInt 64 0
+       %uint = OpTypeInt 32 0
+    %ulong_0 = OpConstant %ulong 0
+     %uint_1 = OpConstant %uint 1
+     %uint_0 = OpConstant %uint 0
+    %ulong_1 = OpConstant %ulong 1
+    %ulong_8 = OpConstant %ulong 8
+    %v3ulong = OpTypeVector %ulong 3
+%_ptr_Input_v3ulong = OpTypePointer Input %v3ulong
+        %106 = OpTypeFunction %ulong %ulong %ulong
+%_ptr_Function_ulong = OpTypePointer Function %ulong
+       %bool = OpTypeBool
+        %109 = OpTypeFunction %uint %uint %uint
+%_ptr_Function_uint = OpTypePointer Function %uint
+       %void = OpTypeVoid
+      %float = OpTypeFloat 32
+%_ptr_CrossWorkgroup_float = OpTypePointer CrossWorkgroup %float
+        %114 = OpTypeFunction %void %_ptr_CrossWorkgroup_float %_ptr_CrossWorkgroup_float %_ptr_CrossWorkgroup_float
+%_ptr_Function__ptr_CrossWorkgroup_float = OpTypePointer Function %_ptr_CrossWorkgroup_float
+%_ptr_Function_float = OpTypePointer Function %float
+%__spirv_BuiltInGlobalInvocationId = OpVariable %_ptr_Input_v3ulong Input
+       %true = OpConstantTrue %bool
+  %float_0_5 = OpConstant %float 0.5
+    %float_0 = OpConstant %float 0
+%xetal_idiv_long = OpFunction %ulong DontInline %106
+          %a = OpFunctionParameter %ulong
+          %b = OpFunctionParameter %ulong
+      %entry = OpLabel
+     %a_addr = OpVariable %_ptr_Function_ulong Function
+     %b_addr = OpVariable %_ptr_Function_ulong Function
+          %q = OpVariable %_ptr_Function_ulong Function
+               OpStore %a_addr %a Aligned 8
+               OpStore %b_addr %b Aligned 8
+        %120 = OpLoad %ulong %a_addr Aligned 8
+        %121 = OpLoad %ulong %b_addr Aligned 8
+        %div = OpSDiv %ulong %120 %121
+               OpStore %q %div Aligned 8
+        %122 = OpLoad %ulong %a_addr Aligned 8
+        %123 = OpLoad %ulong %b_addr Aligned 8
+        %rem = OpSRem %ulong %122 %123
+        %cmp = OpINotEqual %bool %rem %ulong_0
+               OpBranchConditional %cmp %land_lhs_true %cond_false
+%land_lhs_true = OpLabel
+        %124 = OpLoad %ulong %a_addr Aligned 8
+       %cmp1 = OpSLessThan %bool %124 %ulong_0
+       %conv = OpSelect %uint %cmp1 %uint_1 %uint_0
+        %125 = OpLoad %ulong %b_addr Aligned 8
+       %cmp2 = OpSLessThan %bool %125 %ulong_0
+      %conv3 = OpSelect %uint %cmp2 %uint_1 %uint_0
+       %cmp4 = OpINotEqual %bool %conv %conv3
+               OpBranchConditional %cmp4 %cond_true %cond_false
+  %cond_true = OpLabel
+        %126 = OpLoad %ulong %q Aligned 8
+        %sub = OpISub %ulong %126 %ulong_1
+               OpBranch %cond_end
+ %cond_false = OpLabel
+        %127 = OpLoad %ulong %q Aligned 8
+               OpBranch %cond_end
+   %cond_end = OpLabel
+       %cond = OpPhi %ulong %sub %cond_true %127 %cond_false
+               OpReturnValue %cond
+               OpFunctionEnd
+%xetal_imod_long = OpFunction %ulong DontInline %106
+        %a_0 = OpFunctionParameter %ulong
+        %b_0 = OpFunctionParameter %ulong
+    %entry_0 = OpLabel
+   %a_addr_0 = OpVariable %_ptr_Function_ulong Function
+   %b_addr_0 = OpVariable %_ptr_Function_ulong Function
+               OpStore %a_addr_0 %a_0 Aligned 8
+               OpStore %b_addr_0 %b_0 Aligned 8
+        %128 = OpLoad %ulong %a_addr_0 Aligned 8
+        %129 = OpLoad %ulong %a_addr_0 Aligned 8
+        %130 = OpLoad %ulong %b_addr_0 Aligned 8
+       %call = OpFunctionCall %ulong %xetal_idiv_long %129 %130
+        %131 = OpLoad %ulong %b_addr_0 Aligned 8
+        %mul = OpIMul %ulong %call %131
+      %sub_0 = OpISub %ulong %128 %mul
+               OpReturnValue %sub_0
+               OpFunctionEnd
+%xetal_idiv_int = OpFunction %uint DontInline %109
+        %a_1 = OpFunctionParameter %uint
+        %b_1 = OpFunctionParameter %uint
+    %entry_1 = OpLabel
+   %a_addr_1 = OpVariable %_ptr_Function_uint Function
+   %b_addr_1 = OpVariable %_ptr_Function_uint Function
+        %q_0 = OpVariable %_ptr_Function_uint Function
+               OpStore %a_addr_1 %a_1 Aligned 4
+               OpStore %b_addr_1 %b_1 Aligned 4
+        %132 = OpLoad %uint %a_addr_1 Aligned 4
+        %133 = OpLoad %uint %b_addr_1 Aligned 4
+      %div_0 = OpSDiv %uint %132 %133
+               OpStore %q_0 %div_0 Aligned 4
+        %134 = OpLoad %uint %a_addr_1 Aligned 4
+        %135 = OpLoad %uint %b_addr_1 Aligned 4
+      %rem_0 = OpSRem %uint %134 %135
+      %cmp_0 = OpINotEqual %bool %rem_0 %uint_0
+               OpBranchConditional %cmp_0 %land_lhs_true_0 %cond_false_0
+%land_lhs_true_0 = OpLabel
+        %136 = OpLoad %uint %a_addr_1 Aligned 4
+     %cmp1_0 = OpSLessThan %bool %136 %uint_0
+     %conv_0 = OpSelect %uint %cmp1_0 %uint_1 %uint_0
+        %137 = OpLoad %uint %b_addr_1 Aligned 4
+     %cmp2_0 = OpSLessThan %bool %137 %uint_0
+    %conv3_0 = OpSelect %uint %cmp2_0 %uint_1 %uint_0
+     %cmp4_0 = OpINotEqual %bool %conv_0 %conv3_0
+               OpBranchConditional %cmp4_0 %cond_true_0 %cond_false_0
+%cond_true_0 = OpLabel
+        %138 = OpLoad %uint %q_0 Aligned 4
+      %sub_1 = OpISub %uint %138 %uint_1
+               OpBranch %cond_end_0
+%cond_false_0 = OpLabel
+        %139 = OpLoad %uint %q_0 Aligned 4
+               OpBranch %cond_end_0
+ %cond_end_0 = OpLabel
+     %cond_0 = OpPhi %uint %sub_1 %cond_true_0 %139 %cond_false_0
+               OpReturnValue %cond_0
+               OpFunctionEnd
+%xetal_imod_int = OpFunction %uint DontInline %109
+        %a_2 = OpFunctionParameter %uint
+        %b_2 = OpFunctionParameter %uint
+    %entry_2 = OpLabel
+   %a_addr_2 = OpVariable %_ptr_Function_uint Function
+   %b_addr_2 = OpVariable %_ptr_Function_uint Function
+               OpStore %a_addr_2 %a_2 Aligned 4
+               OpStore %b_addr_2 %b_2 Aligned 4
+        %140 = OpLoad %uint %a_addr_2 Aligned 4
+        %141 = OpLoad %uint %a_addr_2 Aligned 4
+        %142 = OpLoad %uint %b_addr_2 Aligned 4
+     %call_0 = OpFunctionCall %uint %xetal_idiv_int %141 %142
+        %143 = OpLoad %uint %b_addr_2 Aligned 4
+      %mul_0 = OpIMul %uint %call_0 %143
+      %sub_2 = OpISub %uint %140 %mul_0
+               OpReturnValue %sub_2
+               OpFunctionEnd
+         %k0 = OpFunction %void DontInline %114
+        %b_x = OpFunctionParameter %_ptr_CrossWorkgroup_float
+%b_threshold = OpFunctionParameter %_ptr_CrossWorkgroup_float
+     %b_relu = OpFunctionParameter %_ptr_CrossWorkgroup_float
+    %entry_3 = OpLabel
+   %b_x_addr = OpVariable %_ptr_Function__ptr_CrossWorkgroup_float Function
+%b_threshold_addr = OpVariable %_ptr_Function__ptr_CrossWorkgroup_float Function
+%b_relu_addr = OpVariable %_ptr_Function__ptr_CrossWorkgroup_float Function
+          %i = OpVariable %_ptr_Function_ulong Function
+       %t_gt = OpVariable %_ptr_Function_uint Function
+     %t_mask = OpVariable %_ptr_Function_float Function
+%t_threshold = OpVariable %_ptr_Function_float Function
+     %t_relu = OpVariable %_ptr_Function_float Function
+               OpStore %b_x_addr %b_x Aligned 8
+               OpStore %b_threshold_addr %b_threshold Aligned 8
+               OpStore %b_relu_addr %b_relu Aligned 8
+        %144 = OpLoad %v3ulong %__spirv_BuiltInGlobalInvocationId Aligned 32
+        %145 = OpCompositeExtract %ulong %144 0
+     %call_1 = OpSelect %ulong %true %145 %ulong_0
+               OpStore %i %call_1 Aligned 8
+        %146 = OpLoad %ulong %i Aligned 8
+      %cmp_1 = OpUGreaterThanEqual %bool %146 %ulong_8
+               OpBranchConditional %cmp_1 %if_then %if_end
+    %if_then = OpLabel
+               OpBranch %return
+     %if_end = OpLabel
+        %147 = OpLoad %_ptr_CrossWorkgroup_float %b_x_addr Aligned 8
+        %148 = OpLoad %ulong %i Aligned 8
+   %arrayidx = OpInBoundsPtrAccessChain %_ptr_CrossWorkgroup_float %147 %148
+        %149 = OpLoad %float %arrayidx Aligned 4
+     %cmp1_1 = OpFOrdGreaterThan %bool %149 %float_0_5
+     %conv_1 = OpSelect %uint %cmp1_1 %uint_1 %uint_0
+               OpStore %t_gt %conv_1 Aligned 4
+        %150 = OpLoad %uint %t_gt Aligned 4
+      %conv2 = OpConvertSToF %float %150
+               OpStore %t_mask %conv2 Aligned 4
+        %151 = OpLoad %_ptr_CrossWorkgroup_float %b_x_addr Aligned 8
+        %152 = OpLoad %ulong %i Aligned 8
+  %arrayidx3 = OpInBoundsPtrAccessChain %_ptr_CrossWorkgroup_float %151 %152
+        %153 = OpLoad %float %arrayidx3 Aligned 4
+        %154 = OpLoad %float %t_mask Aligned 4
+      %mul_1 = OpFMul %float %153 %154
+               OpStore %t_threshold %mul_1 Aligned 4
+        %155 = OpLoad %_ptr_CrossWorkgroup_float %b_x_addr Aligned 8
+        %156 = OpLoad %ulong %i Aligned 8
+  %arrayidx4 = OpInBoundsPtrAccessChain %_ptr_CrossWorkgroup_float %155 %156
+        %157 = OpLoad %float %arrayidx4 Aligned 4
+      %call5 = OpExtInst %float %1 fmax %157 %float_0
+               OpStore %t_relu %call5 Aligned 4
+        %158 = OpLoad %float %t_threshold Aligned 4
+        %159 = OpLoad %_ptr_CrossWorkgroup_float %b_threshold_addr Aligned 8
+        %160 = OpLoad %ulong %i Aligned 8
+  %arrayidx6 = OpInBoundsPtrAccessChain %_ptr_CrossWorkgroup_float %159 %160
+               OpStore %arrayidx6 %158 Aligned 4
+        %161 = OpLoad %float %t_relu Aligned 4
+        %162 = OpLoad %_ptr_CrossWorkgroup_float %b_relu_addr Aligned 8
+        %163 = OpLoad %ulong %i Aligned 8
+  %arrayidx7 = OpInBoundsPtrAccessChain %_ptr_CrossWorkgroup_float %162 %163
+               OpStore %arrayidx7 %161 Aligned 4
+               OpBranch %return
+     %return = OpLabel
+               OpReturn
+               OpFunctionEnd
+          %2 = OpFunction %void DontInline %114
+      %b_x_0 = OpFunctionParameter %_ptr_CrossWorkgroup_float
+%b_threshold_0 = OpFunctionParameter %_ptr_CrossWorkgroup_float
+   %b_relu_0 = OpFunctionParameter %_ptr_CrossWorkgroup_float
+        %164 = OpLabel
+        %165 = OpFunctionCall %void %k0 %b_x_0 %b_threshold_0 %b_relu_0
+               OpReturn
+               OpFunctionEnd

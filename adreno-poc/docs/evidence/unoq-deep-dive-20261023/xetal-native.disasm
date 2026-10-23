@@ -1,0 +1,615 @@
+Native code for unnamed CL shader (null) with sha1 2a4cdd6aa38e7394903ceccc34350e91e59290aa:
+; num_ubos:           0
+; num_driver_params:  12
+; offsets:
+;   driver_params              c0.x (4 vec4)
+;   ubo_ranges                 c8.x (8 vec4)
+;   preamble                   c4.x (4 vec4)
+; ubo_state:
+;   num_enabled:      1
+;   range[0]:
+;     block:          0
+;     offset:         c8.x
+;     size:           8 vec4 (0b -> 128b)
+@in(r48.x)	in0 (wrmask=0x7)
+@in(r0.x)	in1 (wrmask=0x7)
+@const(c16.x)	0x0000ffff, 0x3e800000, 0xbf800000, 0x00000000
+@const(c17.x)	0xffffffff, 0x00000001, 0xd0d0d0d0, 0xd0d0d0d0
+shps #l9
+getone #l9
+mov.u32u32 r0.w, 0xffff
+(nop2) shr.b r1.x, c2.x, 16
+(nop3) and.b r0.w, c2.x, r0.w
+stc.u32 c[17], r1.x, 1
+(rpt2)nop
+stc.u32 c[16], r0.w, 1
+(sy)(ss)shpe
+l9:
+(jp)mov.f32f32 r1.y, c14.x
+mov.f32f32 r1.z, c4.x
+mov.f32f32 r1.w, c4.y
+mov.f32f32 r2.x, c2.x
+(nop3) add.u r1.y, r48.x, r1.y
+and.b r2.w, r1.y, c16.x
+shr.b r3.x, r1.y, 16
+cmps.u.lt hr4.z, r1.y, r48.x
+mull.u r3.y, r1.y, c2.x
+mull.u r3.w, r2.w, c4.x
+mull.u r4.x, r2.w, c4.y
+madsh.m16 r3.w, r2.w, r1.z, r3.w
+madsh.m16 r4.x, r2.w, r1.w, r4.x
+madsh.m16 r3.w, c4.x, r2.w, r3.w
+madsh.m16 r2.w, c4.y, r2.w, r4.x
+mull.u r4.y, r3.x, c4.x
+mull.u r4.z, r3.x, c4.y
+madsh.m16 r1.z, r3.x, r1.z, r4.y
+shl.b r4.w, r2.w, 16
+madsh.m16 r1.z, c4.x, r3.x, r1.z
+madsh.m16 r1.w, r3.x, r1.w, r4.z
+shr.b r2.w, r2.w, 16
+add.u r4.w, r3.w, r4.w
+shl.b r5.y, r1.z, 16
+madsh.m16 r3.x, c4.y, r3.x, r1.w
+cov.u16s32 r2.z, hr4.z
+cmps.u.lt hr7.z, r4.w, r3.w
+add.u r5.y, r4.w, r5.y
+madsh.m16 r3.y, r1.y, r2.x, r3.y
+add.u r2.z, r2.z, c14.y
+cov.u16s32 r5.x, hr7.z
+cmps.u.lt hr10.z, r5.y, r4.w
+madsh.m16 r1.y, c2.x, r1.y, r3.y
+shr.b r1.z, r1.z, 16
+add.u r3.x, r3.x, r5.x
+cov.u16s32 r5.z, hr10.z
+add.u r0.x, r1.y, r0.x
+mull.u r5.w, r2.z, c2.x
+add.u r3.x, r3.x, r2.w
+madsh.m16 r2.x, r2.z, r2.x, r5.w
+cmps.u.lt hr2.z, r0.x, r1.y
+madsh.m16 r2.z, c2.x, r2.z, r2.x
+add.u r3.x, r3.x, r5.z
+add.u r0.y, r0.x, c12.x
+cov.u16s32 r3.z, hr2.z
+nop
+add.u r3.x, r3.x, r1.z
+cmps.u.lt hr0.x, r0.y, r0.x
+(nop1) cmps.u.lt p0.x, r0.y, 8
+add.u r3.x, r3.x, r2.z
+cov.u16s32 r0.z, hr0.x
+(rpt1)nop
+(nop3) add.u r3.z, r3.z, r3.x
+(nop3) add.u r3.z, r3.z, c12.y
+(nop3) add.u r0.z, r0.z, r3.z
+(nop3) cmps.s.eq p0.y, r0.z, 0
+(rpt2)nop
+brao !p0.y, !p0.x, #l277
+shl.b r0.w, r0.y, 2
+shr.b r1.y, r0.y, 30
+shl.b r1.x, r0.y, 3
+shr.b r1.z, r0.y, 29
+add.u r1.w, c8.x, r0.w
+add.u r2.w, c8.y, r1.y
+add.u r4.z, c9.x, r0.w
+add.u r2.y, c8.z, r1.x
+cmps.u.lt hr6.z, r1.w, c8.x
+add.u r5.z, c9.y, r1.y
+cmps.u.lt hr0.x, r4.z, c9.x
+cmps.u.lt hr8.x, r2.y, c8.z
+cov.u16s32 r3.z, hr6.z
+add.u r3.x, c8.w, r1.z
+cov.u16s32 r0.y, hr0.x
+cov.u16s32 r4.y, hr8.x
+add.u r2.x, r3.z, r2.w
+add.u r2.w, c10.x, r0.w
+add.u r4.w, r0.y, r5.z
+add.u r0.y, c11.x, r1.x
+add.u r5.x, c9.z, r0.w
+add.u r2.z, r4.y, r3.x
+cmps.u.lt hr8.z, r2.w, c10.x
+ldg.u32 r3.w, g[r1.w], 1
+cmps.u.lt hr1.z, r0.y, c11.x
+add.u r5.w, c9.w, r1.y
+add.u r3.y, c10.z, r1.x
+add.u r4.x, c10.w, r1.z
+cmps.u.lt hr1.x, r5.x, c9.z
+cov.u16s32 r5.z, hr8.z
+add.u r1.y, c10.y, r1.y
+cov.u16s32 r1.x, hr1.z
+add.u r1.z, c11.y, r1.z
+(ss)cov.u16s32 r1.w, hr1.x
+(nop1) add.u r3.x, r5.z, r1.y
+add.u r0.z, r1.x, r1.z
+ldg.u32 r1.y, g[r2.y], 2
+add.u r5.y, r1.w, r5.w
+(nop3) cmps.u.lt hr11.z, r3.y, c10.z
+cov.u16s32 r0.x, hr11.z
+(rpt2)nop
+add.u r3.z, r0.x, r4.x
+(sy)mul.f r3.w, r3.w, c16.y
+add.u r2.y, r1.y, -4
+add.u r2.z, -3, r1.y
+add.u r1.z, r1.z, -1
+add.f r3.w, r3.w, c16.z
+cmps.u.lt hr2.z, r2.y, r1.y
+absneg.s r4.x, (neg)r2.y
+cmps.u.lt hr8.z, r2.z, -3
+(nop2) cmps.f.lt hr3.z, (0.5), r3.w
+stg.u32 g[r4.z], r3.w, 1
+(ss)and.b r4.z, r2.y, c16.x
+cov.u16f32 (even)r2.x, hr3.z
+(rpt2)nop
+mul.f r2.x, r3.w, r2.x
+(nop3) max.f r3.w, r3.w, (0.0)
+(rpt1)nop
+stg.u32 g[r5.x], r2.x, 1
+nop
+stg.u32 g[r2.w], r3.w, 1
+(ss)cov.u16s32 r3.w, hr2.z
+cmps.u.lt hr5.z, r2.y, -1
+(nop1) cmps.s.ne hr5.w, r2.y, 0
+(nop1) add.u r3.w, r3.w, r1.z
+cov.u16s32 r3.x, hr5.w
+nop
+cmps.s.lt hr11.x, r3.w, -1
+cmps.s.eq hr11.y, r3.w, -1
+cmps.s.lt hr9.z, r3.w, 0
+(nop1) absneg.s r0.x, (neg)r3.w
+andg r5.w, hr11.y, hr5.z, hr11.x
+cov.u16u32 r5.y, hr9.z
+sub.u r0.x, r0.x, r3.x
+sel.b16 hr8.z, hr8.z, hr9.z, hr2.z
+sel.b32 r0.w, c17.x, r5.w, r3.w
+sel.b32 r5.w, c17.x, r5.w, r2.y
+sel.b32 r2.z, r2.z, r5.y, r2.y
+sel.b32 r0.x, r0.x, r5.y, r3.w
+cmps.s.lt hr4.x, r0.w, 0
+max.u r1.w, r0.w, r5.w
+sel.b32 r4.x, r4.x, r5.y, r2.y
+and.b r2.z, r2.z, -2
+shl.b r3.x, r0.x, 31
+cmps.s.eq hr3.z, r1.w, 0
+cov.u16s32 r5.x, hr8.z
+cmps.s.ne hr2.x, r2.z, 0
+shrg r4.x, 1, r4.x, r3.x
+or.b r2.w, hr4.x, hr3.z
+add.u r1.z, r1.z, r5.x
+cov.u16s32 r1.y, hr2.x
+and.b r5.z, r4.x, c16.x
+sel.b32 r5.w, r5.w, r2.w, c17.y
+shr.b r1.x, r4.x, 16
+sel.b32 r0.w, r0.w, r2.w, c16.w
+sub.u r2.z, r2.y, r2.z
+and.b r4.y, r5.w, c16.x
+shr.b r5.x, r5.w, 16
+absneg.s r1.z, (neg)r1.z
+cmps.u.lt hr9.w, r2.z, r2.y
+mull.u r1.w, r4.y, r5.z
+mull.u r2.x, r4.y, r1.x
+madsh.m16 r1.w, r4.y, r5.z, r1.w
+madsh.m16 r2.x, r4.y, r1.x, r2.x
+madsh.m16 r1.w, r5.z, r4.y, r1.w
+madsh.m16 r4.y, r1.x, r4.y, r2.x
+mull.u r2.w, r5.x, r5.z
+mull.u r3.x, r5.x, r1.x
+madsh.m16 r2.w, r5.x, r5.z, r2.w
+madsh.m16 r3.x, r5.x, r1.x, r3.x
+madsh.m16 r5.z, r5.z, r5.x, r2.w
+madsh.m16 r1.x, r1.x, r5.x, r3.x
+shl.b r5.x, r4.y, 16
+sub.u r1.z, r1.z, r1.y
+shl.b r2.x, r5.z, 16
+shr.b r4.y, r4.y, 16
+add.u r5.x, r1.w, r5.x
+shr.b r0.x, r0.x, 1
+add.u r1.z, r3.w, r1.z
+mull.u r1.y, r5.w, r4.x
+cmps.u.lt hr3.z, r5.x, r1.w
+add.u r2.x, r5.x, r2.x
+mull.u r3.x, r5.w, r0.x
+madsh.m16 r1.y, r5.w, r4.x, r1.y
+cov.u16s32 r1.w, hr3.z
+cmps.u.lt hr4.x, r2.x, r5.x
+cov.u16s32 r5.x, hr9.w
+madsh.m16 r3.x, r5.w, r0.x, r3.x
+add.u r1.x, r1.x, r1.w
+cov.u16s32 r2.w, hr4.x
+shr.b r5.z, r5.z, 16
+madsh.m16 r1.y, r4.x, r5.w, r1.y
+add.u r1.x, r1.x, r4.y
+mull.u r4.y, r0.w, r4.x
+add.u r5.x, r5.x, r1.z
+madsh.m16 r4.y, r0.w, r4.x, r4.y
+madsh.m16 r0.x, r0.x, r5.w, r3.x
+add.u r1.x, r1.x, r2.w
+madsh.m16 r4.x, r4.x, r0.w, r4.y
+or.b r2.z, r2.z, r5.x
+add.u r5.w, r1.y, -1
+add.u r1.x, r1.x, r5.z
+add.u r0.x, r0.x, r4.x
+cmps.s.ne hr5.x, r2.z, 0
+cmps.u.lt hr4.x, r5.w, r1.y
+sel.b32 r1.z, c16.w, r5.y, r2.y
+add.u r1.x, r1.x, r0.x
+and.b r5.z, hr5.x, hr9.z
+cov.u16s32 r2.z, hr4.x
+shr.b r0.w, r2.y, 16
+add.u r0.x, r1.x, -1
+sel.b32 r5.w, r5.w, r5.z, r1.y
+(nop1) max.s r1.w, r3.w, 0
+(nop3) add.u r2.z, r2.z, r0.x
+sel.b32 r2.z, r2.z, r5.z, r1.x
+stg.u32 g[r3.y], r1.z, 2
+(rpt2)nop
+(nop3) shl.b r2.z, r2.z, 1
+shrg r2.z, 31, r5.w, r2.z
+(nop2) shl.b r5.w, r5.w, 1
+absneg.s r2.z, (neg)r2.z
+cmps.s.ne hr5.z, r5.w, 0
+(nop2) sub.u r5.w, r2.y, r5.w
+cov.u16s32 r3.x, hr5.z
+and.b r4.x, r5.w, c16.x
+shr.b r4.y, r5.w, 16
+(ss)cmps.u.lt hr6.z, r5.w, r2.y
+sub.u r2.z, r2.z, r3.x
+mull.u r5.x, r4.z, r4.x
+mull.u r5.y, r4.z, r4.y
+madsh.m16 r5.x, r4.z, r4.x, r5.x
+madsh.m16 r5.y, r4.z, r4.y, r5.y
+madsh.m16 r5.x, r4.x, r4.z, r5.x
+madsh.m16 r4.z, r4.y, r4.z, r5.y
+mull.u r5.z, r0.w, r4.x
+mull.u r0.x, r0.w, r4.y
+madsh.m16 r5.z, r0.w, r4.x, r5.z
+madsh.m16 r0.x, r0.w, r4.y, r0.x
+madsh.m16 r4.x, r4.x, r0.w, r5.z
+madsh.m16 r4.y, r4.y, r0.w, r0.x
+shl.b r0.w, r4.z, 16
+cov.u16s32 r3.z, hr6.z
+shl.b r1.y, r4.x, 16
+add.u r2.z, r3.w, r2.z
+add.u r0.w, r5.x, r0.w
+shr.b r4.z, r4.z, 16
+mull.u r4.w, r2.y, r5.w
+add.u r3.z, r3.z, r2.z
+cmps.u.lt hr10.x, r0.w, r5.x
+add.u r1.y, r0.w, r1.y
+mull.u r2.z, r3.w, r5.w
+mull.u r1.w, r2.y, r3.z
+cov.u16s32 r1.x, hr10.x
+cmps.u.lt hr2.z, r1.y, r0.w
+madsh.m16 r4.w, r2.y, r5.w, r4.w
+madsh.m16 r2.z, r3.w, r5.w, r2.z
+add.u r4.y, r4.y, r1.x
+cov.u16s32 r1.z, hr2.z
+madsh.m16 r1.w, r2.y, r3.z, r1.w
+shr.b r4.x, r4.x, 16
+add.u r4.y, r4.y, r4.z
+madsh.m16 r2.x, r5.w, r2.y, r4.w
+madsh.m16 r3.z, r3.z, r2.y, r1.w
+madsh.m16 r5.w, r5.w, r3.w, r2.z
+(nop2) add.u r4.y, r4.y, r1.z
+add.u r3.z, r3.z, r5.w
+(nop3) add.u r4.y, r4.y, r4.x
+(nop3) add.u r2.y, r4.y, r3.z
+(rpt2)nop
+stg.u32 g[r0.y], r2.x, 2
+l277:
+(jp)end
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+; CL: outputs:
+; CL: inputs: r48.x (SYSTEM_VALUE_WORKGROUP_ID slot=47 cm=7,il=0,b=0) r0.x (SYSTEM_VALUE_LOCAL_INVOCATION_ID slot=42 cm=7,il=0,b=0)
+; CL prog 1/1: 328 instr, 69 nops, 259 non-nops, 4 mov, 26 cov, 576 dwords
+; CL prog 1/1: 0 last-baryf, 0 last-helper, 0 half, 6 full, 20 constlen
+; CL prog 1/1: 71 cat0, 30 cat1, 166 cat2, 54 cat3, 0 cat4, 0 cat5, 7 cat6, 0 cat7
+; CL prog 1/1: 0 sstall, 4 (ss), 101 systall, 1 (sy), 0 loops
+; CL prog 1/1: 4 max_waves, 1 double_threadsize
+; 16 preamble-instr, 0 early-preamble
+
+Native code for unnamed CL shader (null) with sha1 74a22923411a39a126ee602ad7130f55729c2663:
+; num_ubos:           0
+; num_driver_params:  12
+; offsets:
+;   driver_params              c0.x (4 vec4)
+;   ubo_ranges                 c8.x (4 vec4)
+;   preamble                   c4.x (4 vec4)
+; ubo_state:
+;   num_enabled:      1
+;   range[0]:
+;     block:          0
+;     offset:         c8.x
+;     size:           4 vec4 (0b -> 64b)
+@in(r48.x)	in0 (wrmask=0x7)
+@in(r0.x)	in1 (wrmask=0x7)
+@const(c12.x)	0x3e800000, 0xbf800000, 0x00000000, 0xffffffff
+@const(c13.x)	0x00000001, 0x0000ffff, 0xd0d0d0d0, 0xd0d0d0d0
+shps #l9
+getone #l9
+mov.u32u32 r0.w, 0xffff
+(nop2) shr.b r1.x, c2.x, 16
+(nop3) and.b r0.w, c2.x, r0.w
+stc.u32 c[17], r1.x, 1
+(rpt2)nop
+stc.u32 c[16], r0.w, 1
+(sy)(ss)shpe
+l9:
+(jp)mov.u32u32 r1.y, 0xffff
+mov.f32f32 r1.z, c4.x
+mov.f32f32 r1.w, c4.y
+shr.b r2.y, r48.x, 16
+and.b r1.y, r48.x, r1.y
+mov.f32f32 r2.x, c2.x
+mov.u32u32 r2.z, r48.x
+mull.u r3.w, r2.y, c4.x
+mull.u r3.y, r1.y, c4.x
+mull.u r3.z, r1.y, c4.y
+madsh.m16 r3.y, r1.y, r1.z, r3.y
+madsh.m16 r3.z, r1.y, r1.w, r3.z
+madsh.m16 r3.y, c4.x, r1.y, r3.y
+madsh.m16 r1.y, c4.y, r1.y, r3.z
+madsh.m16 r1.z, r2.y, r1.z, r3.w
+mull.u r4.x, r2.y, c4.y
+madsh.m16 r1.z, c4.x, r2.y, r1.z
+shl.b r4.y, r1.y, 16
+madsh.m16 r1.w, r2.y, r1.w, r4.x
+mull.u r2.w, r48.x, r2.x
+shl.b r4.w, r1.z, 16
+add.u r4.y, r3.y, r4.y
+madsh.m16 r2.y, c4.y, r2.y, r1.w
+madsh.m16 r2.x, r48.x, r2.x, r2.w
+shr.b r1.y, r1.y, 16
+cmps.u.lt hr6.z, r4.y, r3.y
+add.u r4.w, r4.y, r4.w
+madsh.m16 r2.z, c2.x, r2.z, r2.x
+shr.b r1.z, r1.z, 16
+cov.u16s32 r4.z, hr6.z
+cmps.u.lt hr9.z, r4.w, r4.y
+(nop1) add.u r0.x, r2.z, r0.x
+add.u r2.y, r2.y, r4.z
+cov.u16s32 r5.x, hr9.z
+cmps.u.lt hr5.x, r0.x, r2.z
+cmps.u.lt p0.x, r0.x, 8
+(nop1) add.u r2.y, r2.y, r1.y
+cov.u16s32 r3.x, hr5.x
+nop
+(nop3) add.u r2.y, r2.y, r5.x
+(nop3) add.u r2.y, r2.y, r1.z
+(nop3) add.u r3.x, r3.x, r2.y
+(nop3) cmps.s.eq p0.y, r3.x, 0
+(rpt2)nop
+brao !p0.y, !p0.x, #l264
+shl.b r5.y, r0.x, 2
+shr.b r0.y, r0.x, 30
+shl.b r5.z, r0.x, 3
+shr.b r0.z, r0.x, 29
+add.u r0.w, c8.x, r5.y
+add.u r1.w, c8.y, r0.y
+add.u r3.z, c9.x, r5.y
+add.u r1.y, c8.z, r5.z
+cmps.u.lt hr4.z, r0.w, c8.x
+add.u r4.x, c9.z, r5.y
+cmps.u.lt hr10.x, r3.z, c9.x
+cmps.u.lt hr6.x, r1.y, c8.z
+cov.u16s32 r2.z, hr4.z
+add.u r4.z, c9.y, r0.y
+add.u r2.x, c8.w, r0.z
+cov.u16s32 r5.w, hr10.x
+add.u r1.x, r2.z, r1.w
+cov.u16s32 r3.y, hr6.x
+add.u r1.w, c10.x, r5.y
+add.u r5.y, c11.x, r5.z
+cmps.u.lt hr0.x, r4.x, c9.z
+add.u r3.w, r5.w, r4.z
+add.u r1.z, r3.y, r2.x
+ldg.u32 r2.w, g[r0.w], 1
+cmps.u.lt hr11.z, r5.y, c11.x
+cmps.u.lt hr6.z, r1.w, c10.x
+add.u r4.w, c9.w, r0.y
+add.u r3.x, c10.w, r0.z
+(ss)cov.u16s32 r0.w, hr0.x
+cov.u16s32 r4.z, hr6.z
+add.u r0.y, c10.y, r0.y
+add.u r0.z, c11.y, r0.z
+cov.u16s32 r0.x, hr11.z
+add.u r2.y, c10.z, r5.z
+add.u r2.x, r4.z, r0.y
+add.u r4.y, r0.w, r4.w
+add.u r5.z, r0.x, r0.z
+ldg.u32 r0.y, g[r1.y], 2
+(nop3) cmps.u.lt hr9.z, r2.y, c10.z
+cov.u16s32 r5.x, hr9.z
+(rpt2)nop
+add.u r2.z, r5.x, r3.x
+(sy)mul.f r2.w, r2.w, c12.x
+add.u r1.y, r0.y, -4
+add.u r1.z, -3, r0.y
+add.u r0.z, r0.z, -1
+add.f r2.w, r2.w, c12.y
+cmps.u.lt hr0.z, r1.y, r0.y
+absneg.s r3.x, (neg)r1.y
+cmps.u.lt hr6.z, r1.z, -3
+(nop2) cmps.f.lt hr1.z, (0.5), r2.w
+stg.u32 g[r3.z], r2.w, 1
+(ss)and.b r3.z, r1.y, c13.y
+cov.u16f32 (even)r1.x, hr1.z
+(rpt2)nop
+mul.f r1.x, r2.w, r1.x
+(nop3) max.f r2.w, r2.w, (0.0)
+(rpt1)nop
+stg.u32 g[r4.x], r1.x, 1
+nop
+stg.u32 g[r1.w], r2.w, 1
+(ss)cov.u16s32 r2.w, hr0.z
+cmps.u.lt hr3.z, r1.y, -1
+(nop1) cmps.s.ne hr3.w, r1.y, 0
+(nop1) add.u r2.w, r2.w, r0.z
+cov.u16s32 r2.x, hr3.w
+nop
+cmps.s.lt hr9.x, r2.w, -1
+cmps.s.eq hr9.y, r2.w, -1
+cmps.s.lt hr7.z, r2.w, 0
+(nop1) absneg.s r5.x, (neg)r2.w
+andg r4.w, hr9.y, hr3.z, hr9.x
+cov.u16u32 r4.y, hr7.z
+sub.u r5.x, r5.x, r2.x
+sel.b16 hr6.z, hr6.z, hr7.z, hr0.z
+sel.b32 r5.w, c12.w, r4.w, r2.w
+sel.b32 r4.w, c12.w, r4.w, r1.y
+sel.b32 r1.z, r1.z, r4.y, r1.y
+sel.b32 r5.x, r5.x, r4.y, r2.w
+cmps.s.lt hr2.x, r5.w, 0
+max.u r0.w, r5.w, r4.w
+sel.b32 r3.x, r3.x, r4.y, r1.y
+and.b r1.z, r1.z, -2
+shl.b r2.x, r5.x, 31
+cmps.s.eq hr1.z, r0.w, 0
+cov.u16s32 r4.x, hr6.z
+cmps.s.ne hr0.x, r1.z, 0
+shrg r3.x, 1, r3.x, r2.x
+or.b r1.w, hr2.x, hr1.z
+add.u r0.z, r0.z, r4.x
+cov.u16s32 r0.y, hr0.x
+and.b r4.z, r3.x, c13.y
+sel.b32 r4.w, r4.w, r1.w, c13.x
+shr.b r0.x, r3.x, 16
+sel.b32 r5.w, r5.w, r1.w, c12.z
+sub.u r1.z, r1.y, r1.z
+and.b r3.y, r4.w, c13.y
+shr.b r4.x, r4.w, 16
+absneg.s r0.z, (neg)r0.z
+cmps.u.lt hr7.w, r1.z, r1.y
+mull.u r0.w, r3.y, r4.z
+mull.u r1.x, r3.y, r0.x
+madsh.m16 r0.w, r3.y, r4.z, r0.w
+madsh.m16 r1.x, r3.y, r0.x, r1.x
+madsh.m16 r0.w, r4.z, r3.y, r0.w
+madsh.m16 r3.y, r0.x, r3.y, r1.x
+mull.u r1.w, r4.x, r4.z
+mull.u r2.x, r4.x, r0.x
+madsh.m16 r1.w, r4.x, r4.z, r1.w
+madsh.m16 r2.x, r4.x, r0.x, r2.x
+madsh.m16 r4.z, r4.z, r4.x, r1.w
+madsh.m16 r0.x, r0.x, r4.x, r2.x
+shl.b r4.x, r3.y, 16
+sub.u r0.z, r0.z, r0.y
+shl.b r1.x, r4.z, 16
+shr.b r3.y, r3.y, 16
+add.u r4.x, r0.w, r4.x
+shr.b r5.x, r5.x, 1
+add.u r0.z, r2.w, r0.z
+mull.u r0.y, r4.w, r3.x
+cmps.u.lt hr1.z, r4.x, r0.w
+add.u r1.x, r4.x, r1.x
+mull.u r2.x, r4.w, r5.x
+madsh.m16 r0.y, r4.w, r3.x, r0.y
+cov.u16s32 r0.w, hr1.z
+cmps.u.lt hr2.x, r1.x, r4.x
+cov.u16s32 r4.x, hr7.w
+madsh.m16 r2.x, r4.w, r5.x, r2.x
+add.u r0.x, r0.x, r0.w
+cov.u16s32 r1.w, hr2.x
+shr.b r4.z, r4.z, 16
+madsh.m16 r0.y, r3.x, r4.w, r0.y
+add.u r0.x, r0.x, r3.y
+mull.u r3.y, r5.w, r3.x
+add.u r4.x, r4.x, r0.z
+madsh.m16 r3.y, r5.w, r3.x, r3.y
+madsh.m16 r5.x, r5.x, r4.w, r2.x
+add.u r0.x, r0.x, r1.w
+madsh.m16 r3.x, r3.x, r5.w, r3.y
+or.b r1.z, r1.z, r4.x
+add.u r4.w, r0.y, -1
+add.u r0.x, r0.x, r4.z
+add.u r5.x, r5.x, r3.x
+cmps.s.ne hr3.x, r1.z, 0
+cmps.u.lt hr2.x, r4.w, r0.y
+sel.b32 r0.z, c12.z, r4.y, r1.y
+add.u r0.x, r0.x, r5.x
+and.b r4.z, hr3.x, hr7.z
+cov.u16s32 r1.z, hr2.x
+shr.b r5.w, r1.y, 16
+add.u r5.x, r0.x, -1
+sel.b32 r4.w, r4.w, r4.z, r0.y
+(nop1) max.s r0.w, r2.w, 0
+(nop3) add.u r1.z, r1.z, r5.x
+sel.b32 r1.z, r1.z, r4.z, r0.x
+stg.u32 g[r2.y], r0.z, 2
+(rpt2)nop
+(nop3) shl.b r1.z, r1.z, 1
+shrg r1.z, 31, r4.w, r1.z
+(nop2) shl.b r4.w, r4.w, 1
+absneg.s r1.z, (neg)r1.z
+cmps.s.ne hr3.z, r4.w, 0
+(nop2) sub.u r4.w, r1.y, r4.w
+cov.u16s32 r2.x, hr3.z
+and.b r3.x, r4.w, c13.y
+shr.b r3.y, r4.w, 16
+(ss)cmps.u.lt hr4.z, r4.w, r1.y
+sub.u r1.z, r1.z, r2.x
+mull.u r4.x, r3.z, r3.x
+mull.u r4.y, r3.z, r3.y
+madsh.m16 r4.x, r3.z, r3.x, r4.x
+madsh.m16 r4.y, r3.z, r3.y, r4.y
+madsh.m16 r4.x, r3.x, r3.z, r4.x
+madsh.m16 r3.z, r3.y, r3.z, r4.y
+mull.u r4.z, r5.w, r3.x
+mull.u r5.x, r5.w, r3.y
+madsh.m16 r4.z, r5.w, r3.x, r4.z
+madsh.m16 r5.x, r5.w, r3.y, r5.x
+madsh.m16 r3.x, r3.x, r5.w, r4.z
+madsh.m16 r3.y, r3.y, r5.w, r5.x
+shl.b r5.w, r3.z, 16
+cov.u16s32 r2.z, hr4.z
+shl.b r0.y, r3.x, 16
+add.u r1.z, r2.w, r1.z
+add.u r5.w, r4.x, r5.w
+shr.b r3.z, r3.z, 16
+mull.u r3.w, r1.y, r4.w
+add.u r2.z, r2.z, r1.z
+cmps.u.lt hr8.x, r5.w, r4.x
+add.u r0.y, r5.w, r0.y
+mull.u r1.z, r2.w, r4.w
+mull.u r0.w, r1.y, r2.z
+cov.u16s32 r0.x, hr8.x
+cmps.u.lt hr0.z, r0.y, r5.w
+madsh.m16 r3.w, r1.y, r4.w, r3.w
+madsh.m16 r1.z, r2.w, r4.w, r1.z
+add.u r3.y, r3.y, r0.x
+cov.u16s32 r0.z, hr0.z
+madsh.m16 r0.w, r1.y, r2.z, r0.w
+shr.b r3.x, r3.x, 16
+add.u r3.y, r3.y, r3.z
+madsh.m16 r1.x, r4.w, r1.y, r3.w
+madsh.m16 r2.z, r2.z, r1.y, r0.w
+madsh.m16 r4.w, r4.w, r2.w, r1.z
+(nop2) add.u r3.y, r3.y, r0.z
+add.u r2.z, r2.z, r4.w
+(nop3) add.u r3.y, r3.y, r3.x
+(nop3) add.u r1.y, r3.y, r2.z
+(rpt2)nop
+stg.u32 g[r5.y], r1.x, 2
+l264:
+(jp)end
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+; CL: outputs:
+; CL: inputs: r48.x (SYSTEM_VALUE_WORKGROUP_ID slot=47 cm=7,il=0,b=0) r0.x (SYSTEM_VALUE_LOCAL_INVOCATION_ID slot=42 cm=7,il=0,b=0)
+; CL prog 2/1: 311 instr, 64 nops, 247 non-nops, 5 mov, 24 cov, 544 dwords
+; CL prog 2/1: 0 last-baryf, 0 last-helper, 0 half, 6 full, 16 constlen
+; CL prog 2/1: 66 cat0, 29 cat1, 157 cat2, 52 cat3, 0 cat4, 0 cat5, 7 cat6, 0 cat7
+; CL prog 2/1: 0 sstall, 4 (ss), 102 systall, 1 (sy), 0 loops
+; CL prog 2/1: 4 max_waves, 1 double_threadsize
+; 16 preamble-instr, 0 early-preamble

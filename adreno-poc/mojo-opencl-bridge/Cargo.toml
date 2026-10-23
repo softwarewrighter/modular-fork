@@ -1,0 +1,16 @@
+[package]
+name = "adreno-mojo-opencl"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+xetal-gpu-runtime = { path = "../work/xetal-gpu/components/runtime" }
+xetal-gpu-opencl = { path = "../work/xetal-gpu/components/opencl" }
+xetal-gpu-xir = { path = "../work/xetal-gpu/components/xir" }
+
+[dev-dependencies]
+xetal-program = { path = "../work/xetal-gpu/work/xetal/components/macro/crates/xetal-program" }

@@ -1,0 +1,3 @@
+Mojo bridge: opencl:0 FD702 (GPU, Qualcomm; rusticl)
+OpenCL device kernels: 0.005200 ms; total 26.034 ms
+Mismatch at 23: got 2 expected 1

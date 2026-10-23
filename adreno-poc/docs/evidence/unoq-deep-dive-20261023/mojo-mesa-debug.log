@@ -1,0 +1,2430 @@
+Mojo bridge: opencl:0 FD702 (GPU, Qualcomm; rusticl)
+=== Printing nir for 'k0' after spirv_to_nir
+shader: MESA_SHADER_KERNEL
+source_blake3: {0x1c0638da, 0xa0ca348e, 0xa2602c0d, 0xa3db230c, 0x78afb886, 0xce2f9a6e, 0x6916e661, 0x86be0798}
+workgroup_size: 0, 0, 0
+float_controls_execution_mode: 0x00002000
+subgroup_size: 0
+ptr_size: 64
+decl_var system INTERP_MODE_NONE none u64vec3 __spirv_BuiltInGlobalInvocationId (SYSTEM_VALUE_GLOBAL_INVOCATION_ID)
+decl_var uniform INTERP_MODE_NONE none uint64_t #0 (0, 0, 0)
+decl_var uniform INTERP_MODE_NONE none uint64_t #1 (1, 0, 0)
+decl_var uniform INTERP_MODE_NONE none uint64_t #2 (2, 0, 0)
+decl_function xetal_idiv_long (64 return, 64 a, 64 b) (noinline)
+
+impl xetal_idiv_long {
+    block b0:  // preds:, succs: b1
+    block b1:
+}
+
+decl_function xetal_imod_long (64 return, 64 a, 64 b) (noinline)
+
+impl xetal_imod_long {
+    block b0:  // preds:, succs: b1
+    block b1:
+}
+
+decl_function xetal_idiv_int (64 return, 32 a, 32 b) (noinline)
+
+impl xetal_idiv_int {
+    block b0:  // preds:, succs: b1
+    block b1:
+}
+
+decl_function xetal_imod_int (64 return, 32 a, 32 b) (noinline)
+
+impl xetal_imod_int {
+    block b0:  // preds:, succs: b1
+    block b1:
+}
+
+decl_function k0 (64 b_x, 64 b_threshold, 64 b_relu) (noinline)
+
+impl k0 {
+    decl_var  INTERP_MODE_NONE none uint64_t b_x.addr
+    decl_var  INTERP_MODE_NONE none uint64_t b_threshold.addr
+    decl_var  INTERP_MODE_NONE none uint64_t b_relu.addr
+    decl_var  INTERP_MODE_NONE none uint64_t i
+    decl_var  INTERP_MODE_NONE none uint t_gt
+    decl_var  INTERP_MODE_NONE none float t_mask
+    decl_var  INTERP_MODE_NONE none float t_threshold
+    decl_var  INTERP_MODE_NONE none float t_relu
+    block b0:   // preds:
+    64     %0 = @load_param (param_idx=0)
+    64     %1 = deref_cast (float *)%0 (global float)  (ptr_stride=0, align_mul=0, align_offset=0)
+    64     %2 = deref_cast (float *)%1 (global float)  (ptr_stride=0, align_mul=4, align_offset=0)
+    64     %3 = @load_param (param_idx=1)
+    64     %4 = deref_cast (float *)%3 (global float)  (ptr_stride=0, align_mul=0, align_offset=0)
+    64     %5 = deref_cast (float *)%4 (global float)  (ptr_stride=0, align_mul=4, align_offset=0)
+    64     %6 = @load_param (param_idx=2)
+    64     %7 = deref_cast (float *)%6 (global float)  (ptr_stride=0, align_mul=0, align_offset=0)
+    64     %8 = deref_cast (float *)%7 (global float)  (ptr_stride=0, align_mul=4, align_offset=0)
+    64     %9 = deref_var &b_x.addr (function_temp uint64_t)
+                @store_deref (%9, %2) (wrmask=x, access=none)
+    64    %10 = deref_var &b_threshold.addr (function_temp uint64_t)
+                @store_deref (%10, %5) (wrmask=x, access=none)
+    64    %11 = deref_var &b_relu.addr (function_temp uint64_t)
+                @store_deref (%11, %8) (wrmask=x, access=none)
+    32    %12 = deref_var &__spirv_BuiltInGlobalInvocationId (system u64vec3)
+    64x3  %13 = @load_deref (%12) (access=none)
+    64    %14 = mov %13.x
+    1     %15 = load_const (true)
+    64    %16 = load_const (0x0000000000000000)
+    64    %17 = bcsel %15 (true), %14, %16 (0x0)
+    64    %18 = deref_var &i (function_temp uint64_t)
+                @store_deref (%18, %17) (wrmask=x, access=none)
+    64    %19 = deref_var &i (function_temp uint64_t)
+    64    %20 = @load_deref (%19) (access=none)
+    64    %21 = load_const (0x0000000000000008)
+    1     %22 = uge %20, %21 (0x8)
+    1     %23 = load_const (true)
+    1     %24 = inot %22
+                // succs: b1 b5
+    if %23 (true) {
+        block b1:  // preds: b0, succs: b2 b3
+        if %24 {
+            block b2:   // preds: b1
+            64    %25 = deref_var &b_x.addr (function_temp uint64_t)
+            64    %26 = @load_deref (%25) (access=none)
+            64    %27 = deref_cast (float *)%26 (global float)  (ptr_stride=0, align_mul=0, align_offset=0)
+            64    %28 = deref_var &i (function_temp uint64_t)
+            64    %29 = @load_deref (%28) (access=none)
+            64    %30 = deref_cast (float *)%27 (global float)  (ptr_stride=0, align_mul=0, align_offset=0)
+            64    %31 = deref_ptr_as_array &(*%30)[%29] (global float)  // &(*(float *)%27)[%29]
+            64    %32 = deref_cast (float *)%31 (global float)  (ptr_stride=0, align_mul=4, align_offset=0)
+            32    %33 = @load_deref (%32) (access=none)
+            32    %34 = load_const (0x3f000000 = 0.500000)
+            1     %35 = flt! %34 (0.500000), %33
+            32    %36 = load_const (0x00000001)
+            32    %37 = load_const (0x00000000)
+            32    %38 = bcsel %35, %36 (0x1), %37 (0x0)
+            64    %39 = deref_var &t_gt (function_temp uint)
+                        @store_deref (%39, %38) (wrmask=x, access=none)
+            64    %40 = deref_var &t_gt (function_temp uint)
+            32    %41 = @load_deref (%40) (access=none)
+            32    %42 = i2f32 %41
+            64    %43 = deref_var &t_mask (function_temp float)
+                        @store_deref (%43, %42) (wrmask=x, access=none)
+            64    %44 = deref_var &b_x.addr (function_temp uint64_t)
+            64    %45 = @load_deref (%44) (access=none)
+            64    %46 = deref_cast (float *)%45 (global float)  (ptr_stride=0, align_mul=0, align_offset=0)
+            64    %47 = deref_var &i (function_temp uint64_t)
+            64    %48 = @load_deref (%47) (access=none)
+            64    %49 = deref_cast (float *)%46 (global float)  (ptr_stride=0, align_mul=0, align_offset=0)
+            64    %50 = deref_ptr_as_array &(*%49)[%48] (global float)  // &(*(float *)%46)[%48]
+            64    %51 = deref_cast (float *)%50 (global float)  (ptr_stride=0, align_mul=4, align_offset=0)
+            32    %52 = @load_deref (%51) (access=none)
+            64    %53 = deref_var &t_mask (function_temp float)
+            32    %54 = @load_deref (%53) (access=none)
+            32    %55 = fmul %52, %54
+            64    %56 = deref_var &t_threshold (function_temp float)
+                        @store_deref (%56, %55) (wrmask=x, access=none)
+            64    %57 = deref_var &b_x.addr (function_temp uint64_t)
+            64    %58 = @load_deref (%57) (access=none)
+            64    %59 = deref_cast (float *)%58 (global float)  (ptr_stride=0, align_mul=0, align_offset=0)
+            64    %60 = deref_var &i (function_temp uint64_t)
+            64    %61 = @load_deref (%60) (access=none)
+            64    %62 = deref_cast (float *)%59 (global float)  (ptr_stride=0, align_mul=0, align_offset=0)
+            64    %63 = deref_ptr_as_array &(*%62)[%61] (global float)  // &(*(float *)%59)[%61]
+            64    %64 = deref_cast (float *)%63 (global float)  (ptr_stride=0, align_mul=4, align_offset=0)
+            32    %65 = @load_deref (%64) (access=none)
+            32    %66 = load_const (0x00000000 = 0.000000)
+            32    %67 = fmax %65, %66 (0.000000)
+            64    %68 = deref_var &t_relu (function_temp float)
+                        @store_deref (%68, %67) (wrmask=x, access=none)
+            64    %69 = deref_var &t_threshold (function_temp float)
+            32    %70 = @load_deref (%69) (access=none)
+            64    %71 = deref_var &b_threshold.addr (function_temp uint64_t)
+            64    %72 = @load_deref (%71) (access=none)
+            64    %73 = deref_cast (float *)%72 (global float)  (ptr_stride=0, align_mul=0, align_offset=0)
+            64    %74 = deref_var &i (function_temp uint64_t)
+            64    %75 = @load_deref (%74) (access=none)
+            64    %76 = deref_cast (float *)%73 (global float)  (ptr_stride=0, align_mul=0, align_offset=0)
+            64    %77 = deref_ptr_as_array &(*%76)[%75] (global float)  // &(*(float *)%73)[%75]
+            64    %78 = deref_cast (float *)%77 (global float)  (ptr_stride=0, align_mul=4, align_offset=0)
+                        @store_deref (%78, %70) (wrmask=x, access=none)
+            64    %79 = deref_var &t_relu (function_temp float)
+            32    %80 = @load_deref (%79) (access=none)
+            64    %81 = deref_var &b_relu.addr (function_temp uint64_t)
+            64    %82 = @load_deref (%81) (access=none)
+            64    %83 = deref_cast (float *)%82 (global float)  (ptr_stride=0, align_mul=0, align_offset=0)
+            64    %84 = deref_var &i (function_temp uint64_t)
+            64    %85 = @load_deref (%84) (access=none)
+            64    %86 = deref_cast (float *)%83 (global float)  (ptr_stride=0, align_mul=0, align_offset=0)
+            64    %87 = deref_ptr_as_array &(*%86)[%85] (global float)  // &(*(float *)%83)[%85]
+            64    %88 = deref_cast (float *)%87 (global float)  (ptr_stride=0, align_mul=4, align_offset=0)
+                        @store_deref (%88, %80) (wrmask=x, access=none)
+                        // succs: b4
+        } else {
+            block b3:  // preds: b1, succs: b4
+        }
+        block b4:  // preds: b2 b3, succs: b6
+    } else {
+        block b5:  // preds: b0, succs: b6
+    }
+    block b6:  // preds: b4 b5, succs: b7
+    block b7:
+}
+
+decl_function k0 (64 b_x, 64 b_threshold, 64 b_relu)
+
+impl k0 {
+    block b0:  // preds:
+    64    %0 = @load_param (param_idx=0)
+    64    %1 = deref_cast (float *)%0 (global float)  (ptr_stride=0, align_mul=0, align_offset=0)
+    64    %2 = deref_cast (float *)%1 (global float)  (ptr_stride=0, align_mul=4, align_offset=0)
+    64    %3 = @load_param (param_idx=1)
+    64    %4 = deref_cast (float *)%3 (global float)  (ptr_stride=0, align_mul=0, align_offset=0)
+    64    %5 = deref_cast (float *)%4 (global float)  (ptr_stride=0, align_mul=4, align_offset=0)
+    64    %6 = @load_param (param_idx=2)
+    64    %7 = deref_cast (float *)%6 (global float)  (ptr_stride=0, align_mul=0, align_offset=0)
+    64    %8 = deref_cast (float *)%7 (global float)  (ptr_stride=0, align_mul=4, align_offset=0)
+               call k0 b_x %2, b_threshold %5, b_relu %8
+               // succs: b1
+    block b1:
+}
+
+decl_function __wrapped_k0 () (entrypoint)
+
+impl __wrapped_k0 {
+    block b0:  // preds:
+    64    %0 = deref_var &#0 (uniform uint64_t)
+    64    %1 = @load_deref (%0) (access=none)
+    64    %2 = deref_var &#1 (uniform uint64_t)
+    64    %3 = @load_deref (%2) (access=none)
+    64    %4 = deref_var &#2 (uniform uint64_t)
+    64    %5 = @load_deref (%4) (access=none)
+               call k0 b_x %1, b_threshold %3, b_relu %5
+               // succs: b1
+    block b1:
+}
+
+=== Printing nir for 'k0' before specialization
+shader: MESA_SHADER_KERNEL
+source_blake3: {0x1c0638da, 0xa0ca348e, 0xa2602c0d, 0xa3db230c, 0x78afb886, 0xce2f9a6e, 0x6916e661, 0x86be0798}
+workgroup_size: 0, 0, 0 (variable)
+system_values_read: 0x00000000'00000000'00003000'00000000
+float_controls_execution_mode: 0x0003a200
+subgroup_size: 0
+bit_sizes_float: 0x20
+bit_sizes_int: 0x41
+writes_memory: true
+ptr_size: 64
+decl_var uniform INTERP_MODE_NONE none uint64_t #0 (0, 0, 0)
+decl_var uniform INTERP_MODE_NONE none uint64_t #1 (1, 0, 0)
+decl_var uniform INTERP_MODE_NONE none uint64_t #2 (2, 0, 0)
+decl_function __wrapped_k0 () (entrypoint)
+
+impl __wrapped_k0 {
+    block b0:   // preds:
+    64     %0 = deref_var &#0 (uniform uint64_t)
+    64     %1 = @load_deref (%0) (access=none)
+    64     %2 = deref_var &#1 (uniform uint64_t)
+    64     %3 = @load_deref (%2) (access=none)
+    64     %4 = deref_var &#2 (uniform uint64_t)
+    64     %5 = @load_deref (%4) (access=none)
+    64     %6 = deref_cast (float *)%1 (global float)  (ptr_stride=0, align_mul=4, align_offset=0)
+    64     %7 = deref_cast (float *)%3 (global float)  (ptr_stride=0, align_mul=4, align_offset=0)
+    64     %8 = deref_cast (float *)%5 (global float)  (ptr_stride=0, align_mul=4, align_offset=0)
+    64x3   %9 = @load_global_invocation_id
+    64x3  %10 = @load_base_global_invocation_id
+    64x3  %11 = iadd %9, %10
+    64    %12 = mov %11.x
+    64    %13 = load_const (0x0000000000000008)
+    1     %14 = ult %11.x, %13 (0x8)
+                // succs: b1 b2
+    if %14 {
+        block b1:   // preds: b0
+        64    %15 = deref_ptr_as_array &(*%6)[%12] (global float)  // &(*(float *)%1)[%12]
+        64    %16 = deref_cast (float *)%15 (global float)  (ptr_stride=0, align_mul=4, align_offset=0)
+        32    %17 = @load_deref (%16) (access=none)
+        32    %18 = load_const (0x3f000000 = 0.500000)
+        1     %19 = flt! %18 (0.500000), %17
+        32    %20 = load_const (0x00000000 = 0.000000)
+        32    %21 = b2f32 %19
+        32    %22 = fmul %17, %21
+        32    %23 = fmax %17, %20 (0.000000)
+        64    %24 = deref_ptr_as_array &(*%7)[%12] (global float)  // &(*(float *)%3)[%12]
+        64    %25 = deref_cast (float *)%24 (global float)  (ptr_stride=0, align_mul=4, align_offset=0)
+                    @store_deref (%25, %22) (wrmask=x, access=none)
+        64    %26 = deref_ptr_as_array &(*%8)[%12] (global float)  // &(*(float *)%5)[%12]
+        64    %27 = deref_cast (float *)%26 (global float)  (ptr_stride=0, align_mul=4, align_offset=0)
+                    @store_deref (%27, %23) (wrmask=x, access=none)
+                    // succs: b3
+    } else {
+        block b2:  // preds: b0, succs: b3
+    }
+    block b3:  // preds: b1 b2, succs: b4
+    block b4:
+}
+
+=== Printing nir variant 'Default' for 'k0' before driver finalization
+shader: MESA_SHADER_KERNEL
+source_blake3: {0x1c0638da, 0xa0ca348e, 0xa2602c0d, 0xa3db230c, 0x78afb886, 0xce2f9a6e, 0x6916e661, 0x86be0798}
+workgroup_size: 0, 0, 0 (variable)
+num_ubos: 1
+system_values_read: 0x00000000'00000000'0009a400'00000000
+float_controls_execution_mode: 0x0003a200
+subgroup_size: 0
+bit_sizes_float: 0x20
+bit_sizes_int: 0x61
+first_ubo_is_default_ubo: true
+writes_memory: true
+ptr_size: 64
+uniforms: 96
+decl_var uniform INTERP_MODE_NONE none uint64_t #0 (0, 0, 0)
+decl_var uniform INTERP_MODE_NONE none uint64_t #1 (1, 8, 0)
+decl_var uniform INTERP_MODE_NONE none uint64_t #2 (2, 16, 0)
+decl_var uniform INTERP_MODE_NONE none u64vec4x0a32B base_global_invocation_id (3, 32, 0)
+decl_var uniform INTERP_MODE_NONE none u64vec4x0a32B base_workgroup_id (4, 64, 0)
+decl_var ubo INTERP_MODE_NONE none uint8_t[96] kernel_input (0, 0, 0)
+decl_function __wrapped_k0 () (entrypoint)
+
+impl __wrapped_k0 {
+    block b0:   // preds:
+    32     %0 = load_const (0x00000000 = 0.000000)
+    64     %1 = @load_ubo (%0 (0x0), %0 (0x0)) (access=none, align_mul=256, align_offset=0, range_base=0, range=96)
+    32     %2 = load_const (0x00000008)
+    64     %3 = @load_ubo (%0 (0x0), %2 (0x8)) (access=none, align_mul=256, align_offset=8, range_base=0, range=96)
+    32     %4 = load_const (0x00000010 = 16)
+    64     %5 = @load_ubo (%0 (0x0), %4 (0x10)) (access=none, align_mul=256, align_offset=16, range_base=0, range=96)
+    32x3   %6 = @load_workgroup_size
+    32x3   %7 = @load_workgroup_id
+    32     %8 = load_const (0x00000040 = 64)
+    64x4   %9 = @load_ubo (%0 (0x0), %8 (0x40)) (access=none, align_mul=256, align_offset=64, range_base=0, range=96)
+    32x3  %10 = @load_local_invocation_id
+    32    %11 = unpack_64_2x32_split_x %9.x
+    32    %12 = unpack_64_2x32_split_y %9.x
+    32    %13 = iadd %7.x, %11
+    1     %14 = ult %13, %7.x
+    32    %15 = b2i32 %14
+    32    %16 = iadd %15, %12
+    32    %17 = load_const (0x0000ffff = 65535)
+    32    %18 = iand %13, %17 (0xffff)
+    32    %19 = iand %6.x, %17 (0xffff)
+    32    %20 = ushr %13, %4 (0x10)
+    32    %21 = ushr %6.x, %4 (0x10)
+    32    %22 = imul %18, %19
+    32    %23 = imul %18, %21
+    32    %24 = imul %20, %19
+    32    %25 = imul %20, %21
+    32    %26 = ishl %23, %4 (0x10)
+    32    %27 = iadd %22, %26
+    1     %28 = ult %27, %22
+    32    %29 = b2i32 %28
+    32    %30 = iadd %25, %29
+    32    %31 = ushr %23, %4 (0x10)
+    32    %32 = iadd %30, %31
+    32    %33 = ishl %24, %4 (0x10)
+    32    %34 = iadd %27, %33
+    1     %35 = ult %34, %27
+    32    %36 = b2i32 %35
+    32    %37 = iadd %32, %36
+    32    %38 = ushr %24, %4 (0x10)
+    32    %39 = iadd %37, %38
+    32    %40 = imul %13, %6.x
+    32    %41 = imul %16, %6.x
+    32    %42 = iadd %39, %41
+    32    %43 = iadd %40, %10.x
+    1     %44 = ult %43, %40
+    32    %45 = b2i32 %44
+    32    %46 = iadd %45, %42
+    32    %47 = load_const (0x00000020 = 32)
+    64x4  %48 = @load_ubo (%0 (0x0), %47 (0x20)) (access=none, align_mul=256, align_offset=32, range_base=0, range=96)
+    32    %49 = unpack_64_2x32_split_x %48.x
+    32    %50 = unpack_64_2x32_split_y %48.x
+    32    %51 = iadd %43, %49
+    1     %52 = ult %51, %43
+    32    %53 = b2i32 %52
+    32    %54 = iadd %46, %50
+    32    %55 = iadd %53, %54
+    1     %56 = ieq %55, %0 (0x0)
+    1     %57 = ult %51, %2 (0x8)
+    1     %58 = iand %56, %57
+                // succs: b1 b2
+    if %58 {
+        block b1:   // preds: b0
+        32    %59 = load_const (0x00000002)
+        32    %60 = load_const (0x0000001e = 30)
+        32    %61 = ishl %51, %59 (0x2)
+        32    %62 = ushr %51, %60 (0x1e)
+        32    %63 = unpack_64_2x32_split_x %1
+        32    %64 = unpack_64_2x32_split_y %1
+        32    %65 = iadd %63, %61
+        1     %66 = ult %65, %63
+        32    %67 = b2i32 %66
+        32    %68 = iadd %64, %62
+        32    %69 = iadd %67, %68
+        64    %70 = pack_64_2x32_split %65, %69
+        32    %71 = @load_global (%70) (access=none, align_mul=4, align_offset=0)
+        32    %72 = load_const (0x3f000000 = 0.500000)
+        1     %73 = flt! %72 (0.500000), %71
+        32    %74 = b2f32 %73
+        32    %75 = fmul %71, %74
+        32    %76 = fmax %71, %0 (0.000000)
+        32    %77 = unpack_64_2x32_split_x %3
+        32    %78 = unpack_64_2x32_split_y %3
+        32    %79 = iadd %77, %61
+        1     %80 = ult %79, %77
+        32    %81 = b2i32 %80
+        32    %82 = iadd %78, %62
+        32    %83 = iadd %81, %82
+        64    %84 = pack_64_2x32_split %79, %83
+                    @store_global (%75, %84) (wrmask=x, access=none, align_mul=4, align_offset=0)
+        32    %85 = unpack_64_2x32_split_x %5
+        32    %86 = unpack_64_2x32_split_y %5
+        32    %87 = iadd %85, %61
+        1     %88 = ult %87, %85
+        32    %89 = b2i32 %88
+        32    %90 = iadd %86, %62
+        32    %91 = iadd %89, %90
+        64    %92 = pack_64_2x32_split %87, %91
+                    @store_global (%76, %92) (wrmask=x, access=none, align_mul=4, align_offset=0)
+                    // succs: b3
+    } else {
+        block b2:  // preds: b0, succs: b3
+    }
+    block b3:  // preds: b1 b2, succs: b4
+    block b4:
+}
+
+MESA: info: ----------------------
+MESA: info: shader: MESA_SHADER_KERNEL
+MESA: info: source_blake3: {0x1c0638da, 0xa0ca348e, 0xa2602c0d, 0xa3db230c, 0x78afb886, 0xce2f9a6e, 0x6916e661, 0x86be0798}
+MESA: info: workgroup_size: 0, 0, 0 (variable)
+MESA: info: num_ubos: 1
+MESA: info: system_values_read: 0x00000000'00000000'0009a400'00000000
+MESA: info: float_controls_execution_mode: 0x0003a200
+MESA: info: subgroup_size: 0
+MESA: info: bit_sizes_float: 0x20
+MESA: info: bit_sizes_int: 0x61
+MESA: info: first_ubo_is_default_ubo: true
+MESA: info: writes_memory: true
+MESA: info: ptr_size: 64
+MESA: info: uniforms: 96
+MESA: info: decl_var uniform INTERP_MODE_NONE none uint64_t #0 (0, 0, 0)
+MESA: info: decl_var uniform INTERP_MODE_NONE none uint64_t #1 (1, 8, 0)
+MESA: info: decl_var uniform INTERP_MODE_NONE none uint64_t #2 (2, 16, 0)
+MESA: info: decl_var uniform INTERP_MODE_NONE none u64vec4x0a32B base_global_invocation_id (3, 32, 0)
+MESA: info: decl_var uniform INTERP_MODE_NONE none u64vec4x0a32B base_workgroup_id (4, 64, 0)
+MESA: info: decl_var ubo INTERP_MODE_NONE none uint8_t[96] kernel_input (0, 0, 0)
+MESA: info: decl_function __wrapped_k0 () (entrypoint)
+MESA: info:
+MESA: info: impl __wrapped_k0 {
+MESA: info:     block b0:   // preds:
+MESA: info:     32     %0 = load_const (0x00000000 = 0.000000)
+MESA: info:     64     %1 = @load_ubo (%0 (0x0), %0 (0x0)) (access=none, align_mul=256, align_offset=0, range_base=0, range=96)
+MESA: info:     32     %2 = load_const (0x00000008)
+MESA: info:     64     %3 = @load_ubo (%0 (0x0), %2 (0x8)) (access=none, align_mul=256, align_offset=8, range_base=0, range=96)
+MESA: info:     32     %4 = load_const (0x00000010 = 16)
+MESA: info:     64     %5 = @load_ubo (%0 (0x0), %4 (0x10)) (access=none, align_mul=256, align_offset=16, range_base=0, range=96)
+MESA: info:     32x3   %6 = @load_workgroup_size
+MESA: info:     32x3   %7 = @load_workgroup_id
+MESA: info:     32     %8 = load_const (0x00000040 = 64)
+MESA: info:     64x4   %9 = @load_ubo (%0 (0x0), %8 (0x40)) (access=none, align_mul=256, align_offset=64, range_base=0, range=96)
+MESA: info:     32x3  %10 = @load_local_invocation_id
+MESA: info:     32    %11 = unpack_64_2x32_split_x %9.x
+MESA: info:     32    %12 = unpack_64_2x32_split_y %9.x
+MESA: info:     32    %13 = iadd %7.x, %11
+MESA: info:     1     %14 = ult %13, %7.x
+MESA: info:     32    %15 = b2i32 %14
+MESA: info:     32    %16 = iadd %15, %12
+MESA: info:     32    %17 = load_const (0x0000ffff = 65535)
+MESA: info:     32    %18 = iand %13, %17 (0xffff)
+MESA: info:     32    %19 = iand %6.x, %17 (0xffff)
+MESA: info:     32    %20 = ushr %13, %4 (0x10)
+MESA: info:     32    %21 = ushr %6.x, %4 (0x10)
+MESA: info:     32    %22 = imul %18, %19
+MESA: info:     32    %23 = imul %18, %21
+MESA: info:     32    %24 = imul %20, %19
+MESA: info:     32    %25 = imul %20, %21
+MESA: info:     32    %26 = ishl %23, %4 (0x10)
+MESA: info:     32    %27 = iadd %22, %26
+MESA: info:     1     %28 = ult %27, %22
+MESA: info:     32    %29 = b2i32 %28
+MESA: info:     32    %30 = iadd %25, %29
+MESA: info:     32    %31 = ushr %23, %4 (0x10)
+MESA: info:     32    %32 = iadd %30, %31
+MESA: info:     32    %33 = ishl %24, %4 (0x10)
+MESA: info:     32    %34 = iadd %27, %33
+MESA: info:     1     %35 = ult %34, %27
+MESA: info:     32    %36 = b2i32 %35
+MESA: info:     32    %37 = iadd %32, %36
+MESA: info:     32    %38 = ushr %24, %4 (0x10)
+MESA: info:     32    %39 = iadd %37, %38
+MESA: info:     32    %40 = imul %13, %6.x
+MESA: info:     32    %41 = imul %16, %6.x
+MESA: info:     32    %42 = iadd %39, %41
+MESA: info:     32    %43 = iadd %40, %10.x
+MESA: info:     1     %44 = ult %43, %40
+MESA: info:     32    %45 = b2i32 %44
+MESA: info:     32    %46 = iadd %45, %42
+MESA: info:     32    %47 = load_const (0x00000020 = 32)
+MESA: info:     64x4  %48 = @load_ubo (%0 (0x0), %47 (0x20)) (access=none, align_mul=256, align_offset=32, range_base=0, range=96)
+MESA: info:     32    %49 = unpack_64_2x32_split_x %48.x
+MESA: info:     32    %50 = unpack_64_2x32_split_y %48.x
+MESA: info:     32    %51 = iadd %43, %49
+MESA: info:     1     %52 = ult %51, %43
+MESA: info:     32    %53 = b2i32 %52
+MESA: info:     32    %54 = iadd %46, %50
+MESA: info:     32    %55 = iadd %53, %54
+MESA: info:     1     %56 = ieq %55, %0 (0x0)
+MESA: info:     1     %57 = ult %51, %2 (0x8)
+MESA: info:     1     %58 = iand %56, %57
+MESA: info:                 // succs: b1 b2
+MESA: info:     if %58 {
+MESA: info:         block b1:   // preds: b0
+MESA: info:         32    %59 = load_const (0x00000002)
+MESA: info:         32    %60 = load_const (0x0000001e = 30)
+MESA: info:         32    %61 = ishl %51, %59 (0x2)
+MESA: info:         32    %62 = ushr %51, %60 (0x1e)
+MESA: info:         32    %63 = unpack_64_2x32_split_x %1
+MESA: info:         32    %64 = unpack_64_2x32_split_y %1
+MESA: info:         32    %65 = iadd %63, %61
+MESA: info:         1     %66 = ult %65, %63
+MESA: info:         32    %67 = b2i32 %66
+MESA: info:         32    %68 = iadd %64, %62
+MESA: info:         32    %69 = iadd %67, %68
+MESA: info:         64    %70 = pack_64_2x32_split %65, %69
+MESA: info:         32    %71 = @load_global (%70) (access=none, align_mul=4, align_offset=0)
+MESA: info:         32    %72 = load_const (0x3f000000 = 0.500000)
+MESA: info:         1     %73 = flt! %72 (0.500000), %71
+MESA: info:         32    %74 = b2f32 %73
+MESA: info:         32    %75 = fmul %71, %74
+MESA: info:         32    %76 = fmax %71, %0 (0.000000)
+MESA: info:         32    %77 = unpack_64_2x32_split_x %3
+MESA: info:         32    %78 = unpack_64_2x32_split_y %3
+MESA: info:         32    %79 = iadd %77, %61
+MESA: info:         1     %80 = ult %79, %77
+MESA: info:         32    %81 = b2i32 %80
+MESA: info:         32    %82 = iadd %78, %62
+MESA: info:         32    %83 = iadd %81, %82
+MESA: info:         64    %84 = pack_64_2x32_split %79, %83
+MESA: info:                     @store_global (%75, %84) (wrmask=x, access=none, align_mul=4, align_offset=0)
+MESA: info:         32    %85 = unpack_64_2x32_split_x %5
+MESA: info:         32    %86 = unpack_64_2x32_split_y %5
+MESA: info:         32    %87 = iadd %85, %61
+MESA: info:         1     %88 = ult %87, %85
+MESA: info:         32    %89 = b2i32 %88
+MESA: info:         32    %90 = iadd %86, %62
+MESA: info:         32    %91 = iadd %89, %90
+MESA: info:         64    %92 = pack_64_2x32_split %87, %91
+MESA: info:                     @store_global (%76, %92) (wrmask=x, access=none, align_mul=4, align_offset=0)
+MESA: info:                     // succs: b3
+MESA: info:     } else {
+MESA: info:         block b2:  // preds: b0, succs: b3
+MESA: info:     }
+MESA: info:     block b3:  // preds: b1 b2, succs: b4
+MESA: info:     block b4:
+MESA: info: }
+MESA: info:
+MESA: info: ----------------------
+MESA: info: ----------------------
+MESA: info: shader: MESA_SHADER_KERNEL
+MESA: info: source_blake3: {0x1c0638da, 0xa0ca348e, 0xa2602c0d, 0xa3db230c, 0x78afb886, 0xce2f9a6e, 0x6916e661, 0x86be0798}
+MESA: info: workgroup_size: 0, 0, 0 (variable)
+MESA: info: num_ubos: 1
+MESA: info: system_values_read: 0x00000000'00000000'0009a400'00000000
+MESA: info: float_controls_execution_mode: 0x0003a200
+MESA: info: subgroup_size: 0
+MESA: info: bit_sizes_float: 0x20
+MESA: info: bit_sizes_int: 0x61
+MESA: info: first_ubo_is_default_ubo: true
+MESA: info: writes_memory: true
+MESA: info: ptr_size: 64
+MESA: info: uniforms: 96
+MESA: info: decl_var uniform INTERP_MODE_NONE none uint64_t #0 (0, 0, 0)
+MESA: info: decl_var uniform INTERP_MODE_NONE none uint64_t #1 (1, 8, 0)
+MESA: info: decl_var uniform INTERP_MODE_NONE none uint64_t #2 (2, 16, 0)
+MESA: info: decl_var uniform INTERP_MODE_NONE none u64vec4x0a32B base_global_invocation_id (3, 32, 0)
+MESA: info: decl_var uniform INTERP_MODE_NONE none u64vec4x0a32B base_workgroup_id (4, 64, 0)
+MESA: info: decl_var ubo INTERP_MODE_NONE none uint8_t[96] kernel_input (0, 0, 0)
+MESA: info: decl_function __wrapped_k0 () (entrypoint)
+MESA: info:
+MESA: info: impl __wrapped_k0 {
+MESA: info:     block b0:    // preds:
+MESA: info:     32      %0 = load_const (0x00000000 = 0.000000)
+MESA: info:     32x4    %1 = @load_ubo (%0 (0x0), %0 (0x0)) (access=none, align_mul=1073741824, align_offset=0, range_base=0, range=96)
+MESA: info:     32      %2 = load_const (0x00000008)
+MESA: info:     32      %4 = load_const (0x00000010 = 16)
+MESA: info:     64      %5 = @load_ubo (%0 (0x0), %4 (0x10)) (access=none, align_mul=1073741824, align_offset=16, range_base=0, range=96)
+MESA: info:     32x3    %6 = @load_workgroup_size
+MESA: info:     32x3    %7 = @load_workgroup_id
+MESA: info:     32      %8 = load_const (0x00000040 = 64)
+MESA: info:     64      %9 = @load_ubo (%0 (0x0), %8 (0x40)) (access=none, align_mul=1073741824, align_offset=64, range_base=0, range=96)
+MESA: info:     32x3   %10 = @load_local_invocation_id
+MESA: info:     32     %11 = unpack_64_2x32_split_x %9
+MESA: info:     32     %12 = unpack_64_2x32_split_y %9
+MESA: info:     32     %13 = iadd %7.x, %11
+MESA: info:     1      %14 = ult %13, %7.x
+MESA: info:     32     %15 = b2i32 %14
+MESA: info:     32     %16 = iadd %15, %12
+MESA: info:     32     %17 = load_const (0x0000ffff = 65535)
+MESA: info:     32     %18 = iand %13, %17 (0xffff)
+MESA: info:     32     %19 = iand %6.x, %17 (0xffff)
+MESA: info:     32     %20 = ushr %13, %4 (0x10)
+MESA: info:     32     %21 = ushr %6.x, %4 (0x10)
+MESA: info:     32     %22 = imul %18, %19
+MESA: info:     32     %23 = imul %18, %21
+MESA: info:     32     %24 = imul %20, %19
+MESA: info:     32     %25 = imul %20, %21
+MESA: info:     32     %26 = ishl %23, %4 (0x10)
+MESA: info:     32     %27 = iadd %22, %26
+MESA: info:     1      %28 = ult %27, %22
+MESA: info:     32     %29 = b2i32 %28
+MESA: info:     32     %30 = iadd %25, %29
+MESA: info:     32     %31 = ushr %23, %4 (0x10)
+MESA: info:     32     %32 = iadd %30, %31
+MESA: info:     32     %33 = ishl %24, %4 (0x10)
+MESA: info:     32     %34 = iadd %27, %33
+MESA: info:     1      %35 = ult %34, %27
+MESA: info:     32     %36 = b2i32 %35
+MESA: info:     32     %37 = iadd %32, %36
+MESA: info:     32     %38 = ushr %24, %4 (0x10)
+MESA: info:     32     %39 = iadd %37, %38
+MESA: info:     32     %40 = imul %13, %6.x
+MESA: info:     32     %41 = imul %16, %6.x
+MESA: info:     32     %42 = iadd %39, %41
+MESA: info:     32     %43 = iadd %40, %10.x
+MESA: info:     1      %44 = ult %43, %40
+MESA: info:     32     %45 = b2i32 %44
+MESA: info:     32     %46 = iadd %45, %42
+MESA: info:     32     %47 = load_const (0x00000020 = 32)
+MESA: info:     64     %48 = @load_ubo (%0 (0x0), %47 (0x20)) (access=none, align_mul=1073741824, align_offset=32, range_base=0, range=96)
+MESA: info:     32     %49 = unpack_64_2x32_split_x %48
+MESA: info:     32     %50 = unpack_64_2x32_split_y %48
+MESA: info:     32     %51 = iadd %43, %49
+MESA: info:     1      %52 = ult %51, %43
+MESA: info:     32     %53 = b2i32 %52
+MESA: info:     32     %54 = iadd %46, %50
+MESA: info:     32     %55 = iadd %53, %54
+MESA: info:     1      %56 = ieq %55, %0 (0x0)
+MESA: info:     1      %57 = ult %51, %2 (0x8)
+MESA: info:     1      %58 = iand %56, %57
+MESA: info:                  // succs: b1 b2
+MESA: info:     if %58 {
+MESA: info:         block b1:    // preds: b0
+MESA: info:         32     %59 = load_const (0x00000002)
+MESA: info:         32     %60 = load_const (0x0000001e = 30)
+MESA: info:         32     %61 = ishl %51, %59 (0x2)
+MESA: info:         32     %62 = ushr %51, %60 (0x1e)
+MESA: info:         32     %65 = iadd %1.x, %61
+MESA: info:         1      %66 = ult %65, %1.x
+MESA: info:         32     %67 = b2i32 %66
+MESA: info:         32     %68 = iadd %1.y, %62
+MESA: info:         32     %69 = iadd %67, %68
+MESA: info:         64     %70 = pack_64_2x32_split %65, %69
+MESA: info:         32     %71 = @load_global (%70) (access=none, align_mul=4, align_offset=0)
+MESA: info:         32     %72 = load_const (0x3f000000 = 0.500000)
+MESA: info:         1      %73 = flt! %72 (0.500000), %71
+MESA: info:         32     %74 = b2f32 %73
+MESA: info:         32     %75 = fmul %71, %74
+MESA: info:         32     %76 = fmax %71, %0 (0.000000)
+MESA: info:         32     %79 = iadd %1.z, %61
+MESA: info:         1      %80 = ult %79, %1.z
+MESA: info:         32     %81 = b2i32 %80
+MESA: info:         32     %82 = iadd %1.w, %62
+MESA: info:         32     %83 = iadd %81, %82
+MESA: info:         64     %84 = pack_64_2x32_split %79, %83
+MESA: info:                      @store_global (%75, %84) (wrmask=x, access=none, align_mul=4, align_offset=0)
+MESA: info:         32     %85 = unpack_64_2x32_split_x %5
+MESA: info:         32     %86 = unpack_64_2x32_split_y %5
+MESA: info:         32     %87 = iadd %85, %61
+MESA: info:         1      %88 = ult %87, %85
+MESA: info:         32     %89 = b2i32 %88
+MESA: info:         32     %90 = iadd %86, %62
+MESA: info:         32     %91 = iadd %89, %90
+MESA: info:         64     %92 = pack_64_2x32_split %87, %91
+MESA: info:                      @store_global (%76, %92) (wrmask=x, access=none, align_mul=4, align_offset=0)
+MESA: info:                      // succs: b3
+MESA: info:     } else {
+MESA: info:         block b2:  // preds: b0, succs: b3
+MESA: info:     }
+MESA: info:     block b3:  // preds: b1 b2, succs: b4
+MESA: info:     block b4:
+MESA: info: }
+MESA: info:
+MESA: info: ----------------------
+=== Printing nir variant 'Default' for 'k0' after driver finalization
+shader: MESA_SHADER_KERNEL
+source_blake3: {0x1c0638da, 0xa0ca348e, 0xa2602c0d, 0xa3db230c, 0x78afb886, 0xce2f9a6e, 0x6916e661, 0x86be0798}
+workgroup_size: 0, 0, 0 (variable)
+num_ubos: 1
+system_values_read: 0x00000000'00000000'0009a400'00000000
+float_controls_execution_mode: 0x0003a200
+subgroup_size: 0
+bit_sizes_float: 0x20
+bit_sizes_int: 0x61
+first_ubo_is_default_ubo: true
+writes_memory: true
+ptr_size: 64
+uniforms: 96
+decl_var ubo INTERP_MODE_NONE none uint8_t[96] kernel_input (0, 0, 0)
+decl_function __wrapped_k0 () (entrypoint)
+
+impl __wrapped_k0 {
+    block b0:   // preds:
+    32     %0 = load_const (0x00000000 = 0.000000)
+    32x4   %1 = @load_ubo (%0 (0x0), %0 (0x0)) (access=none, align_mul=1073741824, align_offset=0, range_base=0, range=96)
+    32     %2 = load_const (0x00000008)
+    32     %3 = load_const (0x00000010 = 16)
+    64     %4 = @load_ubo (%0 (0x0), %3 (0x10)) (access=none, align_mul=1073741824, align_offset=16, range_base=0, range=96)
+    32x3   %5 = @load_workgroup_size
+    32x3   %6 = @load_workgroup_id
+    32     %7 = load_const (0x00000040 = 64)
+    64     %8 = @load_ubo (%0 (0x0), %7 (0x40)) (access=none, align_mul=1073741824, align_offset=64, range_base=0, range=96)
+    32x3   %9 = @load_local_invocation_id
+    32    %10 = unpack_64_2x32_split_x %8
+    32    %11 = unpack_64_2x32_split_y %8
+    32    %12 = iadd %6.x, %10
+    1     %13 = ult %12, %6.x
+    32    %14 = b2i32 %13
+    32    %15 = iadd %14, %11
+    32    %16 = load_const (0x0000ffff = 65535)
+    32    %17 = iand %12, %16 (0xffff)
+    32    %18 = iand %5.x, %16 (0xffff)
+    32    %19 = ushr %12, %3 (0x10)
+    32    %20 = ushr %5.x, %3 (0x10)
+    32    %21 = imul %17, %18
+    32    %22 = imul %17, %20
+    32    %23 = imul %19, %18
+    32    %24 = imul %19, %20
+    32    %25 = ishl %22, %3 (0x10)
+    32    %26 = iadd %21, %25
+    1     %27 = ult %26, %21
+    32    %28 = b2i32 %27
+    32    %29 = iadd %24, %28
+    32    %30 = ushr %22, %3 (0x10)
+    32    %31 = iadd %29, %30
+    32    %32 = ishl %23, %3 (0x10)
+    32    %33 = iadd %26, %32
+    1     %34 = ult %33, %26
+    32    %35 = b2i32 %34
+    32    %36 = iadd %31, %35
+    32    %37 = ushr %23, %3 (0x10)
+    32    %38 = iadd %36, %37
+    32    %39 = imul %12, %5.x
+    32    %40 = imul %15, %5.x
+    32    %41 = iadd %38, %40
+    32    %42 = iadd %39, %9.x
+    1     %43 = ult %42, %39
+    32    %44 = b2i32 %43
+    32    %45 = iadd %44, %41
+    32    %46 = load_const (0x00000020 = 32)
+    64    %47 = @load_ubo (%0 (0x0), %46 (0x20)) (access=none, align_mul=1073741824, align_offset=32, range_base=0, range=96)
+    32    %48 = unpack_64_2x32_split_x %47
+    32    %49 = unpack_64_2x32_split_y %47
+    32    %50 = iadd %42, %48
+    1     %51 = ult %50, %42
+    32    %52 = b2i32 %51
+    32    %53 = iadd %45, %49
+    32    %54 = iadd %52, %53
+    1     %55 = ieq %54, %0 (0x0)
+    1     %56 = ult %50, %2 (0x8)
+    1     %57 = iand %55, %56
+                // succs: b1 b2
+    if %57 {
+        block b1:   // preds: b0
+        32    %58 = load_const (0x00000002)
+        32    %59 = load_const (0x0000001e = 30)
+        32    %60 = ishl %50, %58 (0x2)
+        32    %61 = ushr %50, %59 (0x1e)
+        32    %62 = iadd %1.x, %60
+        1     %63 = ult %62, %1.x
+        32    %64 = b2i32 %63
+        32    %65 = iadd %1.y, %61
+        32    %66 = iadd %64, %65
+        64    %67 = pack_64_2x32_split %62, %66
+        32    %68 = @load_global (%67) (access=none, align_mul=4, align_offset=0)
+        32    %69 = load_const (0x3f000000 = 0.500000)
+        1     %70 = flt! %69 (0.500000), %68
+        32    %71 = b2f32 %70
+        32    %72 = fmul %68, %71
+        32    %73 = fmax %68, %0 (0.000000)
+        32    %74 = iadd %1.z, %60
+        1     %75 = ult %74, %1.z
+        32    %76 = b2i32 %75
+        32    %77 = iadd %1.w, %61
+        32    %78 = iadd %76, %77
+        64    %79 = pack_64_2x32_split %74, %78
+                    @store_global (%72, %79) (wrmask=x, access=none, align_mul=4, align_offset=0)
+        32    %80 = unpack_64_2x32_split_x %4
+        32    %81 = unpack_64_2x32_split_y %4
+        32    %82 = iadd %80, %60
+        1     %83 = ult %82, %80
+        32    %84 = b2i32 %83
+        32    %85 = iadd %81, %61
+        32    %86 = iadd %84, %85
+        64    %87 = pack_64_2x32_split %82, %86
+                    @store_global (%73, %87) (wrmask=x, access=none, align_mul=4, align_offset=0)
+                    // succs: b3
+    } else {
+        block b2:  // preds: b0, succs: b3
+    }
+    block b3:  // preds: b1 b2, succs: b4
+    block b4:
+}
+
+=== Printing nir variant 'Optimized' for 'k0' before driver finalization
+shader: MESA_SHADER_KERNEL
+source_blake3: {0x1c0638da, 0xa0ca348e, 0xa2602c0d, 0xa3db230c, 0x78afb886, 0xce2f9a6e, 0x6916e661, 0x86be0798}
+workgroup_size: 0, 0, 0 (variable)
+num_ubos: 1
+system_values_read: 0x00000000'00000000'00088400'00000000
+float_controls_execution_mode: 0x0003a200
+subgroup_size: 0
+bit_sizes_float: 0x20
+bit_sizes_int: 0x61
+first_ubo_is_default_ubo: true
+writes_memory: true
+ptr_size: 64
+uniforms: 24
+decl_var uniform INTERP_MODE_NONE none uint64_t #0 (0, 0, 0)
+decl_var uniform INTERP_MODE_NONE none uint64_t #1 (1, 8, 0)
+decl_var uniform INTERP_MODE_NONE none uint64_t #2 (2, 16, 0)
+decl_var ubo INTERP_MODE_NONE none uint8_t[24] kernel_input (0, 0, 0)
+decl_function __wrapped_k0 () (entrypoint)
+
+impl __wrapped_k0 {
+    block b0:   // preds:
+    32     %0 = load_const (0x00000000 = 0.000000)
+    64     %1 = @load_ubo (%0 (0x0), %0 (0x0)) (access=none, align_mul=256, align_offset=0, range_base=0, range=24)
+    32     %2 = load_const (0x00000008)
+    64     %3 = @load_ubo (%0 (0x0), %2 (0x8)) (access=none, align_mul=256, align_offset=8, range_base=0, range=24)
+    32     %4 = load_const (0x00000010 = 16)
+    64     %5 = @load_ubo (%0 (0x0), %4 (0x10)) (access=none, align_mul=256, align_offset=16, range_base=0, range=24)
+    32x3   %6 = @load_workgroup_size
+    32x3   %7 = @load_workgroup_id
+    32x3   %8 = @load_local_invocation_id
+    32     %9 = load_const (0x0000ffff = 65535)
+    32    %10 = iand %7.x, %9 (0xffff)
+    32    %11 = iand %6.x, %9 (0xffff)
+    32    %12 = ushr %7.x, %4 (0x10)
+    32    %13 = ushr %6.x, %4 (0x10)
+    32    %14 = imul %10, %11
+    32    %15 = imul %10, %13
+    32    %16 = imul %12, %11
+    32    %17 = imul %12, %13
+    32    %18 = ishl %15, %4 (0x10)
+    32    %19 = iadd %14, %18
+    1     %20 = ult %19, %14
+    32    %21 = b2i32 %20
+    32    %22 = iadd %17, %21
+    32    %23 = ushr %15, %4 (0x10)
+    32    %24 = iadd %22, %23
+    32    %25 = ishl %16, %4 (0x10)
+    32    %26 = iadd %19, %25
+    1     %27 = ult %26, %19
+    32    %28 = b2i32 %27
+    32    %29 = iadd %24, %28
+    32    %30 = ushr %16, %4 (0x10)
+    32    %31 = iadd %29, %30
+    32    %32 = imul %7.x, %6.x
+    32    %33 = iadd %32, %8.x
+    1     %34 = ult %33, %32
+    32    %35 = b2i32 %34
+    32    %36 = iadd %35, %31
+    1     %37 = ieq %36, %0 (0x0)
+    1     %38 = ult %33, %2 (0x8)
+    1     %39 = iand %37, %38
+                // succs: b1 b2
+    if %39 {
+        block b1:   // preds: b0
+        32    %40 = load_const (0x00000002)
+        32    %41 = load_const (0x0000001e = 30)
+        32    %42 = ishl %33, %40 (0x2)
+        32    %43 = ushr %33, %41 (0x1e)
+        32    %44 = unpack_64_2x32_split_x %1
+        32    %45 = unpack_64_2x32_split_y %1
+        32    %46 = iadd %44, %42
+        1     %47 = ult %46, %44
+        32    %48 = b2i32 %47
+        32    %49 = iadd %45, %43
+        32    %50 = iadd %48, %49
+        64    %51 = pack_64_2x32_split %46, %50
+        32    %52 = @load_global (%51) (access=none, align_mul=4, align_offset=0)
+        32    %53 = load_const (0x3f000000 = 0.500000)
+        1     %54 = flt! %53 (0.500000), %52
+        32    %55 = b2f32 %54
+        32    %56 = fmul %52, %55
+        32    %57 = fmax %52, %0 (0.000000)
+        32    %58 = unpack_64_2x32_split_x %3
+        32    %59 = unpack_64_2x32_split_y %3
+        32    %60 = iadd %58, %42
+        1     %61 = ult %60, %58
+        32    %62 = b2i32 %61
+        32    %63 = iadd %59, %43
+        32    %64 = iadd %62, %63
+        64    %65 = pack_64_2x32_split %60, %64
+                    @store_global (%56, %65) (wrmask=x, access=none, align_mul=4, align_offset=0)
+        32    %66 = unpack_64_2x32_split_x %5
+        32    %67 = unpack_64_2x32_split_y %5
+        32    %68 = iadd %66, %42
+        1     %69 = ult %68, %66
+        32    %70 = b2i32 %69
+        32    %71 = iadd %67, %43
+        32    %72 = iadd %70, %71
+        64    %73 = pack_64_2x32_split %68, %72
+                    @store_global (%57, %73) (wrmask=x, access=none, align_mul=4, align_offset=0)
+                    // succs: b3
+    } else {
+        block b2:  // preds: b0, succs: b3
+    }
+    block b3:  // preds: b1 b2, succs: b4
+    block b4:
+}
+
+MESA: info: ----------------------
+MESA: info: shader: MESA_SHADER_KERNEL
+MESA: info: source_blake3: {0x1c0638da, 0xa0ca348e, 0xa2602c0d, 0xa3db230c, 0x78afb886, 0xce2f9a6e, 0x6916e661, 0x86be0798}
+MESA: info: workgroup_size: 0, 0, 0 (variable)
+MESA: info: num_ubos: 1
+MESA: info: system_values_read: 0x00000000'00000000'00088400'00000000
+MESA: info: float_controls_execution_mode: 0x0003a200
+MESA: info: subgroup_size: 0
+MESA: info: bit_sizes_float: 0x20
+MESA: info: bit_sizes_int: 0x61
+MESA: info: first_ubo_is_default_ubo: true
+MESA: info: writes_memory: true
+MESA: info: ptr_size: 64
+MESA: info: uniforms: 24
+MESA: info: decl_var uniform INTERP_MODE_NONE none uint64_t #0 (0, 0, 0)
+MESA: info: decl_var uniform INTERP_MODE_NONE none uint64_t #1 (1, 8, 0)
+MESA: info: decl_var uniform INTERP_MODE_NONE none uint64_t #2 (2, 16, 0)
+MESA: info: decl_var ubo INTERP_MODE_NONE none uint8_t[24] kernel_input (0, 0, 0)
+MESA: info: decl_function __wrapped_k0 () (entrypoint)
+MESA: info:
+MESA: info: impl __wrapped_k0 {
+MESA: info:     block b0:   // preds:
+MESA: info:     32     %0 = load_const (0x00000000 = 0.000000)
+MESA: info:     64     %1 = @load_ubo (%0 (0x0), %0 (0x0)) (access=none, align_mul=256, align_offset=0, range_base=0, range=24)
+MESA: info:     32     %2 = load_const (0x00000008)
+MESA: info:     64     %3 = @load_ubo (%0 (0x0), %2 (0x8)) (access=none, align_mul=256, align_offset=8, range_base=0, range=24)
+MESA: info:     32     %4 = load_const (0x00000010 = 16)
+MESA: info:     64     %5 = @load_ubo (%0 (0x0), %4 (0x10)) (access=none, align_mul=256, align_offset=16, range_base=0, range=24)
+MESA: info:     32x3   %6 = @load_workgroup_size
+MESA: info:     32x3   %7 = @load_workgroup_id
+MESA: info:     32x3   %8 = @load_local_invocation_id
+MESA: info:     32     %9 = load_const (0x0000ffff = 65535)
+MESA: info:     32    %10 = iand %7.x, %9 (0xffff)
+MESA: info:     32    %11 = iand %6.x, %9 (0xffff)
+MESA: info:     32    %12 = ushr %7.x, %4 (0x10)
+MESA: info:     32    %13 = ushr %6.x, %4 (0x10)
+MESA: info:     32    %14 = imul %10, %11
+MESA: info:     32    %15 = imul %10, %13
+MESA: info:     32    %16 = imul %12, %11
+MESA: info:     32    %17 = imul %12, %13
+MESA: info:     32    %18 = ishl %15, %4 (0x10)
+MESA: info:     32    %19 = iadd %14, %18
+MESA: info:     1     %20 = ult %19, %14
+MESA: info:     32    %21 = b2i32 %20
+MESA: info:     32    %22 = iadd %17, %21
+MESA: info:     32    %23 = ushr %15, %4 (0x10)
+MESA: info:     32    %24 = iadd %22, %23
+MESA: info:     32    %25 = ishl %16, %4 (0x10)
+MESA: info:     32    %26 = iadd %19, %25
+MESA: info:     1     %27 = ult %26, %19
+MESA: info:     32    %28 = b2i32 %27
+MESA: info:     32    %29 = iadd %24, %28
+MESA: info:     32    %30 = ushr %16, %4 (0x10)
+MESA: info:     32    %31 = iadd %29, %30
+MESA: info:     32    %32 = imul %7.x, %6.x
+MESA: info:     32    %33 = iadd %32, %8.x
+MESA: info:     1     %34 = ult %33, %32
+MESA: info:     32    %35 = b2i32 %34
+MESA: info:     32    %36 = iadd %35, %31
+MESA: info:     1     %37 = ieq %36, %0 (0x0)
+MESA: info:     1     %38 = ult %33, %2 (0x8)
+MESA: info:     1     %39 = iand %37, %38
+MESA: info:                 // succs: b1 b2
+MESA: info:     if %39 {
+MESA: info:         block b1:   // preds: b0
+MESA: info:         32    %40 = load_const (0x00000002)
+MESA: info:         32    %41 = load_const (0x0000001e = 30)
+MESA: info:         32    %42 = ishl %33, %40 (0x2)
+MESA: info:         32    %43 = ushr %33, %41 (0x1e)
+MESA: info:         32    %44 = unpack_64_2x32_split_x %1
+MESA: info:         32    %45 = unpack_64_2x32_split_y %1
+MESA: info:         32    %46 = iadd %44, %42
+MESA: info:         1     %47 = ult %46, %44
+MESA: info:         32    %48 = b2i32 %47
+MESA: info:         32    %49 = iadd %45, %43
+MESA: info:         32    %50 = iadd %48, %49
+MESA: info:         64    %51 = pack_64_2x32_split %46, %50
+MESA: info:         32    %52 = @load_global (%51) (access=none, align_mul=4, align_offset=0)
+MESA: info:         32    %53 = load_const (0x3f000000 = 0.500000)
+MESA: info:         1     %54 = flt! %53 (0.500000), %52
+MESA: info:         32    %55 = b2f32 %54
+MESA: info:         32    %56 = fmul %52, %55
+MESA: info:         32    %57 = fmax %52, %0 (0.000000)
+MESA: info:         32    %58 = unpack_64_2x32_split_x %3
+MESA: info:         32    %59 = unpack_64_2x32_split_y %3
+MESA: info:         32    %60 = iadd %58, %42
+MESA: info:         1     %61 = ult %60, %58
+MESA: info:         32    %62 = b2i32 %61
+MESA: info:         32    %63 = iadd %59, %43
+MESA: info:         32    %64 = iadd %62, %63
+MESA: info:         64    %65 = pack_64_2x32_split %60, %64
+MESA: info:                     @store_global (%56, %65) (wrmask=x, access=none, align_mul=4, align_offset=0)
+MESA: info:         32    %66 = unpack_64_2x32_split_x %5
+MESA: info:         32    %67 = unpack_64_2x32_split_y %5
+MESA: info:         32    %68 = iadd %66, %42
+MESA: info:         1     %69 = ult %68, %66
+MESA: info:         32    %70 = b2i32 %69
+MESA: info:         32    %71 = iadd %67, %43
+MESA: info:         32    %72 = iadd %70, %71
+MESA: info:         64    %73 = pack_64_2x32_split %68, %72
+MESA: info:                     @store_global (%57, %73) (wrmask=x, access=none, align_mul=4, align_offset=0)
+MESA: info:                     // succs: b3
+MESA: info:     } else {
+MESA: info:         block b2:  // preds: b0, succs: b3
+MESA: info:     }
+MESA: info:     block b3:  // preds: b1 b2, succs: b4
+MESA: info:     block b4:
+MESA: info: }
+MESA: info:
+MESA: info: ----------------------
+MESA: info: ----------------------
+MESA: info: shader: MESA_SHADER_KERNEL
+MESA: info: source_blake3: {0x1c0638da, 0xa0ca348e, 0xa2602c0d, 0xa3db230c, 0x78afb886, 0xce2f9a6e, 0x6916e661, 0x86be0798}
+MESA: info: workgroup_size: 0, 0, 0 (variable)
+MESA: info: num_ubos: 1
+MESA: info: system_values_read: 0x00000000'00000000'00088400'00000000
+MESA: info: float_controls_execution_mode: 0x0003a200
+MESA: info: subgroup_size: 0
+MESA: info: bit_sizes_float: 0x20
+MESA: info: bit_sizes_int: 0x61
+MESA: info: first_ubo_is_default_ubo: true
+MESA: info: writes_memory: true
+MESA: info: ptr_size: 64
+MESA: info: uniforms: 24
+MESA: info: decl_var uniform INTERP_MODE_NONE none uint64_t #0 (0, 0, 0)
+MESA: info: decl_var uniform INTERP_MODE_NONE none uint64_t #1 (1, 8, 0)
+MESA: info: decl_var uniform INTERP_MODE_NONE none uint64_t #2 (2, 16, 0)
+MESA: info: decl_var ubo INTERP_MODE_NONE none uint8_t[24] kernel_input (0, 0, 0)
+MESA: info: decl_function __wrapped_k0 () (entrypoint)
+MESA: info:
+MESA: info: impl __wrapped_k0 {
+MESA: info:     block b0:    // preds:
+MESA: info:     32      %0 = load_const (0x00000000 = 0.000000)
+MESA: info:     32x4    %1 = @load_ubo (%0 (0x0), %0 (0x0)) (access=none, align_mul=1073741824, align_offset=0, range_base=0, range=24)
+MESA: info:     32      %2 = load_const (0x00000008)
+MESA: info:     32      %4 = load_const (0x00000010 = 16)
+MESA: info:     64      %5 = @load_ubo (%0 (0x0), %4 (0x10)) (access=none, align_mul=1073741824, align_offset=16, range_base=0, range=24)
+MESA: info:     32x3    %6 = @load_workgroup_size
+MESA: info:     32x3    %7 = @load_workgroup_id
+MESA: info:     32x3    %8 = @load_local_invocation_id
+MESA: info:     32      %9 = load_const (0x0000ffff = 65535)
+MESA: info:     32     %10 = iand %7.x, %9 (0xffff)
+MESA: info:     32     %11 = iand %6.x, %9 (0xffff)
+MESA: info:     32     %12 = ushr %7.x, %4 (0x10)
+MESA: info:     32     %13 = ushr %6.x, %4 (0x10)
+MESA: info:     32     %14 = imul %10, %11
+MESA: info:     32     %15 = imul %10, %13
+MESA: info:     32     %16 = imul %12, %11
+MESA: info:     32     %17 = imul %12, %13
+MESA: info:     32     %18 = ishl %15, %4 (0x10)
+MESA: info:     32     %19 = iadd %14, %18
+MESA: info:     1      %20 = ult %19, %14
+MESA: info:     32     %21 = b2i32 %20
+MESA: info:     32     %22 = iadd %17, %21
+MESA: info:     32     %23 = ushr %15, %4 (0x10)
+MESA: info:     32     %24 = iadd %22, %23
+MESA: info:     32     %25 = ishl %16, %4 (0x10)
+MESA: info:     32     %26 = iadd %19, %25
+MESA: info:     1      %27 = ult %26, %19
+MESA: info:     32     %28 = b2i32 %27
+MESA: info:     32     %29 = iadd %24, %28
+MESA: info:     32     %30 = ushr %16, %4 (0x10)
+MESA: info:     32     %31 = iadd %29, %30
+MESA: info:     32     %32 = imul %7.x, %6.x
+MESA: info:     32     %33 = iadd %32, %8.x
+MESA: info:     1      %34 = ult %33, %32
+MESA: info:     32     %35 = b2i32 %34
+MESA: info:     32     %36 = iadd %35, %31
+MESA: info:     1      %37 = ieq %36, %0 (0x0)
+MESA: info:     1      %38 = ult %33, %2 (0x8)
+MESA: info:     1      %39 = iand %37, %38
+MESA: info:                  // succs: b1 b2
+MESA: info:     if %39 {
+MESA: info:         block b1:    // preds: b0
+MESA: info:         32     %40 = load_const (0x00000002)
+MESA: info:         32     %41 = load_const (0x0000001e = 30)
+MESA: info:         32     %42 = ishl %33, %40 (0x2)
+MESA: info:         32     %43 = ushr %33, %41 (0x1e)
+MESA: info:         32     %46 = iadd %1.x, %42
+MESA: info:         1      %47 = ult %46, %1.x
+MESA: info:         32     %48 = b2i32 %47
+MESA: info:         32     %49 = iadd %1.y, %43
+MESA: info:         32     %50 = iadd %48, %49
+MESA: info:         64     %51 = pack_64_2x32_split %46, %50
+MESA: info:         32     %52 = @load_global (%51) (access=none, align_mul=4, align_offset=0)
+MESA: info:         32     %53 = load_const (0x3f000000 = 0.500000)
+MESA: info:         1      %54 = flt! %53 (0.500000), %52
+MESA: info:         32     %55 = b2f32 %54
+MESA: info:         32     %56 = fmul %52, %55
+MESA: info:         32     %57 = fmax %52, %0 (0.000000)
+MESA: info:         32     %60 = iadd %1.z, %42
+MESA: info:         1      %61 = ult %60, %1.z
+MESA: info:         32     %62 = b2i32 %61
+MESA: info:         32     %63 = iadd %1.w, %43
+MESA: info:         32     %64 = iadd %62, %63
+MESA: info:         64     %65 = pack_64_2x32_split %60, %64
+MESA: info:                      @store_global (%56, %65) (wrmask=x, access=none, align_mul=4, align_offset=0)
+MESA: info:         32     %66 = unpack_64_2x32_split_x %5
+MESA: info:         32     %67 = unpack_64_2x32_split_y %5
+MESA: info:         32     %68 = iadd %66, %42
+MESA: info:         1      %69 = ult %68, %66
+MESA: info:         32     %70 = b2i32 %69
+MESA: info:         32     %71 = iadd %67, %43
+MESA: info:         32     %72 = iadd %70, %71
+MESA: info:         64     %73 = pack_64_2x32_split %68, %72
+MESA: info:                      @store_global (%57, %73) (wrmask=x, access=none, align_mul=4, align_offset=0)
+MESA: info:                      // succs: b3
+MESA: info:     } else {
+MESA: info:         block b2:  // preds: b0, succs: b3
+MESA: info:     }
+MESA: info:     block b3:  // preds: b1 b2, succs: b4
+MESA: info:     block b4:
+MESA: info: }
+MESA: info:
+MESA: info: ----------------------
+=== Printing nir variant 'Optimized' for 'k0' after driver finalization
+shader: MESA_SHADER_KERNEL
+source_blake3: {0x1c0638da, 0xa0ca348e, 0xa2602c0d, 0xa3db230c, 0x78afb886, 0xce2f9a6e, 0x6916e661, 0x86be0798}
+workgroup_size: 0, 0, 0 (variable)
+num_ubos: 1
+system_values_read: 0x00000000'00000000'00088400'00000000
+float_controls_execution_mode: 0x0003a200
+subgroup_size: 0
+bit_sizes_float: 0x20
+bit_sizes_int: 0x61
+first_ubo_is_default_ubo: true
+writes_memory: true
+ptr_size: 64
+uniforms: 24
+decl_var ubo INTERP_MODE_NONE none uint8_t[24] kernel_input (0, 0, 0)
+decl_function __wrapped_k0 () (entrypoint)
+
+impl __wrapped_k0 {
+    block b0:   // preds:
+    32     %0 = load_const (0x00000000 = 0.000000)
+    32x4   %1 = @load_ubo (%0 (0x0), %0 (0x0)) (access=none, align_mul=1073741824, align_offset=0, range_base=0, range=24)
+    32     %2 = load_const (0x00000008)
+    32     %3 = load_const (0x00000010 = 16)
+    64     %4 = @load_ubo (%0 (0x0), %3 (0x10)) (access=none, align_mul=1073741824, align_offset=16, range_base=0, range=24)
+    32x3   %5 = @load_workgroup_size
+    32x3   %6 = @load_workgroup_id
+    32x3   %7 = @load_local_invocation_id
+    32     %8 = load_const (0x0000ffff = 65535)
+    32     %9 = iand %6.x, %8 (0xffff)
+    32    %10 = iand %5.x, %8 (0xffff)
+    32    %11 = ushr %6.x, %3 (0x10)
+    32    %12 = ushr %5.x, %3 (0x10)
+    32    %13 = imul %9, %10
+    32    %14 = imul %9, %12
+    32    %15 = imul %11, %10
+    32    %16 = imul %11, %12
+    32    %17 = ishl %14, %3 (0x10)
+    32    %18 = iadd %13, %17
+    1     %19 = ult %18, %13
+    32    %20 = b2i32 %19
+    32    %21 = iadd %16, %20
+    32    %22 = ushr %14, %3 (0x10)
+    32    %23 = iadd %21, %22
+    32    %24 = ishl %15, %3 (0x10)
+    32    %25 = iadd %18, %24
+    1     %26 = ult %25, %18
+    32    %27 = b2i32 %26
+    32    %28 = iadd %23, %27
+    32    %29 = ushr %15, %3 (0x10)
+    32    %30 = iadd %28, %29
+    32    %31 = imul %6.x, %5.x
+    32    %32 = iadd %31, %7.x
+    1     %33 = ult %32, %31
+    32    %34 = b2i32 %33
+    32    %35 = iadd %34, %30
+    1     %36 = ieq %35, %0 (0x0)
+    1     %37 = ult %32, %2 (0x8)
+    1     %38 = iand %36, %37
+                // succs: b1 b2
+    if %38 {
+        block b1:   // preds: b0
+        32    %39 = load_const (0x00000002)
+        32    %40 = load_const (0x0000001e = 30)
+        32    %41 = ishl %32, %39 (0x2)
+        32    %42 = ushr %32, %40 (0x1e)
+        32    %43 = iadd %1.x, %41
+        1     %44 = ult %43, %1.x
+        32    %45 = b2i32 %44
+        32    %46 = iadd %1.y, %42
+        32    %47 = iadd %45, %46
+        64    %48 = pack_64_2x32_split %43, %47
+        32    %49 = @load_global (%48) (access=none, align_mul=4, align_offset=0)
+        32    %50 = load_const (0x3f000000 = 0.500000)
+        1     %51 = flt! %50 (0.500000), %49
+        32    %52 = b2f32 %51
+        32    %53 = fmul %49, %52
+        32    %54 = fmax %49, %0 (0.000000)
+        32    %55 = iadd %1.z, %41
+        1     %56 = ult %55, %1.z
+        32    %57 = b2i32 %56
+        32    %58 = iadd %1.w, %42
+        32    %59 = iadd %57, %58
+        64    %60 = pack_64_2x32_split %55, %59
+                    @store_global (%53, %60) (wrmask=x, access=none, align_mul=4, align_offset=0)
+        32    %61 = unpack_64_2x32_split_x %4
+        32    %62 = unpack_64_2x32_split_y %4
+        32    %63 = iadd %61, %41
+        1     %64 = ult %63, %61
+        32    %65 = b2i32 %64
+        32    %66 = iadd %62, %42
+        32    %67 = iadd %65, %66
+        64    %68 = pack_64_2x32_split %63, %67
+                    @store_global (%54, %68) (wrmask=x, access=none, align_mul=4, align_offset=0)
+                    // succs: b3
+    } else {
+        block b2:  // preds: b0, succs: b3
+    }
+    block b3:  // preds: b1 b2, succs: b4
+    block b4:
+}
+
+MESA: info: dump nir1: type=14
+MESA: info: shader: MESA_SHADER_KERNEL
+MESA: info: source_blake3: {0x1c0638da, 0xa0ca348e, 0xa2602c0d, 0xa3db230c, 0x78afb886, 0xce2f9a6e, 0x6916e661, 0x86be0798}
+MESA: info: workgroup_size: 0, 0, 0 (variable)
+MESA: info: num_ubos: 1
+MESA: info: system_values_read: 0x00000000'00000000'0009a400'00000000
+MESA: info: float_controls_execution_mode: 0x0003a200
+MESA: info: subgroup_size: 0
+MESA: info: bit_sizes_float: 0x20
+MESA: info: bit_sizes_int: 0x61
+MESA: info: first_ubo_is_default_ubo: true
+MESA: info: writes_memory: true
+MESA: info: ptr_size: 64
+MESA: info: uniforms: 96
+MESA: info: decl_var ubo INTERP_MODE_NONE none uint8_t[96] kernel_input (0, 0, 0)
+MESA: info: decl_function __wrapped_k0 () (entrypoint)
+MESA: info:
+MESA: info: impl __wrapped_k0 {
+MESA: info:     block b0:   // preds:
+MESA: info:     32     %0 = load_const (0x00000000 = 0.000000)
+MESA: info:     32x4   %1 = @load_ubo (%0 (0x0), %0 (0x0)) (access=none, align_mul=1073741824, align_offset=0, range_base=0, range=96)
+MESA: info:     32     %2 = load_const (0x00000008)
+MESA: info:     32     %3 = load_const (0x00000010 = 16)
+MESA: info:     64     %4 = @load_ubo (%0 (0x0), %3 (0x10)) (access=none, align_mul=1073741824, align_offset=16, range_base=0, range=96)
+MESA: info:     32x3   %5 = @load_workgroup_size
+MESA: info:     32x3   %6 = @load_workgroup_id
+MESA: info:     32     %7 = load_const (0x00000040 = 64)
+MESA: info:     64     %8 = @load_ubo (%0 (0x0), %7 (0x40)) (access=none, align_mul=1073741824, align_offset=64, range_base=0, range=96)
+MESA: info:     32x3   %9 = @load_local_invocation_id
+MESA: info:     32    %10 = unpack_64_2x32_split_x %8
+MESA: info:     32    %11 = unpack_64_2x32_split_y %8
+MESA: info:     32    %12 = iadd %6.x, %10
+MESA: info:     1     %13 = ult %12, %6.x
+MESA: info:     32    %14 = b2i32 %13
+MESA: info:     32    %15 = iadd %14, %11
+MESA: info:     32    %16 = load_const (0x0000ffff = 65535)
+MESA: info:     32    %17 = iand %12, %16 (0xffff)
+MESA: info:     32    %18 = iand %5.x, %16 (0xffff)
+MESA: info:     32    %19 = ushr %12, %3 (0x10)
+MESA: info:     32    %20 = ushr %5.x, %3 (0x10)
+MESA: info:     32    %21 = imul %17, %18
+MESA: info:     32    %22 = imul %17, %20
+MESA: info:     32    %23 = imul %19, %18
+MESA: info:     32    %24 = imul %19, %20
+MESA: info:     32    %25 = ishl %22, %3 (0x10)
+MESA: info:     32    %26 = iadd %21, %25
+MESA: info:     1     %27 = ult %26, %21
+MESA: info:     32    %28 = b2i32 %27
+MESA: info:     32    %29 = iadd %24, %28
+MESA: info:     32    %30 = ushr %22, %3 (0x10)
+MESA: info:     32    %31 = iadd %29, %30
+MESA: info:     32    %32 = ishl %23, %3 (0x10)
+MESA: info:     32    %33 = iadd %26, %32
+MESA: info:     1     %34 = ult %33, %26
+MESA: info:     32    %35 = b2i32 %34
+MESA: info:     32    %36 = iadd %31, %35
+MESA: info:     32    %37 = ushr %23, %3 (0x10)
+MESA: info:     32    %38 = iadd %36, %37
+MESA: info:     32    %39 = imul %12, %5.x
+MESA: info:     32    %40 = imul %15, %5.x
+MESA: info:     32    %41 = iadd %38, %40
+MESA: info:     32    %42 = iadd %39, %9.x
+MESA: info:     1     %43 = ult %42, %39
+MESA: info:     32    %44 = b2i32 %43
+MESA: info:     32    %45 = iadd %44, %41
+MESA: info:     32    %46 = load_const (0x00000020 = 32)
+MESA: info:     64    %47 = @load_ubo (%0 (0x0), %46 (0x20)) (access=none, align_mul=1073741824, align_offset=32, range_base=0, range=96)
+MESA: info:     32    %48 = unpack_64_2x32_split_x %47
+MESA: info:     32    %49 = unpack_64_2x32_split_y %47
+MESA: info:     32    %50 = iadd %42, %48
+MESA: info:     1     %51 = ult %50, %42
+MESA: info:     32    %52 = b2i32 %51
+MESA: info:     32    %53 = iadd %45, %49
+MESA: info:     32    %54 = iadd %52, %53
+MESA: info:     1     %55 = ieq %54, %0 (0x0)
+MESA: info:     1     %56 = ult %50, %2 (0x8)
+MESA: info:     1     %57 = iand %55, %56
+MESA: info:                 // succs: b1 b2
+MESA: info:     if %57 {
+MESA: info:         block b1:   // preds: b0
+MESA: info:         32    %58 = load_const (0x00000002)
+MESA: info:         32    %59 = load_const (0x0000001e = 30)
+MESA: info:         32    %60 = ishl %50, %58 (0x2)
+MESA: info:         32    %61 = ushr %50, %59 (0x1e)
+MESA: info:         32    %62 = iadd %1.x, %60
+MESA: info:         1     %63 = ult %62, %1.x
+MESA: info:         32    %64 = b2i32 %63
+MESA: info:         32    %65 = iadd %1.y, %61
+MESA: info:         32    %66 = iadd %64, %65
+MESA: info:         64    %67 = pack_64_2x32_split %62, %66
+MESA: info:         32    %68 = @load_global (%67) (access=none, align_mul=4, align_offset=0)
+MESA: info:         32    %69 = load_const (0x3f000000 = 0.500000)
+MESA: info:         1     %70 = flt! %69 (0.500000), %68
+MESA: info:         32    %71 = b2f32 %70
+MESA: info:         32    %72 = fmul %68, %71
+MESA: info:         32    %73 = fmax %68, %0 (0.000000)
+MESA: info:         32    %74 = iadd %1.z, %60
+MESA: info:         1     %75 = ult %74, %1.z
+MESA: info:         32    %76 = b2i32 %75
+MESA: info:         32    %77 = iadd %1.w, %61
+MESA: info:         32    %78 = iadd %76, %77
+MESA: info:         64    %79 = pack_64_2x32_split %74, %78
+MESA: info:                     @store_global (%72, %79) (wrmask=x, access=none, align_mul=4, align_offset=0)
+MESA: info:         32    %80 = unpack_64_2x32_split_x %4
+MESA: info:         32    %81 = unpack_64_2x32_split_y %4
+MESA: info:         32    %82 = iadd %80, %60
+MESA: info:         1     %83 = ult %82, %80
+MESA: info:         32    %84 = b2i32 %83
+MESA: info:         32    %85 = iadd %81, %61
+MESA: info:         32    %86 = iadd %84, %85
+MESA: info:         64    %87 = pack_64_2x32_split %82, %86
+MESA: info:                     @store_global (%73, %87) (wrmask=x, access=none, align_mul=4, align_offset=0)
+MESA: info:                     // succs: b3
+MESA: info:     } else {
+MESA: info:         block b2:  // preds: b0, succs: b3
+MESA: info:     }
+MESA: info:     block b3:  // preds: b1 b2, succs: b4
+MESA: info:     block b4:
+MESA: info: }
+MESA: info:
+MESA: info: ----------------------
+MESA: info: shader: MESA_SHADER_KERNEL
+MESA: info: source_blake3: {0x1c0638da, 0xa0ca348e, 0xa2602c0d, 0xa3db230c, 0x78afb886, 0xce2f9a6e, 0x6916e661, 0x86be0798}
+MESA: info: workgroup_size: 0, 0, 0 (variable)
+MESA: info: num_ubos: 1
+MESA: info: system_values_read: 0x00000000'00000000'0009a400'00000000
+MESA: info: float_controls_execution_mode: 0x0003a200
+MESA: info: subgroup_size: 0
+MESA: info: bit_sizes_float: 0x20
+MESA: info: bit_sizes_int: 0x61
+MESA: info: first_ubo_is_default_ubo: true
+MESA: info: writes_memory: true
+MESA: info: ptr_size: 64
+MESA: info: uniforms: 96
+MESA: info: decl_var ubo INTERP_MODE_NONE none uint8_t[96] kernel_input (0, 0, 0)
+MESA: info: decl_function __wrapped_k0 () (entrypoint)
+MESA: info:
+MESA: info: impl __wrapped_k0 {
+MESA: info:     block b0:   // preds:
+MESA: info:     32     %0 = load_const (0x00000000 = 0.000000)
+MESA: info:     32x4   %1 = @load_ubo (%0 (0x0), %0 (0x0)) (access=none, align_mul=1073741824, align_offset=0, range_base=0, range=96)
+MESA: info:     32     %2 = load_const (0x00000008)
+MESA: info:     32     %3 = load_const (0x00000010 = 16)
+MESA: info:     64     %4 = @load_ubo (%0 (0x0), %3 (0x10)) (access=none, align_mul=1073741824, align_offset=16, range_base=0, range=96)
+MESA: info:     32x3   %5 = @load_workgroup_size
+MESA: info:     32x3   %6 = @load_workgroup_id
+MESA: info:     32     %7 = load_const (0x00000040 = 64)
+MESA: info:     64     %8 = @load_ubo (%0 (0x0), %7 (0x40)) (access=none, align_mul=1073741824, align_offset=64, range_base=0, range=96)
+MESA: info:     32x3   %9 = @load_local_invocation_id
+MESA: info:     32    %10 = unpack_64_2x32_split_x %8
+MESA: info:     32    %11 = unpack_64_2x32_split_y %8
+MESA: info:     32    %12 = iadd %6.x, %10
+MESA: info:     1     %13 = ult %12, %6.x
+MESA: info:     32    %14 = b2i32 %13
+MESA: info:     32    %15 = iadd %14, %11
+MESA: info:     32    %16 = load_const (0x0000ffff = 65535)
+MESA: info:     32    %17 = iand %12, %16 (0xffff)
+MESA: info:     32    %18 = iand %5.x, %16 (0xffff)
+MESA: info:     32    %19 = ushr %12, %3 (0x10)
+MESA: info:     32    %20 = ushr %5.x, %3 (0x10)
+MESA: info:     32    %21 = imul %17, %18
+MESA: info:     32    %22 = imul %17, %20
+MESA: info:     32    %23 = imul %19, %18
+MESA: info:     32    %24 = imul %19, %20
+MESA: info:     32    %25 = ishl %22, %3 (0x10)
+MESA: info:     32    %26 = iadd %21, %25
+MESA: info:     1     %27 = ult %26, %21
+MESA: info:     32    %28 = b2i32 %27
+MESA: info:     32    %29 = iadd %24, %28
+MESA: info:     32    %30 = ushr %22, %3 (0x10)
+MESA: info:     32    %31 = iadd %29, %30
+MESA: info:     32    %32 = ishl %23, %3 (0x10)
+MESA: info:     32    %33 = iadd %26, %32
+MESA: info:     1     %34 = ult %33, %26
+MESA: info:     32    %35 = b2i32 %34
+MESA: info:     32    %36 = iadd %31, %35
+MESA: info:     32    %37 = ushr %23, %3 (0x10)
+MESA: info:     32    %38 = iadd %36, %37
+MESA: info:     32    %39 = imul %12, %5.x
+MESA: info:     32    %40 = imul %15, %5.x
+MESA: info:     32    %41 = iadd %38, %40
+MESA: info:     32    %42 = iadd %39, %9.x
+MESA: info:     1     %43 = ult %42, %39
+MESA: info:     32    %44 = b2i32 %43
+MESA: info:     32    %45 = iadd %44, %41
+MESA: info:     32    %46 = load_const (0x00000020 = 32)
+MESA: info:     64    %47 = @load_ubo (%0 (0x0), %46 (0x20)) (access=none, align_mul=1073741824, align_offset=32, range_base=0, range=96)
+MESA: info:     32    %48 = unpack_64_2x32_split_x %47
+MESA: info:     32    %49 = unpack_64_2x32_split_y %47
+MESA: info:     32    %50 = iadd %42, %48
+MESA: info:     1     %51 = ult %50, %42
+MESA: info:     32    %52 = b2i32 %51
+MESA: info:     32    %53 = iadd %45, %49
+MESA: info:     32    %54 = iadd %52, %53
+MESA: info:     1     %55 = ieq %54, %0 (0x0)
+MESA: info:     1     %56 = ult %50, %2 (0x8)
+MESA: info:     1     %57 = iand %55, %56
+MESA: info:                 // succs: b1 b2
+MESA: info:     if %57 {
+MESA: info:         block b1:   // preds: b0
+MESA: info:         32    %58 = load_const (0x00000002)
+MESA: info:         32    %59 = load_const (0x0000001e = 30)
+MESA: info:         32    %60 = ishl %50, %58 (0x2)
+MESA: info:         32    %61 = ushr %50, %59 (0x1e)
+MESA: info:         32    %62 = iadd %1.x, %60
+MESA: info:         1     %63 = ult %62, %1.x
+MESA: info:         32    %64 = b2i32 %63
+MESA: info:         32    %65 = iadd %1.y, %61
+MESA: info:         32    %66 = iadd %64, %65
+MESA: info:         64    %67 = pack_64_2x32_split %62, %66
+MESA: info:         32    %68 = @load_global (%67) (access=none, align_mul=4, align_offset=0)
+MESA: info:         32    %69 = load_const (0x3f000000 = 0.500000)
+MESA: info:         1     %70 = flt! %69 (0.500000), %68
+MESA: info:         32    %71 = b2f32 %70
+MESA: info:         32    %72 = fmul %68, %71
+MESA: info:         32    %73 = fmax %68, %0 (0.000000)
+MESA: info:         32    %74 = iadd %1.z, %60
+MESA: info:         1     %75 = ult %74, %1.z
+MESA: info:         32    %76 = b2i32 %75
+MESA: info:         32    %77 = iadd %1.w, %61
+MESA: info:         32    %78 = iadd %76, %77
+MESA: info:         64    %79 = pack_64_2x32_split %74, %78
+MESA: info:                     @store_global (%72, %79) (wrmask=x, access=none, align_mul=4, align_offset=0)
+MESA: info:         32    %80 = unpack_64_2x32_split_x %4
+MESA: info:         32    %81 = unpack_64_2x32_split_y %4
+MESA: info:         32    %82 = iadd %80, %60
+MESA: info:         1     %83 = ult %82, %80
+MESA: info:         32    %84 = b2i32 %83
+MESA: info:         32    %85 = iadd %81, %61
+MESA: info:         32    %86 = iadd %84, %85
+MESA: info:         64    %87 = pack_64_2x32_split %82, %86
+MESA: info:                     @store_global (%73, %87) (wrmask=x, access=none, align_mul=4, align_offset=0)
+MESA: info:                     // succs: b3
+MESA: info:     } else {
+MESA: info:         block b2:  // preds: b0, succs: b3
+MESA: info:     }
+MESA: info:     block b3:  // preds: b1 b2, succs: b4
+MESA: info:     block b4:
+MESA: info: }
+MESA: info:
+MESA: info: ----------------------
+MESA: info: ----------------------
+MESA: info: shader: MESA_SHADER_KERNEL
+MESA: info: source_blake3: {0x1c0638da, 0xa0ca348e, 0xa2602c0d, 0xa3db230c, 0x78afb886, 0xce2f9a6e, 0x6916e661, 0x86be0798}
+MESA: info: workgroup_size: 0, 0, 0 (variable)
+MESA: info: system_values_read: 0x00000000'00000000'0009a400'00000000
+MESA: info: float_controls_execution_mode: 0x0003a200
+MESA: info: subgroup_size: 0
+MESA: info: bit_sizes_float: 0x20
+MESA: info: bit_sizes_int: 0x61
+MESA: info: first_ubo_is_default_ubo: true
+MESA: info: writes_memory: true
+MESA: info: ptr_size: 64
+MESA: info: uniforms: 96
+MESA: info: decl_var ubo INTERP_MODE_NONE none uint8_t[96] kernel_input (0, 0, 0)
+MESA: info: decl_function __wrapped_k0 () (entrypoint)
+MESA: info:
+MESA: info: impl __wrapped_k0 {
+MESA: info:     block b0:    // preds:
+MESA: info:     1       %0 = @preamble_start_ir3
+MESA: info:                  // succs: b1 b5
+MESA: info:     if %0 {
+MESA: info:         block b1:    // preds: b0
+MESA: info:         1       %1 = @elect_any_ir3
+MESA: info:                      // succs: b2 b3
+MESA: info:         if %1 {
+MESA: info:             block b2:    // preds: b1
+MESA: info:             32      %2 = load_const (0x00000010 = 16)
+MESA: info:             32x3    %3 = @load_workgroup_size
+MESA: info:             32      %4 = load_const (0x0000ffff = 65535)
+MESA: info:             32      %5 = iand %3.x, %4 (0xffff)
+MESA: info:                          @store_const_ir3 (%5) (base=16)
+MESA: info:             32      %6 = ushr %3.x, %2 (0x10)
+MESA: info:                          @store_const_ir3 (%6) (base=17)
+MESA: info:                          @preamble_end_ir3
+MESA: info:                          // succs: b4
+MESA: info:         } else {
+MESA: info:             block b3:  // preds: b1, succs: b4
+MESA: info:         }
+MESA: info:         block b4:  // preds: b2 b3, succs: b6
+MESA: info:     } else {
+MESA: info:         block b5:  // preds: b0, succs: b6
+MESA: info:     }
+MESA: info:     block b6:    // preds: b4 b5
+MESA: info:     32      %7 = load_const (0x00000000 = 0.000000)
+MESA: info:     32x4   %10 = @load_const_ir3 (%7 (0x0)) (base=32)
+MESA: info:     32     %11 = load_const (0x00000008)
+MESA: info:     32     %12 = load_const (0x00000010 = 16)
+MESA: info:     32x2   %15 = @load_const_ir3 (%7 (0x0)) (base=36)
+MESA: info:     32x3   %16 = @load_workgroup_size
+MESA: info:     32x3   %17 = @load_workgroup_id
+MESA: info:     32x2   %21 = @load_const_ir3 (%7 (0x0)) (base=48)
+MESA: info:     32x3   %22 = @load_local_invocation_id
+MESA: info:     32     %23 = iadd %17.x, %21.x
+MESA: info:     1      %24 = ult %23, %17.x
+MESA: info:     32     %25 = b2i32 %24
+MESA: info:     32     %26 = iadd %25, %21.y
+MESA: info:     32     %27 = load_const (0x0000ffff = 65535)
+MESA: info:     32     %28 = iand %23, %27 (0xffff)
+MESA: info:     32     %30 = @load_const_ir3 (%7 (0x0)) (base=16)
+MESA: info:     32     %31 = ushr %23, %12 (0x10)
+MESA: info:     32     %33 = @load_const_ir3 (%7 (0x0)) (base=17)
+MESA: info:     32     %34 = imul %28, %30
+MESA: info:     32     %35 = imul %28, %33
+MESA: info:     32     %36 = imul %31, %30
+MESA: info:     32     %37 = imul %31, %33
+MESA: info:     32     %38 = ishl %35, %12 (0x10)
+MESA: info:     32     %39 = iadd %34, %38
+MESA: info:     1      %40 = ult %39, %34
+MESA: info:     32     %41 = b2i32 %40
+MESA: info:     32     %42 = iadd %37, %41
+MESA: info:     32     %43 = ushr %35, %12 (0x10)
+MESA: info:     32     %44 = iadd %42, %43
+MESA: info:     32     %45 = ishl %36, %12 (0x10)
+MESA: info:     32     %46 = iadd %39, %45
+MESA: info:     1      %47 = ult %46, %39
+MESA: info:     32     %48 = b2i32 %47
+MESA: info:     32     %49 = iadd %44, %48
+MESA: info:     32     %50 = ushr %36, %12 (0x10)
+MESA: info:     32     %51 = iadd %49, %50
+MESA: info:     32     %52 = imul %23, %16.x
+MESA: info:     32     %53 = imul %26, %16.x
+MESA: info:     32     %54 = iadd %51, %53
+MESA: info:     32     %55 = iadd %52, %22.x
+MESA: info:     1      %56 = ult %55, %52
+MESA: info:     32     %57 = b2i32 %56
+MESA: info:     32     %58 = iadd %57, %54
+MESA: info:     32x2   %62 = @load_const_ir3 (%7 (0x0)) (base=40)
+MESA: info:     32     %63 = iadd %55, %62.x
+MESA: info:     1      %64 = ult %63, %55
+MESA: info:     32     %65 = b2i32 %64
+MESA: info:     32     %66 = iadd %58, %62.y
+MESA: info:     32     %67 = iadd %65, %66
+MESA: info:     1      %68 = ieq %67, %7 (0x0)
+MESA: info:     1      %69 = ult %63, %11 (0x8)
+MESA: info:     1      %70 = iand %68, %69
+MESA: info:                  // succs: b7 b8
+MESA: info:     if %70 {
+MESA: info:         block b7:    // preds: b6
+MESA: info:         32      %8 = load_const (0x00000002)
+MESA: info:         32     %72 = load_const (0x0000001e = 30)
+MESA: info:         32     %73 = ishl %63, %8 (0x2)
+MESA: info:         32     %74 = ushr %63, %72 (0x1e)
+MESA: info:         32     %75 = iadd %10.x, %73
+MESA: info:         1      %76 = ult %75, %10.x
+MESA: info:         32     %77 = b2i32 %76
+MESA: info:         32     %78 = iadd %10.y, %74
+MESA: info:         32     %79 = iadd %77, %78
+MESA: info:         64     %80 = pack_64_2x32_split %75, %79
+MESA: info:         32     %81 = @load_global_ir3 (%80, %7 (0x0)) (access=none, align_mul=4, align_offset=0, range_base=0, range=0)
+MESA: info:         32     %82 = load_const (0x3f000000 = 0.500000)
+MESA: info:         1      %83 = flt! %82 (0.500000), %81
+MESA: info:         32     %84 = b2f32 %83
+MESA: info:         32     %85 = fmul %81, %84
+MESA: info:         32     %86 = fmax %81, %7 (0.000000)
+MESA: info:         32     %87 = iadd %10.z, %73
+MESA: info:         1      %88 = ult %87, %10.z
+MESA: info:         32     %89 = b2i32 %88
+MESA: info:         32     %90 = iadd %10.w, %74
+MESA: info:         32     %91 = iadd %89, %90
+MESA: info:         64     %92 = pack_64_2x32_split %87, %91
+MESA: info:                      @store_global_ir3 (%85, %92, %7 (0x0)) (access=none, align_mul=4, align_offset=0)
+MESA: info:         32     %93 = iadd %15.x, %73
+MESA: info:         1      %94 = ult %93, %15.x
+MESA: info:         32     %95 = b2i32 %94
+MESA: info:         32     %96 = iadd %15.y, %74
+MESA: info:         32     %97 = iadd %95, %96
+MESA: info:         64     %98 = pack_64_2x32_split %93, %97
+MESA: info:                      @store_global_ir3 (%86, %98, %7 (0x0)) (access=none, align_mul=4, align_offset=0)
+MESA: info:                      // succs: b9
+MESA: info:     } else {
+MESA: info:         block b8:  // preds: b6, succs: b9
+MESA: info:     }
+MESA: info:     block b9:  // preds: b7 b8, succs: b10
+MESA: info:     block b10:
+MESA: info: }
+MESA: info:
+MESA: info: ----------------------
+MESA: info: NIR (final form) for CL shader (null):
+MESA: info: shader: MESA_SHADER_KERNEL
+MESA: info: source_blake3: {0x1c0638da, 0xa0ca348e, 0xa2602c0d, 0xa3db230c, 0x78afb886, 0xce2f9a6e, 0x6916e661, 0x86be0798}
+MESA: info: workgroup_size: 0, 0, 0 (variable)
+MESA: info: system_values_read: 0x00000000'00000000'0009a400'00000000
+MESA: info: float_controls_execution_mode: 0x0003a200
+MESA: info: subgroup_size: 0
+MESA: info: bit_sizes_float: 0x20
+MESA: info: bit_sizes_int: 0x61
+MESA: info: first_ubo_is_default_ubo: true
+MESA: info: writes_memory: true
+MESA: info: ptr_size: 64
+MESA: info: uniforms: 96
+MESA: info: decl_var ubo INTERP_MODE_NONE none uint8_t[96] kernel_input (0, 0, 0)
+MESA: info: decl_function __wrapped_k0 () (entrypoint)
+MESA: info:
+MESA: info: impl __wrapped_k0 {
+MESA: info:     con block b0:        // preds:
+MESA: info:     con 1       %0 = @preamble_start_ir3
+MESA: info:                      // succs: b1 b5
+MESA: info:     if %0 {
+MESA: info:         con block b1:        // preds: b0
+MESA: info:         div 1       %1 = @elect_any_ir3
+MESA: info:                          // succs: b2 b3
+MESA: info:         if %1 {
+MESA: info:             div block b2:        // preds: b1
+MESA: info:             con 32      %2 = load_const (0x00000010 = 16)
+MESA: info:             con 32x3    %3 = @load_workgroup_size
+MESA: info:             con 32      %4 = load_const (0x0000ffff = 65535)
+MESA: info:             con 32      %5 = iand %3.x, %4 (0xffff)
+MESA: info:                              @store_const_ir3 (%5) (base=16)
+MESA: info:             con 32      %6 = ushr %3.x, %2 (0x10)
+MESA: info:                              @store_const_ir3 (%6) (base=17)
+MESA: info:                              @preamble_end_ir3
+MESA: info:                              // succs: b4
+MESA: info:         } else {
+MESA: info:             div block b3:  // preds: b1, succs: b4
+MESA: info:         }
+MESA: info:         con block b4:  // preds: b2 b3, succs: b6
+MESA: info:     } else {
+MESA: info:         con block b5:  // preds: b0, succs: b6
+MESA: info:     }
+MESA: info:     con block b6:        // preds: b4 b5
+MESA: info:     con 32      %7 = load_const (0x00000000 = 0.000000)
+MESA: info:     con 32x4   %10 = @load_const_ir3 (%7 (0x0)) (base=32)
+MESA: info:     con 32     %11 = load_const (0x00000008)
+MESA: info:     con 32     %12 = load_const (0x00000010 = 16)
+MESA: info:     con 32x2   %15 = @load_const_ir3 (%7 (0x0)) (base=36)
+MESA: info:     con 32x3   %16 = @load_workgroup_size
+MESA: info:     con 32x3   %17 = @load_workgroup_id
+MESA: info:     con 32x2   %21 = @load_const_ir3 (%7 (0x0)) (base=48)
+MESA: info:     div 32x3   %22 = @load_local_invocation_id
+MESA: info:     con 32     %23 = iadd %17.x, %21.x
+MESA: info:     con 1      %24 = ult %23, %17.x
+MESA: info:     con 32     %25 = b2i32 %24
+MESA: info:     con 32     %26 = iadd %25, %21.y
+MESA: info:     con 32     %27 = load_const (0x0000ffff = 65535)
+MESA: info:     con 32     %28 = iand %23, %27 (0xffff)
+MESA: info:     con 32     %30 = @load_const_ir3 (%7 (0x0)) (base=16)
+MESA: info:     con 32     %31 = ushr %23, %12 (0x10)
+MESA: info:     con 32     %33 = @load_const_ir3 (%7 (0x0)) (base=17)
+MESA: info:     con 32    %121 = umul_low %28, %30
+MESA: info:     con 32    %122 = imadsh_mix16 %28, %30, %121
+MESA: info:     con 32    %123 = imadsh_mix16 %30, %28, %122
+MESA: info:     con 32    %118 = umul_low %28, %33
+MESA: info:     con 32    %119 = imadsh_mix16 %28, %33, %118
+MESA: info:     con 32    %120 = imadsh_mix16 %33, %28, %119
+MESA: info:     con 32    %115 = umul_low %31, %30
+MESA: info:     con 32    %116 = imadsh_mix16 %31, %30, %115
+MESA: info:     con 32    %117 = imadsh_mix16 %30, %31, %116
+MESA: info:     con 32    %112 = umul_low %31, %33
+MESA: info:     con 32    %113 = imadsh_mix16 %31, %33, %112
+MESA: info:     con 32    %114 = imadsh_mix16 %33, %31, %113
+MESA: info:     con 32     %38 = ishl %120, %12 (0x10)
+MESA: info:     con 32     %39 = iadd %123, %38
+MESA: info:     con 1      %40 = ult %39, %123
+MESA: info:     con 32     %41 = b2i32 %40
+MESA: info:     con 32     %42 = iadd %114, %41
+MESA: info:     con 32     %43 = ushr %120, %12 (0x10)
+MESA: info:     con 32     %44 = iadd %42, %43
+MESA: info:     con 32     %45 = ishl %117, %12 (0x10)
+MESA: info:     con 32     %46 = iadd %39, %45
+MESA: info:     con 1      %47 = ult %46, %39
+MESA: info:     con 32     %48 = b2i32 %47
+MESA: info:     con 32     %49 = iadd %44, %48
+MESA: info:     con 32     %50 = ushr %117, %12 (0x10)
+MESA: info:     con 32     %51 = iadd %49, %50
+MESA: info:     con 32    %109 = umul_low %23, %16.x
+MESA: info:     con 32    %110 = imadsh_mix16 %23, %16.x, %109
+MESA: info:     con 32    %111 = imadsh_mix16 %16.x, %23, %110
+MESA: info:     con 32    %106 = umul_low %26, %16.x
+MESA: info:     con 32    %107 = imadsh_mix16 %26, %16.x, %106
+MESA: info:     con 32    %108 = imadsh_mix16 %16.x, %26, %107
+MESA: info:     con 32     %54 = iadd %51, %108
+MESA: info:     div 32     %55 = iadd %111, %22.x
+MESA: info:     div 1      %56 = ult %55, %111
+MESA: info:     div 32     %57 = b2i32 %56
+MESA: info:     div 32     %58 = iadd %57, %54
+MESA: info:     con 32x2   %62 = @load_const_ir3 (%7 (0x0)) (base=40)
+MESA: info:     div 32     %63 = iadd %55, %62.x
+MESA: info:     div 1      %64 = ult %63, %55
+MESA: info:     div 32     %65 = b2i32 %64
+MESA: info:     div 32     %66 = iadd %58, %62.y
+MESA: info:     div 32     %67 = iadd %65, %66
+MESA: info:     div 1      %68 = ieq %67, %7 (0x0)
+MESA: info:     div 1      %69 = ult %63, %11 (0x8)
+MESA: info:     div 1      %70 = iand %68, %69
+MESA: info:                      // succs: b7 b8
+MESA: info:     if %70 {
+MESA: info:         div block b7:        // preds: b6
+MESA: info:         con 32      %8 = load_const (0x00000002)
+MESA: info:         con 32     %72 = load_const (0x0000001e = 30)
+MESA: info:         div 32     %73 = ishl %63, %8 (0x2)
+MESA: info:         div 32     %74 = ushr %63, %72 (0x1e)
+MESA: info:         div 32x2  %124 = iadd %10.xz, %73.xx
+MESA: info:         div 1x2   %125 = ult %124, %10.xz
+MESA: info:         div 32x2  %126 = b2i32 %125
+MESA: info:         div 32x2  %127 = iadd %10.yw, %74.xx
+MESA: info:         div 32x2  %128 = iadd %126, %127
+MESA: info:         div 64     %80 = pack_64_2x32_split %124.x, %128.x
+MESA: info:         div 32     %81 = @load_global_ir3 (%80, %7 (0x0)) (access=none, align_mul=4, align_offset=0, range_base=0, range=0)
+MESA: info:         con 32     %82 = load_const (0x3f000000 = 0.500000)
+MESA: info:         div 1      %83 = flt! %82 (0.500000), %81
+MESA: info:         div 32     %84 = b2f32 %83
+MESA: info:         div 32     %85 = fmul %81, %84
+MESA: info:         div 32     %86 = fmax %81, %7 (0.000000)
+MESA: info:         div 64     %92 = pack_64_2x32_split %124.y, %128.y
+MESA: info:                          @store_global_ir3 (%85, %92, %7 (0x0)) (access=none, align_mul=4, align_offset=0)
+MESA: info:         div 32     %93 = iadd %15.x, %73
+MESA: info:         div 1      %94 = ult %93, %15.x
+MESA: info:         div 32     %95 = b2i32 %94
+MESA: info:         div 32     %96 = iadd %15.y, %74
+MESA: info:         div 32     %97 = iadd %95, %96
+MESA: info:         div 64     %98 = pack_64_2x32_split %93, %97
+MESA: info:                          @store_global_ir3 (%86, %98, %7 (0x0)) (access=none, align_mul=4, align_offset=0)
+MESA: info:                          // succs: b9
+MESA: info:     } else {
+MESA: info:         div block b8:  // preds: b6, succs: b9
+MESA: info:     }
+MESA: info:     con block b9:  // preds: b7 b8, succs: b10
+MESA: info:     block b10:
+MESA: info: }
+MESA: info:
+MESA: info: Native code for unnamed CL shader (null) with sha1 f4b5a2cc2ccee83ca10ec9d03523d55bc54e3431:
+MESA: info: ; num_ubos:           0
+MESA: info: ; num_driver_params:  12
+MESA: info: ; offsets:
+MESA: info: ;   driver_params              c0.x (4 vec4)
+MESA: info: ;   ubo_ranges                 c8.x (8 vec4)
+MESA: info: ;   preamble                   c4.x (4 vec4)
+MESA: info: ; ubo_state:
+MESA: info: ;   num_enabled:      1
+MESA: info: ;   range[0]:
+MESA: info: ;     block:          0
+MESA: info: ;     offset:         c8.x
+MESA: info: ;     size:           8 vec4 (0b -> 128b)
+MESA: info: @in(r48.x)	in0 (wrmask=0x7)
+MESA: info: @in(r0.x)	in1 (wrmask=0x7)
+MESA: info: @const(c16.x)	0x0000ffff, 0xd0d0d0d0, 0xd0d0d0d0, 0xd0d0d0d0
+MESA: info: shps #l9
+MESA: info: getone #l9
+MESA: info: mov.u32u32 r0.w, 0xffff
+MESA: info: (nop2) shr.b r1.x, c2.x, 16
+MESA: info: (nop3) and.b r0.w, c2.x, r0.w
+MESA: info: stc.u32 c[17], r1.x, 1
+MESA: info: (rpt2)nop
+MESA: info: stc.u32 c[16], r0.w, 1
+MESA: info: (sy)(ss)shpe
+MESA: info: l9:
+MESA: info: (jp)mov.f32f32 r1.y, c12.x
+MESA: info: mov.f32f32 r2.x, c2.x
+MESA: info: mov.f32f32 r1.z, c4.x
+MESA: info: mov.f32f32 r1.w, c4.y
+MESA: info: (nop3) add.u r1.y, r48.x, r1.y
+MESA: info: mull.u r0.z, r1.y, c2.x
+MESA: info: cmps.u.lt hr4.z, r1.y, r48.x
+MESA: info: madsh.m16 r0.z, r1.y, r2.x, r0.z
+MESA: info: and.b r2.w, r1.y, c16.x
+MESA: info: shr.b r0.y, r1.y, 16
+MESA: info: madsh.m16 r1.y, c2.x, r1.y, r0.z
+MESA: info: cov.u16s32 r2.z, hr4.z
+MESA: info: mull.u r1.x, r2.w, c4.x
+MESA: info: mull.u r2.y, r0.y, c4.x
+MESA: info: add.u r0.x, r1.y, r0.x
+MESA: info: madsh.m16 r1.x, r2.w, r1.z, r1.x
+MESA: info: madsh.m16 r1.z, r0.y, r1.z, r2.y
+MESA: info: madsh.m16 r1.x, c4.x, r2.w, r1.x
+MESA: info: cmps.u.lt hr2.z, r0.x, r1.y
+MESA: info: madsh.m16 r1.z, c4.x, r0.y, r1.z
+MESA: info: mull.u r0.z, r0.y, c4.y
+MESA: info: add.u r2.z, r2.z, c12.y
+MESA: info: cov.u16s32 r0.w, hr2.z
+MESA: info: mull.u r1.y, r2.w, c4.y
+MESA: info: shl.b r2.y, r1.z, 16
+MESA: info: madsh.m16 r1.y, r2.w, r1.w, r1.y
+MESA: info: madsh.m16 r1.w, r0.y, r1.w, r0.z
+MESA: info: madsh.m16 r2.w, c4.y, r2.w, r1.y
+MESA: info: madsh.m16 r0.y, c4.y, r0.y, r1.w
+MESA: info: shr.b r1.z, r1.z, 16
+MESA: info: mull.u r0.z, r2.z, c2.x
+MESA: info: shl.b r1.y, r2.w, 16
+MESA: info: shr.b r2.w, r2.w, 16
+MESA: info: (nop1) madsh.m16 r2.x, r2.z, r2.x, r0.z
+MESA: info: add.u r1.y, r1.x, r1.y
+MESA: info: (nop2) madsh.m16 r2.z, c2.x, r2.z, r2.x
+MESA: info: cmps.u.lt hr2.x, r1.y, r1.x
+MESA: info: (nop2) add.u r2.y, r1.y, r2.y
+MESA: info: cov.u16s32 r1.w, hr2.x
+MESA: info: cmps.u.lt hr4.z, r2.y, r1.y
+MESA: info: (nop1) add.u r1.x, r0.x, c10.x
+MESA: info: (nop1) add.u r0.y, r0.y, r1.w
+MESA: info: cmps.u.lt hr0.x, r1.x, r0.x
+MESA: info: cmps.u.lt p0.x, r1.x, 8
+MESA: info: add.u r0.y, r0.y, r2.w
+MESA: info: cov.u16s32 r2.w, hr4.z
+MESA: info: cov.u16s32 r1.y, hr0.x
+MESA: info: (rpt1)nop
+MESA: info: (nop3) add.u r0.y, r0.y, r2.w
+MESA: info: (nop3) add.u r0.y, r0.y, r1.z
+MESA: info: (nop3) add.u r0.y, r0.y, r2.z
+MESA: info: (nop3) add.u r0.w, r0.w, r0.y
+MESA: info: (nop3) add.u r0.w, r0.w, c10.y
+MESA: info: (nop3) add.u r1.y, r1.y, r0.w
+MESA: info: (nop3) cmps.s.eq p0.y, r1.y, 0
+MESA: info: (rpt2)nop
+MESA: info: brao !p0.y, !p0.x, #l97
+MESA: info: shl.b r1.z, r1.x, 2
+MESA: info: (nop2) shr.b r1.x, r1.x, 30
+MESA: info: add.u r1.w, c8.x, r1.z
+MESA: info: add.u r0.x, c8.y, r1.x
+MESA: info: add.u r2.y, c8.z, r1.z
+MESA: info: add.u r0.y, c8.w, r1.x
+MESA: info: cmps.u.lt hr1.x, r1.w, c8.x
+MESA: info: (nop2) add.u r1.x, c9.y, r1.x
+MESA: info: cov.u16s32 r0.w, hr1.x
+MESA: info: (rpt2)nop
+MESA: info: (nop3) add.u r2.x, r0.w, r0.x
+MESA: info: (rpt2)nop
+MESA: info: ldg.u32 r1.y, g[r1.w], 1
+MESA: info: (ss)(nop3) cmps.u.lt hr3.z, r2.y, c8.z
+MESA: info: cov.u16s32 r2.x, hr3.z
+MESA: info: (rpt2)nop
+MESA: info: add.u r2.z, r2.x, r0.y
+MESA: info: (nop3) add.u r0.y, c9.x, r1.z
+MESA: info: (nop3) cmps.u.lt hr1.z, r0.y, c9.x
+MESA: info: cov.u16s32 r1.z, hr1.z
+MESA: info: (rpt2)nop
+MESA: info: add.u r0.z, r1.z, r1.x
+MESA: info: (sy)(nop3) cmps.f.lt hr5.z, (0.5), r1.y
+MESA: info: cov.u16f32 (even)r0.x, hr5.z
+MESA: info: (rpt2)nop
+MESA: info: mul.f r0.x, r1.y, r0.x
+MESA: info: (nop3) max.f r1.y, r1.y, (0.0)
+MESA: info: (rpt1)nop
+MESA: info: stg.u32 g[r2.y], r0.x, 1
+MESA: info: nop
+MESA: info: stg.u32 g[r0.y], r1.y, 1
+MESA: info: l97:
+MESA: info: (jp)end
+MESA: info: nop
+MESA: info: nop
+MESA: info: nop
+MESA: info: nop
+MESA: info: nop
+MESA: info: nop
+MESA: info: nop
+MESA: info: nop
+MESA: info: nop
+MESA: info: nop
+MESA: info: nop
+MESA: info: nop
+MESA: info: nop
+MESA: info: nop
+MESA: info: ; CL: outputs:
+MESA: info: ; CL: inputs: r48.x (SYSTEM_VALUE_WORKGROUP_ID slot=47 cm=7,il=0,b=0) r0.x (SYSTEM_VALUE_LOCAL_INVOCATION_ID slot=42 cm=7,il=0,b=0)
+MESA: info: ; CL prog 1/1: 156 instr, 76 nops, 80 non-nops, 4 mov, 9 cov, 224 dwords
+MESA: info: ; CL prog 1/1: 0 last-baryf, 0 last-helper, 0 half, 3 full, 20 constlen
+MESA: info: ; CL prog 1/1: 78 cat0, 13 cat1, 50 cat2, 12 cat3, 0 cat4, 0 cat5, 3 cat6, 0 cat7
+MESA: info: ; CL prog 1/1: 0 sstall, 1 (ss), 88 systall, 1 (sy), 0 loops
+MESA: info: ; CL prog 1/1: 8 max_waves, 1 double_threadsize
+MESA: info: ; 16 preamble-instr, 0 early-preamble
+MESA: info:
+MESA: info: dump nir2: type=14
+MESA: info: shader: MESA_SHADER_KERNEL
+MESA: info: source_blake3: {0x1c0638da, 0xa0ca348e, 0xa2602c0d, 0xa3db230c, 0x78afb886, 0xce2f9a6e, 0x6916e661, 0x86be0798}
+MESA: info: workgroup_size: 0, 0, 0 (variable)
+MESA: info: num_ubos: 1
+MESA: info: system_values_read: 0x00000000'00000000'00088400'00000000
+MESA: info: float_controls_execution_mode: 0x0003a200
+MESA: info: subgroup_size: 0
+MESA: info: bit_sizes_float: 0x20
+MESA: info: bit_sizes_int: 0x61
+MESA: info: first_ubo_is_default_ubo: true
+MESA: info: writes_memory: true
+MESA: info: ptr_size: 64
+MESA: info: uniforms: 24
+MESA: info: decl_var ubo INTERP_MODE_NONE none uint8_t[24] kernel_input (0, 0, 0)
+MESA: info: decl_function __wrapped_k0 () (entrypoint)
+MESA: info:
+MESA: info: impl __wrapped_k0 {
+MESA: info:     block b0:   // preds:
+MESA: info:     32     %0 = load_const (0x00000000 = 0.000000)
+MESA: info:     32x4   %1 = @load_ubo (%0 (0x0), %0 (0x0)) (access=none, align_mul=1073741824, align_offset=0, range_base=0, range=24)
+MESA: info:     32     %2 = load_const (0x00000008)
+MESA: info:     32     %3 = load_const (0x00000010 = 16)
+MESA: info:     64     %4 = @load_ubo (%0 (0x0), %3 (0x10)) (access=none, align_mul=1073741824, align_offset=16, range_base=0, range=24)
+MESA: info:     32x3   %5 = @load_workgroup_size
+MESA: info:     32x3   %6 = @load_workgroup_id
+MESA: info:     32x3   %7 = @load_local_invocation_id
+MESA: info:     32     %8 = load_const (0x0000ffff = 65535)
+MESA: info:     32     %9 = iand %6.x, %8 (0xffff)
+MESA: info:     32    %10 = iand %5.x, %8 (0xffff)
+MESA: info:     32    %11 = ushr %6.x, %3 (0x10)
+MESA: info:     32    %12 = ushr %5.x, %3 (0x10)
+MESA: info:     32    %13 = imul %9, %10
+MESA: info:     32    %14 = imul %9, %12
+MESA: info:     32    %15 = imul %11, %10
+MESA: info:     32    %16 = imul %11, %12
+MESA: info:     32    %17 = ishl %14, %3 (0x10)
+MESA: info:     32    %18 = iadd %13, %17
+MESA: info:     1     %19 = ult %18, %13
+MESA: info:     32    %20 = b2i32 %19
+MESA: info:     32    %21 = iadd %16, %20
+MESA: info:     32    %22 = ushr %14, %3 (0x10)
+MESA: info:     32    %23 = iadd %21, %22
+MESA: info:     32    %24 = ishl %15, %3 (0x10)
+MESA: info:     32    %25 = iadd %18, %24
+MESA: info:     1     %26 = ult %25, %18
+MESA: info:     32    %27 = b2i32 %26
+MESA: info:     32    %28 = iadd %23, %27
+MESA: info:     32    %29 = ushr %15, %3 (0x10)
+MESA: info:     32    %30 = iadd %28, %29
+MESA: info:     32    %31 = imul %6.x, %5.x
+MESA: info:     32    %32 = iadd %31, %7.x
+MESA: info:     1     %33 = ult %32, %31
+MESA: info:     32    %34 = b2i32 %33
+MESA: info:     32    %35 = iadd %34, %30
+MESA: info:     1     %36 = ieq %35, %0 (0x0)
+MESA: info:     1     %37 = ult %32, %2 (0x8)
+MESA: info:     1     %38 = iand %36, %37
+MESA: info:                 // succs: b1 b2
+MESA: info:     if %38 {
+MESA: info:         block b1:   // preds: b0
+MESA: info:         32    %39 = load_const (0x00000002)
+MESA: info:         32    %40 = load_const (0x0000001e = 30)
+MESA: info:         32    %41 = ishl %32, %39 (0x2)
+MESA: info:         32    %42 = ushr %32, %40 (0x1e)
+MESA: info:         32    %43 = iadd %1.x, %41
+MESA: info:         1     %44 = ult %43, %1.x
+MESA: info:         32    %45 = b2i32 %44
+MESA: info:         32    %46 = iadd %1.y, %42
+MESA: info:         32    %47 = iadd %45, %46
+MESA: info:         64    %48 = pack_64_2x32_split %43, %47
+MESA: info:         32    %49 = @load_global (%48) (access=none, align_mul=4, align_offset=0)
+MESA: info:         32    %50 = load_const (0x3f000000 = 0.500000)
+MESA: info:         1     %51 = flt! %50 (0.500000), %49
+MESA: info:         32    %52 = b2f32 %51
+MESA: info:         32    %53 = fmul %49, %52
+MESA: info:         32    %54 = fmax %49, %0 (0.000000)
+MESA: info:         32    %55 = iadd %1.z, %41
+MESA: info:         1     %56 = ult %55, %1.z
+MESA: info:         32    %57 = b2i32 %56
+MESA: info:         32    %58 = iadd %1.w, %42
+MESA: info:         32    %59 = iadd %57, %58
+MESA: info:         64    %60 = pack_64_2x32_split %55, %59
+MESA: info:                     @store_global (%53, %60) (wrmask=x, access=none, align_mul=4, align_offset=0)
+MESA: info:         32    %61 = unpack_64_2x32_split_x %4
+MESA: info:         32    %62 = unpack_64_2x32_split_y %4
+MESA: info:         32    %63 = iadd %61, %41
+MESA: info:         1     %64 = ult %63, %61
+MESA: info:         32    %65 = b2i32 %64
+MESA: info:         32    %66 = iadd %62, %42
+MESA: info:         32    %67 = iadd %65, %66
+MESA: info:         64    %68 = pack_64_2x32_split %63, %67
+MESA: info:                     @store_global (%54, %68) (wrmask=x, access=none, align_mul=4, align_offset=0)
+MESA: info:                     // succs: b3
+MESA: info:     } else {
+MESA: info:         block b2:  // preds: b0, succs: b3
+MESA: info:     }
+MESA: info:     block b3:  // preds: b1 b2, succs: b4
+MESA: info:     block b4:
+MESA: info: }
+MESA: info:
+MESA: info: ----------------------
+MESA: info: shader: MESA_SHADER_KERNEL
+MESA: info: source_blake3: {0x1c0638da, 0xa0ca348e, 0xa2602c0d, 0xa3db230c, 0x78afb886, 0xce2f9a6e, 0x6916e661, 0x86be0798}
+MESA: info: workgroup_size: 0, 0, 0 (variable)
+MESA: info: num_ubos: 1
+MESA: info: system_values_read: 0x00000000'00000000'00088400'00000000
+MESA: info: float_controls_execution_mode: 0x0003a200
+MESA: info: subgroup_size: 0
+MESA: info: bit_sizes_float: 0x20
+MESA: info: bit_sizes_int: 0x61
+MESA: info: first_ubo_is_default_ubo: true
+MESA: info: writes_memory: true
+MESA: info: ptr_size: 64
+MESA: info: uniforms: 24
+MESA: info: decl_var ubo INTERP_MODE_NONE none uint8_t[24] kernel_input (0, 0, 0)
+MESA: info: decl_function __wrapped_k0 () (entrypoint)
+MESA: info:
+MESA: info: impl __wrapped_k0 {
+MESA: info:     block b0:   // preds:
+MESA: info:     32     %0 = load_const (0x00000000 = 0.000000)
+MESA: info:     32x4   %1 = @load_ubo (%0 (0x0), %0 (0x0)) (access=none, align_mul=1073741824, align_offset=0, range_base=0, range=24)
+MESA: info:     32     %2 = load_const (0x00000008)
+MESA: info:     32     %3 = load_const (0x00000010 = 16)
+MESA: info:     64     %4 = @load_ubo (%0 (0x0), %3 (0x10)) (access=none, align_mul=1073741824, align_offset=16, range_base=0, range=24)
+MESA: info:     32x3   %5 = @load_workgroup_size
+MESA: info:     32x3   %6 = @load_workgroup_id
+MESA: info:     32x3   %7 = @load_local_invocation_id
+MESA: info:     32     %8 = load_const (0x0000ffff = 65535)
+MESA: info:     32     %9 = iand %6.x, %8 (0xffff)
+MESA: info:     32    %10 = iand %5.x, %8 (0xffff)
+MESA: info:     32    %11 = ushr %6.x, %3 (0x10)
+MESA: info:     32    %12 = ushr %5.x, %3 (0x10)
+MESA: info:     32    %13 = imul %9, %10
+MESA: info:     32    %14 = imul %9, %12
+MESA: info:     32    %15 = imul %11, %10
+MESA: info:     32    %16 = imul %11, %12
+MESA: info:     32    %17 = ishl %14, %3 (0x10)
+MESA: info:     32    %18 = iadd %13, %17
+MESA: info:     1     %19 = ult %18, %13
+MESA: info:     32    %20 = b2i32 %19
+MESA: info:     32    %21 = iadd %16, %20
+MESA: info:     32    %22 = ushr %14, %3 (0x10)
+MESA: info:     32    %23 = iadd %21, %22
+MESA: info:     32    %24 = ishl %15, %3 (0x10)
+MESA: info:     32    %25 = iadd %18, %24
+MESA: info:     1     %26 = ult %25, %18
+MESA: info:     32    %27 = b2i32 %26
+MESA: info:     32    %28 = iadd %23, %27
+MESA: info:     32    %29 = ushr %15, %3 (0x10)
+MESA: info:     32    %30 = iadd %28, %29
+MESA: info:     32    %31 = imul %6.x, %5.x
+MESA: info:     32    %32 = iadd %31, %7.x
+MESA: info:     1     %33 = ult %32, %31
+MESA: info:     32    %34 = b2i32 %33
+MESA: info:     32    %35 = iadd %34, %30
+MESA: info:     1     %36 = ieq %35, %0 (0x0)
+MESA: info:     1     %37 = ult %32, %2 (0x8)
+MESA: info:     1     %38 = iand %36, %37
+MESA: info:                 // succs: b1 b2
+MESA: info:     if %38 {
+MESA: info:         block b1:   // preds: b0
+MESA: info:         32    %39 = load_const (0x00000002)
+MESA: info:         32    %40 = load_const (0x0000001e = 30)
+MESA: info:         32    %41 = ishl %32, %39 (0x2)
+MESA: info:         32    %42 = ushr %32, %40 (0x1e)
+MESA: info:         32    %43 = iadd %1.x, %41
+MESA: info:         1     %44 = ult %43, %1.x
+MESA: info:         32    %45 = b2i32 %44
+MESA: info:         32    %46 = iadd %1.y, %42
+MESA: info:         32    %47 = iadd %45, %46
+MESA: info:         64    %48 = pack_64_2x32_split %43, %47
+MESA: info:         32    %49 = @load_global (%48) (access=none, align_mul=4, align_offset=0)
+MESA: info:         32    %50 = load_const (0x3f000000 = 0.500000)
+MESA: info:         1     %51 = flt! %50 (0.500000), %49
+MESA: info:         32    %52 = b2f32 %51
+MESA: info:         32    %53 = fmul %49, %52
+MESA: info:         32    %54 = fmax %49, %0 (0.000000)
+MESA: info:         32    %55 = iadd %1.z, %41
+MESA: info:         1     %56 = ult %55, %1.z
+MESA: info:         32    %57 = b2i32 %56
+MESA: info:         32    %58 = iadd %1.w, %42
+MESA: info:         32    %59 = iadd %57, %58
+MESA: info:         64    %60 = pack_64_2x32_split %55, %59
+MESA: info:                     @store_global (%53, %60) (wrmask=x, access=none, align_mul=4, align_offset=0)
+MESA: info:         32    %61 = unpack_64_2x32_split_x %4
+MESA: info:         32    %62 = unpack_64_2x32_split_y %4
+MESA: info:         32    %63 = iadd %61, %41
+MESA: info:         1     %64 = ult %63, %61
+MESA: info:         32    %65 = b2i32 %64
+MESA: info:         32    %66 = iadd %62, %42
+MESA: info:         32    %67 = iadd %65, %66
+MESA: info:         64    %68 = pack_64_2x32_split %63, %67
+MESA: info:                     @store_global (%54, %68) (wrmask=x, access=none, align_mul=4, align_offset=0)
+MESA: info:                     // succs: b3
+MESA: info:     } else {
+MESA: info:         block b2:  // preds: b0, succs: b3
+MESA: info:     }
+MESA: info:     block b3:  // preds: b1 b2, succs: b4
+MESA: info:     block b4:
+MESA: info: }
+MESA: info:
+MESA: info: ----------------------
+MESA: info: ----------------------
+MESA: info: shader: MESA_SHADER_KERNEL
+MESA: info: source_blake3: {0x1c0638da, 0xa0ca348e, 0xa2602c0d, 0xa3db230c, 0x78afb886, 0xce2f9a6e, 0x6916e661, 0x86be0798}
+MESA: info: workgroup_size: 0, 0, 0 (variable)
+MESA: info: system_values_read: 0x00000000'00000000'00088400'00000000
+MESA: info: float_controls_execution_mode: 0x0003a200
+MESA: info: subgroup_size: 0
+MESA: info: bit_sizes_float: 0x20
+MESA: info: bit_sizes_int: 0x61
+MESA: info: first_ubo_is_default_ubo: true
+MESA: info: writes_memory: true
+MESA: info: ptr_size: 64
+MESA: info: uniforms: 24
+MESA: info: decl_var ubo INTERP_MODE_NONE none uint8_t[24] kernel_input (0, 0, 0)
+MESA: info: decl_function __wrapped_k0 () (entrypoint)
+MESA: info:
+MESA: info: impl __wrapped_k0 {
+MESA: info:     block b0:   // preds:
+MESA: info:     1      %0 = @preamble_start_ir3
+MESA: info:                 // succs: b1 b5
+MESA: info:     if %0 {
+MESA: info:         block b1:   // preds: b0
+MESA: info:         1      %1 = @elect_any_ir3
+MESA: info:                     // succs: b2 b3
+MESA: info:         if %1 {
+MESA: info:             block b2:   // preds: b1
+MESA: info:             32     %2 = load_const (0x00000010 = 16)
+MESA: info:             32x3   %3 = @load_workgroup_size
+MESA: info:             32     %4 = load_const (0x0000ffff = 65535)
+MESA: info:             32     %5 = iand %3.x, %4 (0xffff)
+MESA: info:                         @store_const_ir3 (%5) (base=16)
+MESA: info:             32     %6 = ushr %3.x, %2 (0x10)
+MESA: info:                         @store_const_ir3 (%6) (base=17)
+MESA: info:                         @preamble_end_ir3
+MESA: info:                         // succs: b4
+MESA: info:         } else {
+MESA: info:             block b3:  // preds: b1, succs: b4
+MESA: info:         }
+MESA: info:         block b4:  // preds: b2 b3, succs: b6
+MESA: info:     } else {
+MESA: info:         block b5:  // preds: b0, succs: b6
+MESA: info:     }
+MESA: info:     block b6:   // preds: b4 b5
+MESA: info:     32     %7 = load_const (0x00000000 = 0.000000)
+MESA: info:     32x4  %10 = @load_const_ir3 (%7 (0x0)) (base=32)
+MESA: info:     32    %11 = load_const (0x00000008)
+MESA: info:     32    %12 = load_const (0x00000010 = 16)
+MESA: info:     32x2  %15 = @load_const_ir3 (%7 (0x0)) (base=36)
+MESA: info:     32x3  %16 = @load_workgroup_size
+MESA: info:     32x3  %17 = @load_workgroup_id
+MESA: info:     32x3  %18 = @load_local_invocation_id
+MESA: info:     32    %19 = load_const (0x0000ffff = 65535)
+MESA: info:     32    %20 = iand %17.x, %19 (0xffff)
+MESA: info:     32    %22 = @load_const_ir3 (%7 (0x0)) (base=16)
+MESA: info:     32    %23 = ushr %17.x, %12 (0x10)
+MESA: info:     32    %25 = @load_const_ir3 (%7 (0x0)) (base=17)
+MESA: info:     32    %26 = imul %20, %22
+MESA: info:     32    %27 = imul %20, %25
+MESA: info:     32    %28 = imul %23, %22
+MESA: info:     32    %29 = imul %23, %25
+MESA: info:     32    %30 = ishl %27, %12 (0x10)
+MESA: info:     32    %31 = iadd %26, %30
+MESA: info:     1     %32 = ult %31, %26
+MESA: info:     32    %33 = b2i32 %32
+MESA: info:     32    %34 = iadd %29, %33
+MESA: info:     32    %35 = ushr %27, %12 (0x10)
+MESA: info:     32    %36 = iadd %34, %35
+MESA: info:     32    %37 = ishl %28, %12 (0x10)
+MESA: info:     32    %38 = iadd %31, %37
+MESA: info:     1     %39 = ult %38, %31
+MESA: info:     32    %40 = b2i32 %39
+MESA: info:     32    %41 = iadd %36, %40
+MESA: info:     32    %42 = ushr %28, %12 (0x10)
+MESA: info:     32    %43 = iadd %41, %42
+MESA: info:     32    %44 = imul %17.x, %16.x
+MESA: info:     32    %45 = iadd %44, %18.x
+MESA: info:     1     %46 = ult %45, %44
+MESA: info:     32    %47 = b2i32 %46
+MESA: info:     32    %48 = iadd %47, %43
+MESA: info:     1     %49 = ieq %48, %7 (0x0)
+MESA: info:     1     %50 = ult %45, %11 (0x8)
+MESA: info:     1     %51 = iand %49, %50
+MESA: info:                 // succs: b7 b8
+MESA: info:     if %51 {
+MESA: info:         block b7:   // preds: b6
+MESA: info:         32     %8 = load_const (0x00000002)
+MESA: info:         32    %53 = load_const (0x0000001e = 30)
+MESA: info:         32    %54 = ishl %45, %8 (0x2)
+MESA: info:         32    %55 = ushr %45, %53 (0x1e)
+MESA: info:         32    %56 = iadd %10.x, %54
+MESA: info:         1     %57 = ult %56, %10.x
+MESA: info:         32    %58 = b2i32 %57
+MESA: info:         32    %59 = iadd %10.y, %55
+MESA: info:         32    %60 = iadd %58, %59
+MESA: info:         64    %61 = pack_64_2x32_split %56, %60
+MESA: info:         32    %62 = @load_global_ir3 (%61, %7 (0x0)) (access=none, align_mul=4, align_offset=0, range_base=0, range=0)
+MESA: info:         32    %63 = load_const (0x3f000000 = 0.500000)
+MESA: info:         1     %64 = flt! %63 (0.500000), %62
+MESA: info:         32    %65 = b2f32 %64
+MESA: info:         32    %66 = fmul %62, %65
+MESA: info:         32    %67 = fmax %62, %7 (0.000000)
+MESA: info:         32    %68 = iadd %10.z, %54
+MESA: info:         1     %69 = ult %68, %10.z
+MESA: info:         32    %70 = b2i32 %69
+MESA: info:         32    %71 = iadd %10.w, %55
+MESA: info:         32    %72 = iadd %70, %71
+MESA: info:         64    %73 = pack_64_2x32_split %68, %72
+MESA: info:                     @store_global_ir3 (%66, %73, %7 (0x0)) (access=none, align_mul=4, align_offset=0)
+MESA: info:         32    %74 = iadd %15.x, %54
+MESA: info:         1     %75 = ult %74, %15.x
+MESA: info:         32    %76 = b2i32 %75
+MESA: info:         32    %77 = iadd %15.y, %55
+MESA: info:         32    %78 = iadd %76, %77
+MESA: info:         64    %79 = pack_64_2x32_split %74, %78
+MESA: info:                     @store_global_ir3 (%67, %79, %7 (0x0)) (access=none, align_mul=4, align_offset=0)
+MESA: info:                     // succs: b9
+MESA: info:     } else {
+MESA: info:         block b8:  // preds: b6, succs: b9
+MESA: info:     }
+MESA: info:     block b9:  // preds: b7 b8, succs: b10
+MESA: info:     block b10:
+MESA: info: }
+MESA: info:
+MESA: info: ----------------------
+MESA: info: NIR (final form) for CL shader (null):
+MESA: info: shader: MESA_SHADER_KERNEL
+MESA: info: source_blake3: {0x1c0638da, 0xa0ca348e, 0xa2602c0d, 0xa3db230c, 0x78afb886, 0xce2f9a6e, 0x6916e661, 0x86be0798}
+MESA: info: workgroup_size: 0, 0, 0 (variable)
+MESA: info: system_values_read: 0x00000000'00000000'00088400'00000000
+MESA: info: float_controls_execution_mode: 0x0003a200
+MESA: info: subgroup_size: 0
+MESA: info: bit_sizes_float: 0x20
+MESA: info: bit_sizes_int: 0x61
+MESA: info: first_ubo_is_default_ubo: true
+MESA: info: writes_memory: true
+MESA: info: ptr_size: 64
+MESA: info: uniforms: 24
+MESA: info: decl_var ubo INTERP_MODE_NONE none uint8_t[24] kernel_input (0, 0, 0)
+MESA: info: decl_function __wrapped_k0 () (entrypoint)
+MESA: info:
+MESA: info: impl __wrapped_k0 {
+MESA: info:     con block b0:        // preds:
+MESA: info:     con 1       %0 = @preamble_start_ir3
+MESA: info:                      // succs: b1 b5
+MESA: info:     if %0 {
+MESA: info:         con block b1:        // preds: b0
+MESA: info:         div 1       %1 = @elect_any_ir3
+MESA: info:                          // succs: b2 b3
+MESA: info:         if %1 {
+MESA: info:             div block b2:        // preds: b1
+MESA: info:             con 32      %2 = load_const (0x00000010 = 16)
+MESA: info:             con 32x3    %3 = @load_workgroup_size
+MESA: info:             con 32      %4 = load_const (0x0000ffff = 65535)
+MESA: info:             con 32      %5 = iand %3.x, %4 (0xffff)
+MESA: info:                              @store_const_ir3 (%5) (base=16)
+MESA: info:             con 32      %6 = ushr %3.x, %2 (0x10)
+MESA: info:                              @store_const_ir3 (%6) (base=17)
+MESA: info:                              @preamble_end_ir3
+MESA: info:                              // succs: b4
+MESA: info:         } else {
+MESA: info:             div block b3:  // preds: b1, succs: b4
+MESA: info:         }
+MESA: info:         con block b4:  // preds: b2 b3, succs: b6
+MESA: info:     } else {
+MESA: info:         con block b5:  // preds: b0, succs: b6
+MESA: info:     }
+MESA: info:     con block b6:        // preds: b4 b5
+MESA: info:     con 32      %7 = load_const (0x00000000 = 0.000000)
+MESA: info:     con 32x4   %10 = @load_const_ir3 (%7 (0x0)) (base=32)
+MESA: info:     con 32     %11 = load_const (0x00000008)
+MESA: info:     con 32     %12 = load_const (0x00000010 = 16)
+MESA: info:     con 32x2   %15 = @load_const_ir3 (%7 (0x0)) (base=36)
+MESA: info:     con 32x3   %16 = @load_workgroup_size
+MESA: info:     con 32x3   %17 = @load_workgroup_id
+MESA: info:     div 32x3   %18 = @load_local_invocation_id
+MESA: info:     con 32     %19 = load_const (0x0000ffff = 65535)
+MESA: info:     con 32     %20 = iand %17.x, %19 (0xffff)
+MESA: info:     con 32     %22 = @load_const_ir3 (%7 (0x0)) (base=16)
+MESA: info:     con 32     %23 = ushr %17.x, %12 (0x10)
+MESA: info:     con 32     %25 = @load_const_ir3 (%7 (0x0)) (base=17)
+MESA: info:     con 32     %95 = umul_low %20, %22
+MESA: info:     con 32     %96 = imadsh_mix16 %20, %22, %95
+MESA: info:     con 32     %97 = imadsh_mix16 %22, %20, %96
+MESA: info:     con 32     %92 = umul_low %20, %25
+MESA: info:     con 32     %93 = imadsh_mix16 %20, %25, %92
+MESA: info:     con 32     %94 = imadsh_mix16 %25, %20, %93
+MESA: info:     con 32     %89 = umul_low %23, %22
+MESA: info:     con 32     %90 = imadsh_mix16 %23, %22, %89
+MESA: info:     con 32     %91 = imadsh_mix16 %22, %23, %90
+MESA: info:     con 32     %86 = umul_low %23, %25
+MESA: info:     con 32     %87 = imadsh_mix16 %23, %25, %86
+MESA: info:     con 32     %88 = imadsh_mix16 %25, %23, %87
+MESA: info:     con 32     %30 = ishl %94, %12 (0x10)
+MESA: info:     con 32     %31 = iadd %97, %30
+MESA: info:     con 1      %32 = ult %31, %97
+MESA: info:     con 32     %33 = b2i32 %32
+MESA: info:     con 32     %34 = iadd %88, %33
+MESA: info:     con 32     %35 = ushr %94, %12 (0x10)
+MESA: info:     con 32     %36 = iadd %34, %35
+MESA: info:     con 32     %37 = ishl %91, %12 (0x10)
+MESA: info:     con 32     %38 = iadd %31, %37
+MESA: info:     con 1      %39 = ult %38, %31
+MESA: info:     con 32     %40 = b2i32 %39
+MESA: info:     con 32     %41 = iadd %36, %40
+MESA: info:     con 32     %42 = ushr %91, %12 (0x10)
+MESA: info:     con 32     %43 = iadd %41, %42
+MESA: info:     con 32     %83 = umul_low %17.x, %16.x
+MESA: info:     con 32     %84 = imadsh_mix16 %17.x, %16.x, %83
+MESA: info:     con 32     %85 = imadsh_mix16 %16.x, %17.x, %84
+MESA: info:     div 32     %45 = iadd %85, %18.x
+MESA: info:     div 1      %46 = ult %45, %85
+MESA: info:     div 32     %47 = b2i32 %46
+MESA: info:     div 32     %48 = iadd %47, %43
+MESA: info:     div 1      %49 = ieq %48, %7 (0x0)
+MESA: info:     div 1      %50 = ult %45, %11 (0x8)
+MESA: info:     div 1      %51 = iand %49, %50
+MESA: info:                      // succs: b7 b8
+MESA: info:     if %51 {
+MESA: info:         div block b7:        // preds: b6
+MESA: info:         con 32      %8 = load_const (0x00000002)
+MESA: info:         con 32     %53 = load_const (0x0000001e = 30)
+MESA: info:         div 32     %54 = ishl %45, %8 (0x2)
+MESA: info:         div 32     %55 = ushr %45, %53 (0x1e)
+MESA: info:         div 32x2   %98 = iadd %10.xz, %54.xx
+MESA: info:         div 1x2    %99 = ult %98, %10.xz
+MESA: info:         div 32x2  %100 = b2i32 %99
+MESA: info:         div 32x2  %101 = iadd %10.yw, %55.xx
+MESA: info:         div 32x2  %102 = iadd %100, %101
+MESA: info:         div 64     %61 = pack_64_2x32_split %98.x, %102.x
+MESA: info:         div 32     %62 = @load_global_ir3 (%61, %7 (0x0)) (access=none, align_mul=4, align_offset=0, range_base=0, range=0)
+MESA: info:         con 32     %63 = load_const (0x3f000000 = 0.500000)
+MESA: info:         div 1      %64 = flt! %63 (0.500000), %62
+MESA: info:         div 32     %65 = b2f32 %64
+MESA: info:         div 32     %66 = fmul %62, %65
+MESA: info:         div 32     %67 = fmax %62, %7 (0.000000)
+MESA: info:         div 64     %73 = pack_64_2x32_split %98.y, %102.y
+MESA: info:                          @store_global_ir3 (%66, %73, %7 (0x0)) (access=none, align_mul=4, align_offset=0)
+MESA: info:         div 32     %74 = iadd %15.x, %54
+MESA: info:         div 1      %75 = ult %74, %15.x
+MESA: info:         div 32     %76 = b2i32 %75
+MESA: info:         div 32     %77 = iadd %15.y, %55
+MESA: info:         div 32     %78 = iadd %76, %77
+MESA: info:         div 64     %79 = pack_64_2x32_split %74, %78
+MESA: info:                          @store_global_ir3 (%67, %79, %7 (0x0)) (access=none, align_mul=4, align_offset=0)
+MESA: info:                          // succs: b9
+MESA: info:     } else {
+MESA: info:         div block b8:  // preds: b6, succs: b9
+MESA: info:     }
+MESA: info:     con block b9:  // preds: b7 b8, succs: b10
+MESA: info:     block b10:
+MESA: info: }
+MESA: info:
+MESA: info: Native code for unnamed CL shader (null) with sha1 a5a367beab9e29d9ef1af8e804fd89b347d54a5f:
+MESA: info: ; num_ubos:           0
+MESA: info: ; num_driver_params:  12
+MESA: info: ; offsets:
+MESA: info: ;   driver_params              c0.x (4 vec4)
+MESA: info: ;   ubo_ranges                 c8.x (4 vec4)
+MESA: info: ;   preamble                   c4.x (4 vec4)
+MESA: info: ; ubo_state:
+MESA: info: ;   num_enabled:      1
+MESA: info: ;   range[0]:
+MESA: info: ;     block:          0
+MESA: info: ;     offset:         c8.x
+MESA: info: ;     size:           4 vec4 (0b -> 64b)
+MESA: info: @in(r48.x)	in0 (wrmask=0x7)
+MESA: info: @in(r0.x)	in1 (wrmask=0x7)
+MESA: info: shps #l9
+MESA: info: getone #l9
+MESA: info: mov.u32u32 r0.w, 0xffff
+MESA: info: (nop2) shr.b r1.x, c2.x, 16
+MESA: info: (nop3) and.b r0.w, c2.x, r0.w
+MESA: info: stc.u32 c[17], r1.x, 1
+MESA: info: (rpt2)nop
+MESA: info: stc.u32 c[16], r0.w, 1
+MESA: info: (sy)(ss)shpe
+MESA: info: l9:
+MESA: info: (jp)mov.f32f32 r0.y, c2.x
+MESA: info: mov.u32u32 r0.w, r48.x
+MESA: info: mov.u32u32 r1.y, 0xffff
+MESA: info: mov.f32f32 r1.z, c4.x
+MESA: info: mull.u r1.x, r48.x, r0.y
+MESA: info: mov.f32f32 r1.w, c4.y
+MESA: info: madsh.m16 r0.y, r48.x, r0.y, r1.x
+MESA: info: and.b r1.y, r48.x, r1.y
+MESA: info: madsh.m16 r0.w, c2.x, r0.w, r0.y
+MESA: info: (nop1) shr.b r0.z, r48.x, 16
+MESA: info: mull.u r1.x, r1.y, c4.y
+MESA: info: add.u r0.x, r0.w, r0.x
+MESA: info: (nop2) madsh.m16 r1.x, r1.y, r1.w, r1.x
+MESA: info: cmps.u.lt hr1.z, r0.x, r0.w
+MESA: info: (nop2) cmps.u.lt p0.x, r0.x, 8
+MESA: info: cov.u16s32 r0.y, hr1.z
+MESA: info: (nop1) mull.u r0.w, r1.y, c4.x
+MESA: info: (nop1) madsh.m16 r0.w, r1.y, r1.z, r0.w
+MESA: info: madsh.m16 r0.w, c4.x, r1.y, r0.w
+MESA: info: madsh.m16 r1.y, c4.y, r1.y, r1.x
+MESA: info: (nop1) mull.u r1.x, r0.z, c4.x
+MESA: info: madsh.m16 r1.z, r0.z, r1.z, r1.x
+MESA: info: mull.u r1.x, r0.z, c4.y
+MESA: info: madsh.m16 r1.z, c4.x, r0.z, r1.z
+MESA: info: (nop1) madsh.m16 r1.w, r0.z, r1.w, r1.x
+MESA: info: madsh.m16 r0.z, c4.y, r0.z, r1.w
+MESA: info: shl.b r1.w, r1.y, 16
+MESA: info: shl.b r1.x, r1.z, 16
+MESA: info: shr.b r1.y, r1.y, 16
+MESA: info: shr.b r1.z, r1.z, 16
+MESA: info: (nop3) add.u r1.w, r0.w, r1.w
+MESA: info: cmps.u.lt hr1.z, r1.w, r0.w
+MESA: info: (nop2) add.u r1.x, r1.w, r1.x
+MESA: info: cov.u16s32 r0.w, hr1.z
+MESA: info: (nop2) cmps.u.lt hr2.x, r1.x, r1.w
+MESA: info: (nop3) add.u r0.z, r0.z, r0.w
+MESA: info: add.u r0.z, r0.z, r1.y
+MESA: info: cov.u16s32 r1.y, hr2.x
+MESA: info: (rpt2)nop
+MESA: info: (nop3) add.u r0.z, r0.z, r1.y
+MESA: info: (nop3) add.u r0.z, r0.z, r1.z
+MESA: info: (nop3) add.u r0.y, r0.y, r0.z
+MESA: info: (nop3) cmps.s.eq p0.y, r0.y, 0
+MESA: info: (rpt2)nop
+MESA: info: brao !p0.y, !p0.x, #l86
+MESA: info: shl.b r1.z, r0.x, 2
+MESA: info: (nop2) shr.b r0.x, r0.x, 30
+MESA: info: add.u r0.y, c8.x, r1.z
+MESA: info: add.u r1.x, c8.y, r0.x
+MESA: info: add.u r0.w, c8.z, r1.z
+MESA: info: add.u r1.y, c8.w, r0.x
+MESA: info: cmps.u.lt hr3.z, r0.y, c8.x
+MESA: info: (nop2) add.u r0.x, c9.y, r0.x
+MESA: info: cov.u16s32 r0.z, hr3.z
+MESA: info: (nop2) cmps.u.lt hr3.z, r0.w, c8.z
+MESA: info: (nop3) add.u r0.z, r0.z, r1.x
+MESA: info: (rpt2)nop
+MESA: info: ldg.u32 r1.x, g[r0.y], 1
+MESA: info: (ss)cov.u16s32 r0.y, hr3.z
+MESA: info: mov.u32u32 r0.z, r0.w
+MESA: info: (rpt1)nop
+MESA: info: (nop3) add.u r0.y, r0.y, r1.y
+MESA: info: mov.u32u32 r0.w, r0.y
+MESA: info: add.u r0.y, c9.x, r1.z
+MESA: info: (sy)(nop3) cmps.f.lt hr2.z, (0.5), r1.x
+MESA: info: cov.u16f32 (even)r1.w, hr2.z
+MESA: info: (rpt2)nop
+MESA: info: mul.f r1.w, r1.x, r1.w
+MESA: info: (nop3) max.f r1.x, r1.x, (0.0)
+MESA: info: (rpt1)nop
+MESA: info: stg.u32 g[r0.z], r1.w, 1
+MESA: info: (ss)(nop3) cmps.u.lt hr1.z, r0.y, c9.x
+MESA: info: cov.u16s32 r1.y, hr1.z
+MESA: info: (rpt2)nop
+MESA: info: (nop3) add.u r0.z, r1.y, r0.x
+MESA: info: (rpt2)nop
+MESA: info: stg.u32 g[r0.y], r1.x, 1
+MESA: info: l86:
+MESA: info: (jp)end
+MESA: info: nop
+MESA: info: nop
+MESA: info: nop
+MESA: info: nop
+MESA: info: nop
+MESA: info: nop
+MESA: info: nop
+MESA: info: nop
+MESA: info: nop
+MESA: info: ; CL: outputs:
+MESA: info: ; CL: inputs: r48.x (SYSTEM_VALUE_WORKGROUP_ID slot=47 cm=7,il=0,b=0) r0.x (SYSTEM_VALUE_LOCAL_INVOCATION_ID slot=42 cm=7,il=0,b=0)
+MESA: info: ; CL prog 2/1: 147 instr, 77 nops, 70 non-nops, 7 mov, 7 cov, 192 dwords
+MESA: info: ; CL prog 2/1: 0 last-baryf, 0 last-helper, 0 half, 2 full, 12 constlen
+MESA: info: ; CL prog 2/1: 79 cat0, 14 cat1, 41 cat2, 10 cat3, 0 cat4, 0 cat5, 3 cat6, 0 cat7
+MESA: info: ; CL prog 2/1: 0 sstall, 2 (ss), 100 systall, 1 (sy), 0 loops
+MESA: info: ; CL prog 2/1: 12 max_waves, 1 double_threadsize
+MESA: info: ; 16 preamble-instr, 0 early-preamble
+MESA: info:
+OpenCL device kernels: 0.005252 ms; total 131.411 ms

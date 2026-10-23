@@ -1,0 +1,36 @@
+device: opencl:0 FD702 (Qualcomm; OpenCL 3.0; driver 25.2.6-1~bpo13+1; OpenCL C 1.2)
+kernels: k0
+CL_PROGRAM_BINARY_TYPE: executable
+CL_PROGRAM_BINARY_SIZES: 7781 bytes
+CL_PROGRAM_BINARIES: unrecognized
+first bytes: 72 75 73 74 69 63 6c 00 01 00 00 00 05 00 00 00
+readable strings of 8 characters or more: 27
+  OpenCL.std
+  kernel_arg_type.k0.float*,long*,float*,float*,float*,long*,long*,
+  kernel_arg_type_qual.k0.const,const,,,,,,
+  __spirv_BuiltInGlobalInvocationId
+  xetal_idiv_long
+  land.lhs.true
+  cond.true
+  cond.false
+  cond.end
+  xetal_imod_long
+  xetal_idiv_int
+  xetal_imod_int
+  b_l.addr
+  b_l_2.addr
+  b_sub.addr
+  b_mul.addr
+  b_max.addr
+  b_max_2.addr
+  b_mul_2.addr
+  arrayidx
+  arrayidx4
+  arrayidx9
+  arrayidx10
+  arrayidx11
+  arrayidx12
+  arrayidx13
+  Linked by SPIR-V Tools Linker
+build log: (empty)
+written: work/threshold.bin (7781 bytes)

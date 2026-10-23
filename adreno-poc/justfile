@@ -8,6 +8,10 @@ gate:
     for script in scripts/*.sh tests/*.sh; do bash -n "$script"; done
     bash tests/scaffold.sh
     python3 tests/select_adreno.py
+    python3 tests/rusticl_container.py
+    cargo fmt --manifest-path mojo-opencl-bridge/Cargo.toml --check
+    cargo test --offline --manifest-path mojo-opencl-bridge/Cargo.toml
+    cargo clippy --offline --manifest-path mojo-opencl-bridge/Cargo.toml --all-targets -- -D warnings
     git diff --check
 
 setup:

@@ -1,0 +1,167 @@
+cargo fmt --check
+cargo test --offline
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.06s
+     Running unittests src/lib.rs (target/debug/deps/adreno_vk-5ef15c2eff27fda0)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/adreno_vk-2ff21378d89e6acf)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/vector_add.rs (target/debug/deps/vector_add-165c99723de70a16)
+
+running 3 tests
+test physical_gpu_checks_aligned_and_partial_workgroups ... ignored, requires a physical Vulkan GPU; run explicitly
+test invalid_counts_fail_before_loading_a_driver ... ok
+test oracle_checks_every_element_and_rejects_nonfinite_results ... ok
+
+test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests adreno_vk
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+cargo clippy --offline --all-targets -- -D warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.08s
+for script in scripts/*.sh tests/*.sh; do bash -n "$script"; done
+bash tests/scaffold.sh
+Driver and device names: review full vulkan.log and opencl.log.
+software Vulkan detected; physical GPU NOT established
+Mixed hardware/software listings require per-device inspection.
+rusticl NOT established.
+Inventory only: no dispatch or numerical correctness established.
+Driver and device names: review full vulkan.log and opencl.log.
+Adreno/Turnip candidate; verify physical device, COMPUTE queue and storage limits.
+rusticl NOT established.
+Inventory only: no dispatch or numerical correctness established.
+Prepared /disk1/github/softwarewrighter/modular-fork/adreno-poc/work/host.env (arch).
+Source it before builds. See work/environment.log for installed/missing tools.
+Cross compilation is not ready until the aarch64 Rust standard library and
+linker are present. System packages and shared toolchains are never modified.
+Use --prepare-cross to install a project-local Rust target (network required).
+Mac: place MoltenVK under work/MoltenVK; install cargo-zigbuild under
+work/ and ziglang in work/.venv when the Vulkan cross-build step needs them.
+See docs/scaffold-handoff.md for local toolchain preparation instructions.
+scaffold checks passed
+python3 tests/select_adreno.py
+..
+----------------------------------------------------------------------
+Ran 2 tests in 0.200s
+
+OK
+python3 tests/rusticl_container.py
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+OK
+cargo fmt --manifest-path mojo-opencl-bridge/Cargo.toml --check
+cargo test --offline --manifest-path mojo-opencl-bridge/Cargo.toml
+   Compiling adreno-mojo-opencl v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/mojo-opencl-bridge)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.40s
+     Running unittests src/lib.rs (target/debug/deps/adreno_mojo_opencl-f514ba9d85bc4ec8)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/reference.rs (target/debug/deps/reference-385c0030aeb82d20)
+
+running 2 tests
+test ffi_rejects_invalid_buffers_without_loading_opencl ... ok
+test bridge_program_matches_xetal_threshold_float_baseline ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests adreno_mojo_opencl
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+cargo clippy --offline --manifest-path mojo-opencl-bridge/Cargo.toml --all-targets -- -D warnings
+    Checking xetal-base v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/base/crates/xetal-base)
+   Compiling winnow v0.7.15
+    Checking unicode-width v0.2.2
+    Checking simd-adler32 v0.3.10
+    Checking adler2 v2.0.1
+    Checking xetal-store v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/base/crates/xetal-store)
+    Checking crc32fast v1.5.2
+    Checking equivalent v1.0.3
+   Compiling serde v1.0.229
+    Checking hashbrown v0.17.1
+    Checking toml_datetime v0.6.11
+    Checking serde_spanned v0.6.9
+    Checking num-traits v0.2.19
+    Checking bitflags v1.3.2
+    Checking xetal-token v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/syntax/crates/xetal-token)
+    Checking xetal-array v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/eval/crates/xetal-array)
+    Checking xetal-ty v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/types/crates/xetal-ty)
+    Checking miniz_oxide v0.9.1
+    Checking miniz_oxide v0.8.9
+    Checking fdeflate v0.3.7
+    Checking xetal-grid v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/view/crates/xetal-grid)
+    Checking iana-time-zone v0.1.65
+    Checking xetal-lex v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/syntax/crates/xetal-lex)
+    Checking xetal-svg v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/draw/crates/xetal-svg)
+    Checking xetal-mapped v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/expand/crates/xetal-mapped)
+    Checking xetal-tty v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/console/crates/xetal-tty)
+    Checking xetal-libs v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/macro/crates/xetal-libs)
+    Checking xetal-ir v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/core/crates/xetal-ir)
+    Checking xetal-ast v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/syntax/crates/xetal-ast)
+    Checking xetal-sources v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/macro/crates/xetal-sources)
+    Checking xetal-names v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/macro/crates/xetal-names)
+    Checking xetal-expand v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/expand/crates/xetal-expand)
+    Checking xetal-lookup v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/lookup/crates/xetal-lookup)
+    Checking xetal-complexity v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/core/crates/xetal-complexity)
+    Checking xetal-syntax v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/syntax/crates/xetal-syntax)
+    Checking xetal-bang v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/core/crates/xetal-bang)
+    Checking adreno-mojo-opencl v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/mojo-opencl-bridge)
+    Checking indexmap v2.14.2
+    Checking flate2 v1.1.10
+    Checking chrono v0.4.45
+    Checking xetal-explain v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/core/crates/xetal-explain)
+    Checking png v0.17.16
+    Checking xetal-draw v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/draw/crates/xetal-draw)
+    Checking xetal-clock v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/base/crates/xetal-clock)
+    Checking toml_edit v0.22.27
+    Checking toml v0.8.23
+   Compiling xetal-catalog v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/base/crates/xetal-catalog)
+    Checking xetal-core v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/core/crates/xetal-core)
+    Checking xetal-prim-types v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/types/crates/xetal-prim-types)
+    Checking xetal-lint v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/core/crates/xetal-lint)
+    Checking xetal-sigs v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/lookup/crates/xetal-sigs)
+    Checking xetal-macro v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/macro/crates/xetal-macro)
+    Checking xetal-value v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/eval/crates/xetal-value)
+    Checking xetal-render v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/render/crates/xetal-render)
+    Checking xetal-elab v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/types/crates/xetal-elab)
+    Checking xetal-types v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/types/crates/xetal-types)
+    Checking xetal-kernel v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/step/crates/xetal-kernel)
+    Checking xetal-transpose v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/axes/crates/xetal-transpose)
+    Checking xetal-rotate v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/axes/crates/xetal-rotate)
+    Checking xetal-arith v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/eval/crates/xetal-arith)
+    Checking xetal-struct v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/eval/crates/xetal-struct)
+    Checking xetal-radix v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/radix/crates/xetal-radix)
+    Checking xetal-table v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/system/crates/xetal-table)
+    Checking xetal-quad v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/system/crates/xetal-quad)
+    Checking xetal-system v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/system/crates/xetal-system)
+    Checking xetal-view v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/view/crates/xetal-view)
+    Checking xetal-map v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/hof/crates/xetal-map)
+    Checking xetal-frame v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/step/crates/xetal-frame)
+    Checking xetal-axes v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/axes/crates/xetal-axes)
+    Checking xetal-search v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/search/crates/xetal-search)
+    Checking xetal-source v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/system/crates/xetal-source)
+    Checking xetal-hof v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/hof/crates/xetal-hof)
+    Checking xetal-prim v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/step/crates/xetal-prim)
+    Checking xetal-step v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/step/crates/xetal-step)
+    Checking xetal-eval v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/eval/crates/xetal-eval)
+    Checking xetal-program v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/work/xetal-gpu/work/xetal/components/macro/crates/xetal-program)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 4.07s
+git diff --check

@@ -1,0 +1,32 @@
+device: opencl:0 FD702 (Qualcomm; OpenCL 3.0; driver 25.2.6-1~bpo13+1; OpenCL C 1.2)
+kernels: k0
+CL_PROGRAM_BINARY_TYPE: executable
+CL_PROGRAM_BINARY_SIZES: 5849 bytes
+CL_PROGRAM_BINARIES: unrecognized
+first bytes: 72 75 73 74 69 63 6c 00 01 00 00 00 05 00 00 00
+readable strings of 8 characters or more: 23
+  OpenCL.std
+  kernel_arg_type.k0.float*,float*,float*,
+  kernel_arg_type_qual.k0.const,,,
+  __spirv_BuiltInGlobalInvocationId
+  xetal_idiv_long
+  land.lhs.true
+  cond.true
+  cond.false
+  cond.end
+  xetal_imod_long
+  xetal_idiv_int
+  xetal_imod_int
+  b_threshold
+  b_x.addr
+  b_threshold.addr
+  b_relu.addr
+  t_threshold
+  arrayidx
+  arrayidx3
+  arrayidx4
+  arrayidx6
+  arrayidx7
+  Linked by SPIR-V Tools Linker
+build log: (empty)
+written: work/mojo-threshold.bin (5849 bytes)

@@ -1,0 +1,12 @@
+/usr/aarch64-linux-gnu/bin/ld: work/mojo-cross/hello.o: in function `main':
+hello.mojo:(.text+0x14): undefined reference to `KGEN_CompilerRT_AsyncRT_GetCurrentCPUDevice'
+/usr/aarch64-linux-gnu/bin/ld: hello.mojo:(.text+0x38): undefined reference to `KGEN_CompilerRT_GetOrCreateGlobal'
+/usr/aarch64-linux-gnu/bin/ld: hello.mojo:(.text+0x44): undefined reference to `KGEN_CompilerRT_SetArgV'
+/usr/aarch64-linux-gnu/bin/ld: hello.mojo:(.text+0x48): undefined reference to `KGEN_CompilerRT_PrintStackTraceOnFault'
+/usr/aarch64-linux-gnu/bin/ld: hello.mojo:(.text+0xa8): undefined reference to `KGEN_CompilerRT_AlignedFree'
+/usr/aarch64-linux-gnu/bin/ld: hello.mojo:(.text+0xac): undefined reference to `KGEN_CompilerRT_DestroyGlobals'
+/usr/aarch64-linux-gnu/bin/ld: work/mojo-cross/hello.o: in function `std::builtin::_startup::__wrap_and_execute_main[def() thin -> None](::SIMD[DType.int32, 1],!kgen.pointer<pointer<scalar<ui8>>>),main_func=hello::main()_closure_0':
+hello.mojo:(.text+0x228): undefined reference to `KGEN_CompilerRT_AsyncRT_GetOrCreateCPUDevice'
+/usr/aarch64-linux-gnu/bin/ld: work/mojo-cross/hello.o: in function `std::builtin::_startup::__wrap_and_execute_main[def() thin -> None](::SIMD[DType.int32, 1],!kgen.pointer<pointer<scalar<ui8>>>),main_func=hello::main()_closure_1':
+hello.mojo:(.text+0x22c): undefined reference to `KGEN_CompilerRT_AsyncRT_ReleaseCPUDevice'
+collect2: error: ld returned 1 exit status

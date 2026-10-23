@@ -16,6 +16,8 @@ evaluator and Mojo emitter; Mojo's published aarch64 Linux wheels.
 Five X_eTaL source demos now run on the UNO Q's physical Adreno 702 through
 rusticl OpenCL, with all 71 output elements checked against evaluator
 baselines. See [the working demo and results](docs/xetal-opencl-handoff.md).
+A cross-compiled Mojo host now drives threshold/ReLU on the same GPU; see
+[the annotated deep dive](docs/adreno-deep-dive.md) for both compilation paths.
 The scaffold and Vulkan vector addition are also validated on Arch's RTX
 5060 Ti, with every element checked from 1K through 1M.
 See [the host Vulkan results](docs/host-vulkan-handoff.md).
@@ -35,7 +37,7 @@ The steps, in order, with the host each needs:
 | 2 | board-inventory | board | physical Adreno in vulkaninfo, a compute queue, rusticl in clinfo, glibc, memory; Vulkan-first or OpenCL-first |
 | 3 | host-vulkan | arch (mac via MoltenVK) | `adreno-vk`: ash + naga vector add on the host GPU, every element checked |
 | 4 | xetal-gpu-opencl-board (DONE) | arch, then board | Five X_eTaL source demos on physical FD702 through rusticl, every output checked |
-| 5 | mojo-opencl-demo (NEXT) | arch, then board | Mojo feasibility, then Mojo FFI driving the same Adreno OpenCL computation |
+| 5 | mojo-opencl-demo (DONE) | arch, then board | Mojo feasibility, then Mojo FFI driving the same Adreno OpenCL computation |
 | 6 | cross-aarch64 | arch or mac, then board | the first dispatch on the Adreno 702 through Turnip |
 | 7 | xir-glsl | mac or arch | XIR to GLSL compute: `xir-vk run`, ten programs on the host GPU against the evaluator |
 | 8 | xir-vk-board | board | the same on the Adreno: X_eTaL source to the Adreno through Vulkan |

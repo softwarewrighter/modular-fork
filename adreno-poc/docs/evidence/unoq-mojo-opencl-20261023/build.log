@@ -1,0 +1,5 @@
+Mojo 1.2.0.dev2026101305 (bb6fedb4)
+   Compiling adreno-mojo-opencl v0.1.0 (/disk1/github/softwarewrighter/modular-fork/adreno-poc/mojo-opencl-bridge)
+    Finished `release` profile [optimized] target(s) in 0.50s
+Failed to initialize Crashpad.  Crash reporting will not be available.  Cause: while locating crashpad handler: unable to locate crashpad handler executable
+Bundle: work/mojo-adreno-bundle.tar.gz

@@ -1,0 +1,4 @@
+container bytes: 7781; sha256: 396df7ecef4d316670e8bc9d2f1f97ad8c594eb4f1974ba4f9ec1d265b48ceab
+observed version: 1; device: FD702; binary type word: 4
+SPIR-V offset: 29; payload bytes: 7752
+This payload is OpenCL SPIR-V, not final Adreno machine code.

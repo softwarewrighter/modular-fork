@@ -1,0 +1,10 @@
+%x = input f64 [8]
+%t = const f64 [] 0.5
+%gt = map gt %x %t
+%mask = cast f64 %gt
+%threshold = map mul %x %mask
+%zero = const f64 [] 0.0
+%relu = map max %x %zero
+output %x
+output %threshold
+output %relu
