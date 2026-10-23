@@ -57,21 +57,13 @@ ac:r_elu n
 (n m_od 2) ac:k_eep n
 ```
 
-As X_eTaL renders it (`xetal render`, the editor's right-hand pane): an
-underscore underlines the letter before it and marks a function, a
+As the X_eTaL editor renders it (its decorated pane, set in JuliaMono):
+an underscore underlines the letter before it and marks a function, a
 library alias becomes a superscript, and the ASCII operators become
-their mathematical symbols:
+their mathematical symbols. An image, because the rendering depends on
+a font that carries the combining marks:
 
-```text
-"ac:" u̲se< "Accel"
-x ← ((r̲ange 8) ÷ 4) − 1.0
-x
-0.5 ᵃᶜt̲hreshold x
-ᵃᶜr̲elu x
-n ← (r̲ange 8) − 4
-ᵃᶜr̲elu n
-(n m̲od 2) ᵃᶜk̲eep n
-```
+![The threshold program as the X_eTaL editor renders it: underlined function letters, the ac alias raised, division and minus as their symbols, built-ins blue, library functions teal, numbers and strings amber](images/threshold-rendered.png)
 
 X_eTaL's range here is 1 through 8. The first three vectors are:
 
