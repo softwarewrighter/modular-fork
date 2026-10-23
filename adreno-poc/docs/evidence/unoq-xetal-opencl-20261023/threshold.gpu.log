@@ -1,0 +1,1 @@
+repeat 1 time: setup 225.564 ms, upload 10.737 ms, kernels 0.003 ms (device), launches 0.871 ms (host), download 2.518 ms, total 239.933 ms

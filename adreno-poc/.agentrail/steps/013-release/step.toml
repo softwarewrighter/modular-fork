@@ -1,8 +1,0 @@
-number = 13
-slug = "release"
-status = "pending"
-description = "adreno-702 step 13, release [any]: `adreno-poc/README.md` with the results ta..."
-role = "production"
-context_files = []
-created_at = "2026-10-23T08:57:41"
-commits = []

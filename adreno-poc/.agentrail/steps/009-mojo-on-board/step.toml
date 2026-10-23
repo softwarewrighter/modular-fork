@@ -1,0 +1,8 @@
+number = 9
+slug = "mojo-on-board"
+status = "pending"
+description = "adreno-702 step 8, mojo-on-board [board]: `pip install mojo` on the UNO Q (th..."
+role = "production"
+context_files = []
+created_at = "2026-10-23T08:57:41"
+commits = []

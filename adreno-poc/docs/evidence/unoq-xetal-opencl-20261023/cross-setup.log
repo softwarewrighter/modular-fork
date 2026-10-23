@@ -1,0 +1,15 @@
+info: syncing channel updates for stable-x86_64-unknown-linux-gnu
+info: latest update on 2026-10-15 for version 1.99.1 (58cf8f9c3 2026-10-13)
+info: component rust-std for target aarch64-unknown-linux-gnu is up to date
+info: downloading 2 components
+
+  stable-x86_64-unknown-linux-gnu updated - rustc 1.99.1 (58cf8f9c3 2026-10-13) (from rustc 1.99.1 (58cf8f9c3 2026-10-13))
+
+Prepared /disk1/github/softwarewrighter/modular-fork/adreno-poc/work/host.env (arch).
+Source it before builds. See work/environment.log for installed/missing tools.
+Cross compilation is not ready until the aarch64 Rust standard library and
+linker are present. System packages and shared toolchains are never modified.
+Use --prepare-cross to install a project-local Rust target (network required).
+Mac: place MoltenVK under work/MoltenVK; install cargo-zigbuild under
+work/ and ziglang in work/.venv when cross-build step 004 needs them.
+See docs/scaffold-handoff.md for local toolchain preparation instructions.

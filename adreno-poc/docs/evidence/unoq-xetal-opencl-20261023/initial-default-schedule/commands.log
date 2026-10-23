@@ -1,0 +1,14 @@
+XETAL_PATH=/home/arduino/adreno-poc/work/xetal-opencl/libs/Accel/src:/home/arduino/adreno-poc/work/xetal-opencl/lib
+XETAL_GPU_NO_CACHE=1
+/home/arduino/adreno-poc/work/xetal-opencl/bin/xetal-gpu lower libs/Accel/demos/threshold.xtl
+/home/arduino/adreno-poc/work/xetal-opencl/bin/xetal-gpu run libs/Accel/demos/threshold.xtl --device cpu
+/home/arduino/adreno-poc/work/xetal-opencl/bin/xetal-gpu run libs/Accel/demos/threshold.xtl --device opencl:0 --time
+/home/arduino/adreno-poc/work/xetal-opencl/bin/xetal-gpu lower libs/Accel/demos/vector-add.xtl
+/home/arduino/adreno-poc/work/xetal-opencl/bin/xetal-gpu run libs/Accel/demos/vector-add.xtl --device cpu
+/home/arduino/adreno-poc/work/xetal-opencl/bin/xetal-gpu run libs/Accel/demos/vector-add.xtl --device opencl:0 --time
+/home/arduino/adreno-poc/work/xetal-opencl/bin/xetal-gpu lower libs/Accel/demos/saxpy.xtl
+/home/arduino/adreno-poc/work/xetal-opencl/bin/xetal-gpu run libs/Accel/demos/saxpy.xtl --device cpu
+/home/arduino/adreno-poc/work/xetal-opencl/bin/xetal-gpu run libs/Accel/demos/saxpy.xtl --device opencl:0 --time
+/home/arduino/adreno-poc/work/xetal-opencl/bin/xetal-gpu lower libs/Accel/demos/reduce-sum.xtl
+/home/arduino/adreno-poc/work/xetal-opencl/bin/xetal-gpu run libs/Accel/demos/reduce-sum.xtl --device cpu
+/home/arduino/adreno-poc/work/xetal-opencl/bin/xetal-gpu run libs/Accel/demos/reduce-sum.xtl --device opencl:0 --time

@@ -1,6 +1,6 @@
 number = 4
 slug = "xetal-gpu-opencl-board"
-status = "pending"
+status = "in-progress"
 description = "HIGH PRIORITY - NEXT: demonstrate actual X_eTaL source running on the UNO Q A..."
 role = "production"
 context_files = []

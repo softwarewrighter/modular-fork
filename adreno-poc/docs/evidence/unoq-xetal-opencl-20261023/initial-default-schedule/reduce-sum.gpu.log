@@ -1,0 +1,1 @@
+xetal-gpu: kernel reduce_max_long allows work-groups of at most 192 on FD702; schedule --work-group 192 or less

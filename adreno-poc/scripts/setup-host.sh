@@ -18,7 +18,7 @@ esac
 if test "${1:-}" = --prepare-cross; then
     export RUSTUP_HOME="$root/work/rustup"
     export CARGO_HOME="$root/work/cargo"
-    rustup toolchain install stable --profile minimal --target aarch64-unknown-linux-gnu
+    rustup toolchain install stable --profile minimal --component rustfmt,clippy --target aarch64-unknown-linux-gnu --no-self-update
     if test "$host" = mac; then
         python3 -m venv "$root/work/.venv"
         "$root/work/.venv/bin/python" -m pip install ziglang
@@ -64,6 +64,6 @@ Cross compilation is not ready until the aarch64 Rust standard library and
 linker are present. System packages and shared toolchains are never modified.
 Use --prepare-cross to install a project-local Rust target (network required).
 Mac: place MoltenVK under work/MoltenVK; install cargo-zigbuild under
-work/ and ziglang in work/.venv when cross-build step 004 needs them.
+work/ and ziglang in work/.venv when the Vulkan cross-build step needs them.
 See docs/scaffold-handoff.md for local toolchain preparation instructions.
 EOF

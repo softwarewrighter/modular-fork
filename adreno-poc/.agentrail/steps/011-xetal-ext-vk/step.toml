@@ -1,0 +1,8 @@
+number = 11
+slug = "xetal-ext-vk"
+status = "pending"
+description = "adreno-702 step 10, xetal-ext-vk [mac or arch, then board]: the Vulkan runtim..."
+role = "production"
+context_files = []
+created_at = "2026-10-23T08:57:41"
+commits = []

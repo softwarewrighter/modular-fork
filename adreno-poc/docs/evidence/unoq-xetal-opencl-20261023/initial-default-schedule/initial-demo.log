@@ -1,0 +1,95 @@
+opencl:0  FD702 (GPU, Qualcomm; OpenCL 3.0), 1 compute units, work-groups to 512, 1740 MB, no fp64
+Selected physical Adreno: opencl:0 (FD702, Qualcomm GPU)
+Driver identification (full details in environment.log):
+  Device Name                                     FD702
+  Device Vendor                                   Qualcomm
+  Device Vendor ID                                0x5143
+  Driver Version                                  25.2.6-1~bpo13+1
+  Device Type                                     GPU
+    Device Name                                   FD702
+    Device Name                                   FD702
+    Device Name                                   FD702
+=== X_eTaL source: threshold ===
+#!/usr/bin/env xetal
+# Threshold: a select by mask, item by item: x where x > t, else 0;
+# relu is the same with t = 0; k_eep takes any Int mask.
+# Run with "just demo-lib Accel threshold".
+"ac:" u_se< "Accel"
+x := ((r_ange 8) / 4) - 1.0
+x
+0.5 ac:t_hreshold x
+ac:r_elu x
+n := (r_ange 8) - 4
+ac:r_elu n
+(n m_od 2) ac:k_eep n
+ok: 5 lines agree (exactly)
+Evaluator baseline:
+-0.75 -0.5 -0.25 0.0 0.25 0.5 0.75 1.0
+-0.0 -0.0 -0.0 0.0 0.0 0.0 0.75 1.0
+0.0 0.0 0.0 0.0 0.25 0.5 0.75 1.0
+0 0 0 0 1 2 3 4
+-3 0 -1 0 1 0 3 0
+Adreno output:
+-0.75 -0.5 -0.25 0.0 0.25 0.5 0.75 1.0
+-0.0 -0.0 -0.0 0.0 0.0 0.0 0.75 1.0
+0.0 0.0 0.0 0.0 0.25 0.5 0.75 1.0
+0 0 0 0 1 2 3 4
+-3 0 -1 0 1 0 3 0
+ok: 5 lines agree (tolerance 1e-05)
+GPU timing:
+repeat 1 time: setup 336.407 ms, upload 13.421 ms, kernels 0.005 ms (device), launches 7.452 ms (host), download 2.043 ms, total 359.580 ms
+PASS: threshold on opencl:0 (all outputs checked)
+=== X_eTaL source: vector-add ===
+#!/usr/bin/env xetal
+# Vector add: c := a + b, the first kernel (one work-item per element).
+# Run with "just demo-lib Accel vector-add".
+"ac:" u_se< "Accel"
+a := r_ange 8
+b := 10 * r_ange 8
+a ac:v_add b
+x := (r_ange 8) / 4
+y := 0.5 ac:s_cale x
+x ac:v_add y
+ok: 2 lines agree (exactly)
+Evaluator baseline:
+11 22 33 44 55 66 77 88
+0.375 0.75 1.125 1.5 1.875 2.25 2.625 3.0
+Adreno output:
+11 22 33 44 55 66 77 88
+0.375 0.75 1.125 1.5 1.875 2.25 2.625 3.0
+ok: 2 lines agree (tolerance 1e-05)
+GPU timing:
+repeat 1 time: setup 289.795 ms, upload 14.881 ms, kernels 0.004 ms (device), launches 0.930 ms (host), download 0.736 ms, total 306.549 ms
+PASS: vector-add on opencl:0 (all outputs checked)
+=== X_eTaL source: saxpy ===
+#!/usr/bin/env xetal
+# SAXPY: y := a x + y, a scale then an add, fused into one kernel on a
+# GPU. Run with "just demo-lib Accel saxpy".
+"ac:" u_se< "Accel"
+x := (r_ange 8) / 4
+y := 1.0 ac:s_cale 1.0 0.5 0.25 0.125 0.0 -0.125 -0.25 -0.5
+(2.0 ac:s_cale x) ac:v_add y
+ok: 1 lines agree (exactly)
+Evaluator baseline:
+1.5 1.5 1.75 2.125 2.5 2.875 3.25 3.5
+Adreno output:
+1.5 1.5 1.75 2.125 2.5 2.875 3.25 3.5
+ok: 1 lines agree (tolerance 1e-05)
+GPU timing:
+repeat 1 time: setup 269.336 ms, upload 13.154 ms, kernels 0.005 ms (device), launches 0.994 ms (host), download 0.308 ms, total 283.978 ms
+PASS: saxpy on opencl:0 (all outputs checked)
+=== X_eTaL source: reduce-sum ===
+#!/usr/bin/env xetal
+# Reductions: research7's GPU PoC 0 (a, b := 2 a, c := a + b, +/ c),
+# the largest item, an inner product. Run with "just demo-lib Accel reduce-sum".
+"ac:" u_se< "Accel"
+a := r_ange 8
+b := 2 ac:s_cale a
+c := a ac:v_add b
+ac:s_um c
+ac:l_argest c
+a ac:d_ot b
+f := (r_ange 8) / 8
+ac:s_um f
+f ac:d_ot f
+ok: 5 lines agree (exactly)

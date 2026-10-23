@@ -106,55 +106,65 @@ evaluator's `.expect`) and says what ran and what is only a listing.
    work. Enumeration alone does not complete this step; if dispatch fails,
    record the exact failure and the next experiment rather than claiming a
    successful demo.
-5. cross-aarch64 [arch or mac, then board] -- the
+5. mojo-opencl-demo [arch, then board] -- HIGH PRIORITY, NEXT after the
+   working X_eTaL OpenCL demo. Establish a pinned Mojo toolchain and hello
+   on the UNO Q without system installation. The board has no Mojo/pip yet;
+   its 2 GB memory is below the documented 8 GB minimum, so capture actual
+   feasibility before assuming success. Then call the proven OpenCL path
+   through a small C ABI from Mojo, dispatch threshold/ReLU or vector-add
+   on physical FD702, and check all results against the same X_eTaL oracle.
+   Label it Mojo host + OpenCL kernel; native Mojo kernels on Qualcomm are
+   separate compiler/runtime work. Capture failures and try host cross-build
+   if compiler execution on the board fails. No Vulkan prerequisite.
+6. cross-aarch64 [arch or mac, then board] -- the
    aarch64-unknown-linux-gnu build of adreno-vk (cross gcc on Arch,
    cargo-zigbuild on the Mac), `scripts/deploy.sh` (scp, ssh, run,
    fetch the log); the first dispatch on the Adreno 702 through
    Turnip, driver name in the log, every element checked. This is the
    Vulkan acceptance criterion; the OpenCL demo has priority before it.
-6. xir-glsl [mac or arch] -- the emitter: XIR to GLSL compute, one
+7. xir-glsl [mac or arch] -- the emitter: XIR to GLSL compute, one
    shader per fused stage, reductions as two passes, patterned on
    rust-demo's `emit.rs` and X_eTaL-gpu's OpenCL emitter; `xir-vk run
    programs/<p>.xir` runs it on the host GPU and checks against the
    Rust reference and `.expect`; all of rust-demo's ten programs; a
    `--dump-spirv` that writes the disassembly as text.
-7. xir-vk-board [board] -- the same tool cross-built and run on the
+8. xir-vk-board [board] -- the same tool cross-built and run on the
    Adreno 702 for every program; the evidence directory with the
    SPIR-V disassembly; X_eTaL source to the Adreno through Vulkan,
    nothing by hand.
-8. mojo-on-board [board] -- `pip install mojo` on the UNO Q (the
+9. mojo-on-board [board] -- `pip install mojo` on the UNO Q (the
    manylinux_2_34 aarch64 wheel; record disk and memory), a hello,
    then rust-demo's generated Mojo for accel-threshold built with
    `-D XIR_CPU=true` and run on the A53 against `.expect`; the exact
    text of `DeviceContext()` failing and what `--target-accelerator`
    accepts, as the documented limitation. If the wheel will not
    install or run, that is the finding.
-9. mojo-vulkan-ffi [board] -- adreno-vk as a cdylib with a small C ABI
+10. mojo-vulkan-ffi [board] -- adreno-vk as a cdylib with a small C ABI
    (context, buffer, upload, dispatch by shader name, download, free,
    a version), Mojo calling it through `DLHandle` on the board: the
    same shader, the same inputs, the same checked outputs as Rust. The
    Mojo path that exists today; the log says the kernel was not
    authored in Mojo.
-10. xetal-ext-vk [mac or arch, then board] -- the Vulkan runtime as an
+11. xetal-ext-vk [mac or arch, then board] -- the Vulkan runtime as an
     ABI V1 extension in X_eTaL-gpu's `extensions/gpu` shape (devices,
     load, bind, run, output), so an X_eTaL program chooses `vulkan:N`
     beside `opencl:N` through `xetal-x`; one program run both ways on
     the board; an asks document for X_eTaL-gpu and X_eTaL-extensions
     for whatever should move there.
-11. demos-crossover [board] -- the demo progression and the
+12. demos-crossover [board] -- the demo progression and the
     measurement: threshold, saxpy, ReLU, softmax (maps and
     reductions, what XIR has today) at 1 K to 1 M elements on the A53
     (Rust reference, Mojo `--cpu`) and on the Adreno (Vulkan, OpenCL),
     the research's JSON record per run (setup, upload, dispatch,
     download, total), the crossover size in a table; peak RSS; the
     2 GB versus 4 GB question answered from the numbers.
-12. mojo-spirv-research [mac] -- what this fork exposes for a Mojo to
+13. mojo-spirv-research [mac] -- what this fork exposes for a Mojo to
     SPIR-V path: `kgen.compile_offload`, the accepted target triples
     and `--target-accelerator` values, `_emission_kind`, whether the
     bundled compiler carries MLIR's SPIR-V dialect; a findings
     document with a go/no-go for the research's Approach B and C and
     the smallest experiment that would decide it.
-13. release -- `adreno-poc/README.md` with the results table (what
+14. release -- `adreno-poc/README.md` with the results table (what
     ran where, checked against what), the root README's links row,
     a blog handoff like rust-demo's, the retrospective, the saga
     archived.

@@ -1,0 +1,9 @@
+# UNO Q, Mesa rusticl 25.2.6, physical Qualcomm FD702.
+# reduce_max_long reports a kernel-specific maximum of 192, despite the
+# device-wide limit of 512. Use a power-of-two tree reduction group below it.
+device = "Qualcomm FD702 (Arduino UNO Q Adreno 702)"
+tested = true
+float = "f32"
+int = "i64"
+work_group = 128
+tile = 8

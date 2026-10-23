@@ -1,0 +1,8 @@
+number = 8
+slug = "xir-vk-board"
+status = "pending"
+description = "adreno-702 step 7, xir-vk-board [board]: the same tool cross-built and run on..."
+role = "production"
+context_files = []
+created_at = "2026-10-23T08:57:41"
+commits = []
