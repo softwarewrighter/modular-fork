@@ -27,7 +27,10 @@ the files are the deck's own data as published.
 
 The deck is published as a private page at
 https://claude.ai/artifact/38GHd98m2sKJyvXZWcGamE; its Share menu
-exports PowerPoint and PDF. The exports are not committed (binaries).
+exports PowerPoint and PDF. The PDF export is committed here as
+`xetal-and-mojo-on-the-adreno-702.pdf` (16 pages, slides as pictures
+with a text layer, 4.8 MB), the one binary in this directory, so the
+talk can be read without the page. The PowerPoint export is not.
 The typefaces are IBM Plex Sans and JetBrains Mono from Google Fonts,
 and JuliaMono Regular uploaded to the page for the code blocks, because
 it carries the combining underline and the raised letters X_eTaL's
