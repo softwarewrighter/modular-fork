@@ -1,8 +1,9 @@
 number = 4
 slug = "xetal-gpu-opencl-board"
-status = "in-progress"
+status = "completed"
 description = "HIGH PRIORITY - NEXT: demonstrate actual X_eTaL source running on the UNO Q A..."
 role = "production"
 context_files = []
 created_at = "2026-10-23T08:57:41"
-commits = []
+completed_at = "2026-10-23T14:07:18"
+commits = ["336896b090583af757be96ee0579d756015ee60f"]
