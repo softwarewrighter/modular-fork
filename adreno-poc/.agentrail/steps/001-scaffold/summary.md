@@ -1,0 +1,1 @@
+Scaffold validated on Arch: empty adreno-vk crate, just gate, read-only board inventory with software-renderer reporting checks, local host setup, evidence and handoff. Mac provisioning and board dispatch not run. Missing host packages: vulkan-tools and aarch64-linux-gnu-gcc. Push follows completion metadata commit.
