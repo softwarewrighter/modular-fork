@@ -1,0 +1,13 @@
+# vendored tools and SDKs built or unpacked for this work, never tracked
+work/
+# Rust and Python build state
+target/
+.venv/
+__pycache__/
+# binaries: SPIR-V is committed as disassembly text, never as .spv
+*.spv
+*.so
+*.dylib
+# agentrail raw session transcripts (large, local only)
+.agentrail/sessions/*.jsonl
+.agentrail-archive/*/sessions/*.jsonl

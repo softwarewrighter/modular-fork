@@ -1,0 +1,8 @@
+number = 3
+slug = "host-vulkan"
+status = "pending"
+description = "adreno-702 step 3, host-vulkan [arch, or mac via MoltenVK]: crate `adreno-vk`..."
+role = "production"
+context_files = []
+created_at = "2026-10-23T08:57:41"
+commits = []

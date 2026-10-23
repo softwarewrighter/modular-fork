@@ -1,0 +1,1 @@
+Saga planned from docs/research.txt, corrected against X_eTaL-gpu, X_eTaL-extensions, rust-demo and the published Mojo wheels; plan in docs/plan.md.
