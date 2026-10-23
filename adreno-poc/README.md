@@ -16,7 +16,9 @@ evaluator and Mojo emitter; Mojo's published aarch64 Linux wheels.
 Five X_eTaL source demos now run on the UNO Q's physical Adreno 702 through
 rusticl OpenCL, with all 71 output elements checked against evaluator
 baselines. See [the working demo and results](docs/xetal-opencl-handoff.md).
-A cross-compiled Mojo host now drives threshold/ReLU on the same GPU; see
+A Mojo-authored GPU kernel now also executes on Adreno through an audited
+LLVM-to-SPIR-V retargeter; [run it](docs/mojo-spirv-handoff.md). A
+cross-compiled Mojo host drives the earlier OpenCL bridge too; see
 [the annotated deep dive](docs/adreno-deep-dive.md) for both compilation paths.
 The scaffold and Vulkan vector addition are also validated on Arch's RTX
 5060 Ti, with every element checked from 1K through 1M.
@@ -46,7 +48,8 @@ The steps, in order, with the host each needs:
 | 11 | xetal-ext-vk | mac or arch, then board | the Vulkan runtime as an ABI V1 extension beside X_eTaL-gpu's OpenCL one |
 | 12 | demos-crossover | board | the demo progression, A53 versus Adreno, the crossover size, 2 GB versus 4 GB answered |
 | 13 | mojo-spirv-research | mac | what this fork exposes for a Mojo to SPIR-V path; go/no-go |
-| 14 | release | any | results table, root README link, blog handoff, retrospective |
+| 14 | mojo-kernel-spirv (DONE, out of order) | arch, then board | Mojo-authored GPU kernel retargeted from LLVM to SPIR-V, checked on FD702 |
+| 15 | release | any | results table, root README link, blog handoff, retrospective |
 
 `work/` holds vendored tools and SDKs and is not tracked. Binaries are
 never committed; SPIR-V is committed as its disassembly.

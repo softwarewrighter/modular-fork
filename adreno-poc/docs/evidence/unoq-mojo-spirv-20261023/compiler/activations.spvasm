@@ -1,0 +1,79 @@
+; SPIR-V
+; Version: 1.0
+; Generator: LLVM LLVM SPIR-V Backend; 23
+; Bound: 99
+; Schema: 0
+               OpCapability Kernel
+               OpCapability Addresses
+               OpCapability Int64
+               OpCapability Linkage
+          %1 = OpExtInstImport "OpenCL.std"
+               OpMemoryModel Physical64 OpenCL
+               OpEntryPoint Kernel %activation_gpu_activations_Po6A6AoA6A6A_2d28411a43ede716 "activation_gpu_activations_Po6A6AoA6A6A_2d28411a43ede716" %__spirv_BuiltInWorkgroupSize %__spirv_BuiltInWorkgroupId %__spirv_BuiltInLocalInvocationId
+               OpExecutionMode %activation_gpu_activations_Po6A6AoA6A6A_2d28411a43ede716 ContractionOff
+               OpSource OpenCL_CPP 100000
+               OpName %activation_gpu_activations_Po6A6AoA6A6A_2d28411a43ede716 "activation_gpu_activations_Po6A6AoA6A6A_2d28411a43ede716"
+               OpName %__spirv_BuiltInWorkgroupId "__spirv_BuiltInWorkgroupId"
+               OpName %__spirv_BuiltInWorkgroupSize "__spirv_BuiltInWorkgroupSize"
+               OpName %__spirv_BuiltInLocalInvocationId "__spirv_BuiltInLocalInvocationId"
+               OpDecorate %__spirv_BuiltInWorkgroupId Constant
+               OpDecorate %__spirv_BuiltInWorkgroupId LinkageAttributes "__spirv_BuiltInWorkgroupId" Import
+               OpDecorate %__spirv_BuiltInWorkgroupId BuiltIn WorkgroupId
+               OpDecorate %__spirv_BuiltInWorkgroupSize Constant
+               OpDecorate %__spirv_BuiltInWorkgroupSize LinkageAttributes "__spirv_BuiltInWorkgroupSize" Import
+               OpDecorate %__spirv_BuiltInWorkgroupSize BuiltIn WorkgroupSize
+               OpDecorate %__spirv_BuiltInLocalInvocationId Constant
+               OpDecorate %__spirv_BuiltInLocalInvocationId LinkageAttributes "__spirv_BuiltInLocalInvocationId" Import
+               OpDecorate %__spirv_BuiltInLocalInvocationId BuiltIn LocalInvocationId
+      %float = OpTypeFloat 32
+%_ptr_CrossWorkgroup_float = OpTypePointer CrossWorkgroup %float
+       %uint = OpTypeInt 32 0
+       %void = OpTypeVoid
+          %6 = OpTypeFunction %void %_ptr_CrossWorkgroup_float %_ptr_CrossWorkgroup_float %_ptr_CrossWorkgroup_float %float %uint
+      %ulong = OpTypeInt 64 0
+    %v3ulong = OpTypeVector %ulong 3
+%_ptr_Input_v3ulong = OpTypePointer Input %v3ulong
+       %bool = OpTypeBool
+%ulong_4294967295 = OpConstant %ulong 4294967295
+         %12 = OpConstantNull %float
+    %float_1 = OpConstant %float 1
+%__spirv_BuiltInWorkgroupId = OpVariable %_ptr_Input_v3ulong Input
+%__spirv_BuiltInWorkgroupSize = OpVariable %_ptr_Input_v3ulong Input
+%__spirv_BuiltInLocalInvocationId = OpVariable %_ptr_Input_v3ulong Input
+%activation_gpu_activations_Po6A6AoA6A6A_2d28411a43ede716 = OpFunction %void None %6
+         %18 = OpFunctionParameter %_ptr_CrossWorkgroup_float
+         %19 = OpFunctionParameter %_ptr_CrossWorkgroup_float
+         %20 = OpFunctionParameter %_ptr_CrossWorkgroup_float
+         %21 = OpFunctionParameter %float
+         %22 = OpFunctionParameter %uint
+         %45 = OpLabel
+         %23 = OpLoad %v3ulong %__spirv_BuiltInWorkgroupId Aligned 1
+         %24 = OpCompositeExtract %ulong %23 0
+         %25 = OpBitwiseAnd %ulong %24 %ulong_4294967295
+         %26 = OpLoad %v3ulong %__spirv_BuiltInWorkgroupSize Aligned 1
+         %27 = OpCompositeExtract %ulong %26 0
+         %28 = OpUConvert %uint %27
+         %29 = OpSConvert %ulong %28
+         %30 = OpIMul %ulong %25 %29
+         %31 = OpLoad %v3ulong %__spirv_BuiltInLocalInvocationId Aligned 1
+         %32 = OpCompositeExtract %ulong %31 0
+         %33 = OpBitwiseAnd %ulong %32 %ulong_4294967295
+         %34 = OpIAdd %ulong %30 %33
+         %35 = OpInBoundsPtrAccessChain %_ptr_CrossWorkgroup_float %20 %34
+         %36 = OpInBoundsPtrAccessChain %_ptr_CrossWorkgroup_float %19 %34
+         %37 = OpInBoundsPtrAccessChain %_ptr_CrossWorkgroup_float %18 %34
+         %38 = OpSConvert %ulong %22
+         %39 = OpSLessThan %bool %34 %38
+               OpBranchConditional %39 %46 %47
+         %46 = OpLabel
+         %40 = OpLoad %float %37 Aligned 4
+         %41 = OpFOrdGreaterThan %bool %40 %21
+         %42 = OpSelect %float %41 %float_1 %12
+         %43 = OpFMul %float %40 %42
+               OpStore %36 %43 Aligned 4
+         %44 = OpExtInst %float %1 fmax %40 %12
+               OpStore %35 %44 Aligned 4
+               OpBranch %47
+         %47 = OpLabel
+               OpReturn
+               OpFunctionEnd

@@ -1,4 +1,5 @@
 //! Versioned C ABI for the existing X_eTaL OpenCL path, called by Mojo.
+pub mod spirv;
 use std::collections::HashMap;
 use xetal_gpu_opencl::{plan, Schedule};
 use xetal_gpu_runtime::{devices, execute_timed};

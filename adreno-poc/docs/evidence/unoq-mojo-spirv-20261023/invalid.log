@@ -1,0 +1,2 @@
+SPIR-V bridge error: expected aligned little-endian SPIR-V header
+Mojo/SPIR-V failed: status=-2

@@ -8,6 +8,7 @@ license = "MIT"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
+opencl3 = "0.12"
 xetal-gpu-runtime = { path = "../work/xetal-gpu/components/runtime" }
 xetal-gpu-opencl = { path = "../work/xetal-gpu/components/opencl" }
 xetal-gpu-xir = { path = "../work/xetal-gpu/components/xir" }

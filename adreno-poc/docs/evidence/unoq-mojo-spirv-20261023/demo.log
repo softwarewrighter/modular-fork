@@ -1,0 +1,12 @@
+SPIR-V device: FD702 (Qualcomm; GPU); driver 25.2.6-1~bpo13+1; IL SPIR-V_1.0 SPIR-V_1.1 SPIR-V_1.2 SPIR-V_1.3 SPIR-V_1.4 SPIR-V_1.5 SPIR-V_1.6
+Mojo-authored SPIR-V dispatched: n=8, local=64, global=64
+-0.75 -0.5 -0.25 0 0.25 0.5 0.75 1
+-0 -0 -0 0 0 0 0.75 1
+0 0 0 0 0.25 0.5 0.75 1
+ok: 3 lines agree (tolerance 1e-05)
+PASS: corrupted final output rejected
+PASS: n=1, all 3 values checked by Mojo and launcher
+PASS: n=65, all 195 values checked by Mojo and launcher
+PASS: n=129, all 387 values checked by Mojo and launcher
+PASS: invalid IL rejected and error propagated
+RESULT: Mojo-authored kernel on FD702; 24 of 24 fixture outputs agree with both oracles

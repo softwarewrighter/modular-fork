@@ -164,7 +164,13 @@ evaluator's `.expect`) and says what ran and what is only a listing.
     bundled compiler carries MLIR's SPIR-V dialect; a findings
     document with a go/no-go for the research's Approach B and C and
     the smallest experiment that would decide it.
-14. release -- `adreno-poc/README.md` with the results table (what
+14. mojo-kernel-spirv [arch, then board] -- completed out of order per the
+    supplied handoff. Verify ordinary Mojo activations on RTX 5060 Ti,
+    retarget its audited NVPTX LLVM subset to OpenCL SPIR-V, validate,
+    load the IL on physical FD702, check both oracles and partial groups,
+    and capture native code beside the earlier OpenCL C path. Unknown
+    barriers/shared memory/atomics/libdevice constructs must be refused.
+15. release -- `adreno-poc/README.md` with the results table (what
     ran where, checked against what), the root README's links row,
     a blog handoff like rust-demo's, the retrospective, the saga
     archived.

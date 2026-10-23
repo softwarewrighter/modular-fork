@@ -12,3 +12,5 @@ Tools (pacman; name versions in environment.log): an LLVM whose `llc --version` 
 6. Evidence in docs/evidence/unoq-mojo-spirv-<date>/ (environment, build, rewritten IR, spvasm, validation, run, negative test, native disasm), a handoff doc docs/mojo-spirv-handoff.md with "what this does not establish" (host is the C ABI bridge, not DeviceContext; one kernel shape; no barriers/shared memory/math library yet), and a paragraph in docs/adreno-deep-dive.md section 9 replacing "the retarget experiment" with its result. If the SPIR-V back-end or rusticl rejects the module, that exact error is the deliverable.
 
 Gate, signed [adreno-poc] commit with .agentrail, push.
+
+User priority: execute this step out of order before Vulkan step 006. Record the implementation using agentrail close 14 --commit REF, retaining the cursor and pending Vulkan steps. The supplied docs/handoff.txt is the instruction source.

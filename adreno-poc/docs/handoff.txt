@@ -1,0 +1,35 @@
+
+Ordinary Mojo cannot run on the Adreno today. The blocker is Mojo's compiler binary: it refuses any SPIR-V target, and SPIR-V is what the Adreno's OpenCL driver accepts in place of source code. There is a workable route around it, and I've written it up as the next saga step for the Arch agent. Two commits are pushed to the research branch, 6b464f4068 and 5627a4f5a5.
+
+Why the Mojo demo looks so different from the X_eTaL one. X_eTaL-gpu generates code only as far as OpenCL C, a portable source language. Any OpenCL driver compiles that, including the one on the board. Mojo generates code all the way down to each vendor's own format: Apple's AIR for Metal, PTX for NVIDIA. Its runtime also only knows Metal, CUDA and AMD's HIP. With neither half available for Qualcomm, the demo had Mojo run on the ARM CPU and hand the GPU work to X_eTaL's emitter through a C call.
+
+What normal Mojo looks like on Apple Silicon or the RTX 5060 Ti. It is one file for both, adreno-poc/mojo/activation_gpu.mojo. The kernel computes one element per GPU thread, and the host side opens a GPU context, copies the buffers, launches, and copies back.
+- On the M1 Max it ran and matched 24 of 24 outputs, the first three lines of X_eTaL's output exactly.
+- For the RTX 5060 Ti the same file cross-compiled to PTX on this Mac. It has not run on that card yet; that is part of the new step.
+
+What I tested about reaching the Adreno.
+- No target registered: the GPU target names spirv, opencl, vulkan and adreno all fail, because the standard library knows no such accelerator.
+- The compiler refuses SPIR-V: a hand-built SPIR-V target fails even when asking only for LLVM IR. The error comes from the compiler binary, not the open standard library:
+
+error: target 'spirv64-unknown-unknown' is not supported by this build
+
+- The way in: the LLVM IR Mojo emits for the NVIDIA build of this kernel is 25 lines. Only three calls are NVIDIA-specific, the block index, block size and thread index, plus the target line, calling convention and pointer address space. Each maps directly to an OpenCL SPIR-V equivalent, and the board's OpenCL driver accepts SPIR-V.
+
+What the Arch agent is asked to do, saga step 14, mojo-kernel-spirv.
+1. Run the same file on the RTX 5060 Ti.
+2. Write a tested script that rewrites the NVIDIA IR to OpenCL SPIR-V. It must refuse any construct it does not know rather than guess.
+3. Compile and validate the result with pacman's LLVM and spirv-tools.
+4. Add a bridge entry point that loads the SPIR-V on the board.
+5. Drive it from a Mojo host and check all 24 outputs against both oracles, including the deliberate-corruption test.
+6. Capture the native Adreno code, and write evidence, a handoff document and the result into the deep dive.
+
+That would be a kernel written in ordinary Mojo, compiled by Mojo, running on the Adreno. The host would still be the C bridge rather than Mojo's own GPU context. Making that native needs a SPIR-V target in the compiler and a new runtime, and both live in Modular's closed binaries.
+
+In the repo
+- The deep dive gains section 8, the line-by-line explanation of threshold.mojo against threshold.xtl, and section 9, the road to ordinary Mojo on the Adreno.
+- Evidence for the Mac runs is in docs/evidence/m1max-mojo-targets-20261023/.
+- In the saga, step 13, the Mojo-to-SPIR-V research, is closed with my findings. The new step 14 holds the full instructions, and release moved to step 15.
+
+Before you hand off
+- Step order: the saga cursor is still on step 6, cross-aarch64. If you want Arch to do the Mojo kernel next, tell its agent to work step 14 first.
+- Gate: the gate stopped at the bridge crate on this Mac, because that crate needs an X_eTaL-gpu clone that exists only on Arch. Everything before it passed; it should complete there.

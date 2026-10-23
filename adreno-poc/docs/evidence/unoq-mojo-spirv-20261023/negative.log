@@ -1,0 +1,3 @@
+SPIR-V device: FD702 (Qualcomm; GPU); driver 25.2.6-1~bpo13+1; IL SPIR-V_1.0 SPIR-V_1.1 SPIR-V_1.2 SPIR-V_1.3 SPIR-V_1.4 SPIR-V_1.5 SPIR-V_1.6
+Mojo-authored SPIR-V dispatched: n=8, local=64, global=64
+Mismatch at 23: got 2 expected 1

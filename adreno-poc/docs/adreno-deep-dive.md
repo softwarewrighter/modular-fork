@@ -6,9 +6,15 @@ cross-compiled Mojo host function ran threshold/ReLU through the same
 OpenCL emitter/runtime and matched all 24 Float outputs against both its
 own reference calculation and X_eTaL's saved evaluator baseline.
 
+A later experiment now also runs the kernel authored in ordinary
+`activation_gpu.mojo` on Adreno, through Mojo LLVM IR -> retargeted SPIR-V
+-> OpenCL IL. Section 9 and [the successful handoff](mojo-spirv-handoff.md)
+record this result. Sections 1-7 below describe the earlier OpenCL C bridge.
+
 The important boundary: the Mojo function runs on the ARM CPU and requests
 GPU work through a C ABI. It is not a native Mojo GPU kernel compiled to
-Adreno instructions. The GPU kernel is generated OpenCL C in both paths.
+Adreno instructions. The GPU kernel is generated OpenCL C in both earlier paths; section 9
+now adds the distinct Mojo-authored SPIR-V kernel path.
 
 ```mermaid
 flowchart TD
@@ -467,9 +473,39 @@ The arithmetic (`fcmp ogt`, `select`, `fmul`, `llvm.maxnum.f32`) is
 target-neutral. rusticl advertises `cl_khr_il_program`, so a SPIR-V module
 can be loaded with `clCreateProgramWithIL` in place of OpenCL C source.
 
+### Retarget result on Arch and the UNO Q
+
+The retarget experiment passed: the same Mojo source ran on RTX 5060 Ti,
+and its Mojo-generated kernel IR was retargeted and dispatched on physical
+FD702 via `clCreateProgramWithIL`. The eight-element fixture matches all
+24 values against both Mojo and X_eTaL oracles. Partial groups (n=1, 65,
+129), corruption rejection and invalid-IL error propagation also pass.
+See [run and rejection evidence](evidence/unoq-mojo-spirv-20261023/demo.log).
+The host remains a cross-compiled Mojo C ABI export plus C/Rust bridge;
+there is still no native Adreno `DeviceContext` implementation.
+
+The [retargeter](../scripts/nvptx-to-spirv.py) supports a deliberately
+restricted scalar subset and refuses unsupported constructs. LLVM 23's
+generic SPIR-V target initially emitted 1.4, rejected by the OpenCL 2.1
+validator. The explicit `spirv64v1.0-unknown-unknown` target produces a
+module that validates and runs. Captured stages:
+
+- [Original Mojo NVPTX LLVM IR](evidence/unoq-mojo-spirv-20261023/compiler/mojo_activation_gpu_activations_Po6A6AoA6A6A_2d28411a43ede716.nvptx.ll)
+- [Rewritten LLVM IR](evidence/unoq-mojo-spirv-20261023/compiler/activations.spirv.ll)
+- [Validated SPIR-V text](evidence/unoq-mojo-spirv-20261023/compiler/activations.spvasm)
+- [Mesa NIR/native trace](evidence/unoq-mojo-spirv-20261023/debug/mesa-debug.log)
+- [Extracted native Adreno code](evidence/unoq-mojo-spirv-20261023/debug/native.disasm)
+
+The native code contains compare, mask conversion, multiplication, maximum
+and two global stores, like the earlier OpenCL C path. This capture reports
+224 dwords. It is not byte-identical to that earlier shader: the threshold
+is now a kernel argument instead of a literal, and register allocation and
+variants differ. [The handoff](mojo-spirv-handoff.md) annotates both paths
+side by side and provides the deployed one-command demo.
+
 ### The road, in three stages
 
-1. **Retarget experiment (Arch, then the board; saga step
+1. **Completed retarget experiment (Arch and board; saga step
    `mojo-kernel-spirv`).** Take the kernel IR Mojo emits for NVIDIA,
    rewrite the parts in the table above with a small script, compile it
    with an LLVM that has the SPIR-V back-end (or the Khronos
@@ -490,7 +526,8 @@ can be loaded with `clCreateProgramWithIL` in place of OpenCL C source.
 
 This is the go/no-go the plan's `mojo-spirv-research` step asked for: no-go
 for a native Mojo Adreno target from this fork alone; go for the retarget
-experiment, which needs only tools Arch has.
+experiment, which has now passed for this scalar kernel. Generalization
+and native runtime support remain unproven.
 
 ## Reproduce and evidence index
 
