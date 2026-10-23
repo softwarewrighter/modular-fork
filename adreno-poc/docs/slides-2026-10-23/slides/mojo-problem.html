@@ -1,0 +1,37 @@
+<section id="mojo-problem" data-transition="fade" style="background:#141B2D;color:#F5F3EE;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#E0A030">Path two: Mojo</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">Mojo has no Adreno target, so Mojo takes the host's seat</h2>
+</div>
+<div style="display:flex;gap:40px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#1F2A44;padding:40px;border-radius:16px;border:1px solid #33425F">
+<h3 style="font-size:34px;font-weight:600;color:#FF8A80">Three walls</h3>
+<ul style="font-size:28px;line-height:1.45;color:#C9D1DC">
+<li>No Qualcomm, OpenCL or Vulkan target: Mojo's runtime looks for CUDA, HIP and Metal only.</li>
+<li>No compiler on the board: 1.7 GiB of RAM against a documented 8 GB, and no pip in the image.</li>
+<li>A normal cross-built Mojo executable died with SIGILL: the runtime library uses LSE atomics the Cortex-A53 lacks.</li>
+</ul>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#1F2A44;padding:40px;border-radius:16px;border:1px solid #4FA3A5">
+<h3 style="font-size:34px;font-weight:600;color:#8FD3D4">Three doors</h3>
+<ul style="font-size:28px;line-height:1.45;color:#C9D1DC">
+<li>Cross-compile on Arch to an object: --emit object, target aarch64-unknown-linux-gnu, CPU cortex-a53.</li>
+<li>Export one C-ABI function from Mojo; a 30-line C launcher provides storage, so no Mojo runtime is linked.</li>
+<li>A Rust bridge with a C ABI hands the work to the same XIR, OpenCL emitter and runtime X_eTaL used.</li>
+</ul>
+</div>
+</div>
+<div style="display:flex;align-items:center;gap:16px">
+<div style="flex:1;background:#2A3350;padding:24px;border-radius:12px;border:1px solid #33425F"><h3 style="font-size:28px;font-weight:600">threshold.mojo</h3></div>
+<x-shape kind="arrow-right" style="width:48px;height:24px;background:#E0A030"></x-shape>
+<div style="flex:1;background:#2A3350;padding:24px;border-radius:12px;border:1px solid #33425F"><h3 style="font-size:28px;font-weight:600">LLVM IR, ARM64 object</h3></div>
+<x-shape kind="arrow-right" style="width:48px;height:24px;background:#E0A030"></x-shape>
+<div style="flex:1;background:#2A3350;padding:24px;border-radius:12px;border:1px solid #33425F"><h3 style="font-size:28px;font-weight:600">C launcher + Rust bridge</h3></div>
+<x-shape kind="arrow-right" style="width:48px;height:24px;background:#E0A030"></x-shape>
+<div style="flex:1;background:#2A3350;padding:24px;border-radius:12px;border:1px solid #33425F"><h3 style="font-size:28px;font-weight:600">OpenCL C, rusticl</h3></div>
+<x-shape kind="arrow-right" style="width:48px;height:24px;background:#E0A030"></x-shape>
+<div style="flex:1;background:#2A3350;padding:24px;border-radius:12px;border:1px solid #4FA3A5"><h3 style="font-size:28px;font-weight:600;color:#8FD3D4">Adreno 702</h3></div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#8A93A3">The executable needs only libc and the bridge library; the SIGILL diagnosis is a likely cause, not a traced fault address</p>
+<aside>This is the honest version of Mojo on this board. Mojo runs on the ARM cores and asks for GPU work through a C ABI. The GPU kernel is still generated OpenCL C. What Mojo contributes is the host program, its reference computation and the check, all compiled by Mojo for a CPU Modular never listed.</aside>
+</section>

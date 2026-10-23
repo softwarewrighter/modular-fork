@@ -1,0 +1,27 @@
+<section id="path-xetal" data-transition="fade" style="background:#141B2D;color:#F5F3EE;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#E0A030">Path one: X_eTaL</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">Source to silicon, nothing by hand</h2>
+</div>
+<div style="display:flex;align-items:center;gap:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#1F2A44;padding:28px 24px;border-radius:12px;border:1px solid #33425F"><h3 style="font-size:30px;font-weight:600">X_eTaL source</h3><p style="font-size:24px;color:#C9D1DC">threshold.xtl</p></div>
+<x-shape kind="arrow-right" style="width:48px;height:24px;background:#E0A030"></x-shape>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#1F2A44;padding:28px 24px;border-radius:12px;border:1px solid #33425F"><h3 style="font-size:30px;font-weight:600">Core</h3><p style="font-size:24px;color:#C9D1DC">xetal_program::load</p></div>
+<x-shape kind="arrow-right" style="width:48px;height:24px;background:#E0A030"></x-shape>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#1F2A44;padding:28px 24px;border-radius:12px;border:1px solid #33425F"><h3 style="font-size:30px;font-weight:600">Typed XIR</h3><p style="font-size:24px;color:#C9D1DC">xetal-gpu lower</p></div>
+<x-shape kind="arrow-right" style="width:48px;height:24px;background:#E0A030"></x-shape>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#1F2A44;padding:28px 24px;border-radius:12px;border:1px solid #33425F"><h3 style="font-size:30px;font-weight:600">OpenCL C 1.2</h3><p style="font-size:24px;color:#C9D1DC">xetal-gpu kernel</p></div>
+</div>
+<div style="display:flex;align-items:center;gap:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#2A3350;padding:28px 24px;border-radius:12px;border:1px solid #4FA3A5"><h3 style="font-size:30px;font-weight:600;color:#8FD3D4">SPIR-V</h3><p style="font-size:24px;color:#C9D1DC">rusticl, clang</p></div>
+<x-shape kind="arrow-right" style="width:48px;height:24px;background:#4FA3A5"></x-shape>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#2A3350;padding:28px 24px;border-radius:12px;border:1px solid #4FA3A5"><h3 style="font-size:30px;font-weight:600;color:#8FD3D4">Mesa NIR</h3><p style="font-size:24px;color:#C9D1DC">lowering passes</p></div>
+<x-shape kind="arrow-right" style="width:48px;height:24px;background:#4FA3A5"></x-shape>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#2A3350;padding:28px 24px;border-radius:12px;border:1px solid #4FA3A5"><h3 style="font-size:30px;font-weight:600;color:#8FD3D4">Freedreno IR3</h3><p style="font-size:24px;color:#C9D1DC">the driver's compiler</p></div>
+<x-shape kind="arrow-right" style="width:48px;height:24px;background:#4FA3A5"></x-shape>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#2A3350;padding:28px 24px;border-radius:12px;border:1px solid #4FA3A5"><h3 style="font-size:30px;font-weight:600;color:#8FD3D4">Adreno shader</h3><p style="font-size:24px;color:#C9D1DC">dispatch, readback, check</p></div>
+</div>
+<p style="font-size:28px;line-height:1.4;color:#C9D1DC;width:1664px">The top row is the X_eTaL ecosystem, unchanged. The bottom row is Mesa on the board. Every box's output was captured as text and committed as evidence.</p>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#8A93A3">The pinned X_eTaL-gpu was cross-built on Arch and lowered the programs on the board itself</p>
+<aside>Nothing in the top row changed for this board. The CLI was cross-compiled for aarch64 and copied over. Lowering happened on the board. The bottom row is what Mesa does with the OpenCL C, and Mesa's debug variables let us capture every stage of it.</aside>
+</section>

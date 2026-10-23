@@ -1,0 +1,64 @@
+{
+  "v": 4,
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-10-23T22:30:00Z"
+  },
+  "lists": "css",
+  "title": "X_eTaL and Mojo on the Adreno 702",
+  "order": [
+    "cover",
+    "board",
+    "question",
+    "plan",
+    "inventory",
+    "path-xetal",
+    "source-xir",
+    "kernel",
+    "results-xetal",
+    "metal",
+    "mojo-problem",
+    "mojo-source",
+    "mojo-results",
+    "boundary",
+    "next",
+    "links"
+  ],
+  "sections": {
+    "intro": {
+      "description": "Why a 2 GB Arduino board with a Qualcomm GPU, and what the day set out to prove.",
+      "start": "cover"
+    },
+    "setup": {
+      "description": "The board, the plan and what the inventory found.",
+      "start": "board"
+    },
+    "xetal": {
+      "description": "X_eTaL source lowered to XIR and OpenCL C, run and checked on the Adreno, read down to its native instructions.",
+      "start": "path-xetal"
+    },
+    "mojo": {
+      "description": "Mojo cross-compiled for the Cortex-A53 and driving the same GPU kernel through a C ABI.",
+      "start": "mojo-problem"
+    },
+    "closing": {
+      "description": "What is established, what is not, and what comes next.",
+      "start": "boundary"
+    }
+  },
+  "faces": {
+    "ibm-plex-sans": {
+      "family": "IBM Plex Sans",
+      "href": "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap"
+    },
+    "jetbrains-mono": {
+      "family": "JetBrains Mono",
+      "href": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap"
+    },
+    "juliamono": {
+      "family": "JuliaMono",
+      "src": "/_blob/774e7116be299ed391c2d53cf884dad5"
+    }
+  },
+  "designSystems": []
+}

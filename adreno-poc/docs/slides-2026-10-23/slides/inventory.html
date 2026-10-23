@@ -1,0 +1,33 @@
+<section id="inventory" data-transition="fade" style="background:#EAE6DC;color:#141B2D;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#B07A1A">Inventory</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">The GPU is real, and it answers to two names</h2>
+</div>
+<div style="display:flex;gap:40px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFC;padding:36px 40px;border:1px solid #D8D3C6;border-radius:16px">
+<h3 style="font-size:34px;font-weight:600">Vulkan: Turnip Adreno (TM) 702</h3>
+<table style="font-size:26px;color:#3D4553">
+<tr><th style="width:52%;text-align:left">Property</th><th style="width:48%;text-align:left">Value</th></tr>
+<tr><td>API version</td><td>1.0.318</td></tr>
+<tr><td>Queue family 0</td><td>graphics, compute, transfer</td></tr>
+<tr><td>Max work-group invocations</td><td>512</td></tr>
+<tr><td>Shared memory</td><td>16 KiB</td></tr>
+<tr><td>Also listed</td><td>llvmpipe, a CPU renderer</td></tr>
+</table>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFC;padding:36px 40px;border:1px solid #D8D3C6;border-radius:16px">
+<h3 style="font-size:34px;font-weight:600">OpenCL: rusticl FD702, Qualcomm</h3>
+<table style="font-size:26px;color:#3D4553">
+<tr><th style="width:52%;text-align:left">Property</th><th style="width:48%;text-align:left">Value</th></tr>
+<tr><td>Platform version</td><td>OpenCL 3.0</td></tr>
+<tr><td>Kernel language</td><td>OpenCL C 1.2</td></tr>
+<tr><td>Max work-group size</td><td>512</td></tr>
+<tr><td>Double precision</td><td>none</td></tr>
+<tr><td>Device type</td><td>GPU, the only device</td></tr>
+</table>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.4;color:#3D4553;width:1664px"><b>Decision: OpenCL first.</b> X_eTaL-gpu already emits OpenCL C 1.2, so the existing path could be tried with no new code. Turnip reports Vulkan 1.0 and the host demo required 1.1, so Vulkan waits for a compatibility change. A run on llvmpipe never counts.</p>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6A7179">vulkaninfo and clinfo on the board; adreno-poc/docs/evidence/unoq-inventory-20261023</p>
+<aside>The inventory script refuses to call a software renderer a GPU. Both stacks list the physical Adreno. Rusticl exposes exactly the language version the X_eTaL emitter writes, which decided the order of the day.</aside>
+</section>

@@ -1,0 +1,40 @@
+<section id="kernel" data-transition="fade" style="background:#F5F3EE;color:#141B2D;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#B07A1A">IR and kernel</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">Typed XIR, then one fused OpenCL kernel</h2>
+</div>
+<div style="display:flex;gap:40px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<h3 style="font-size:32px;font-weight:600">threshold.xir, the Float path</h3>
+<div style="display:flex;flex-direction:column;gap:4px;background:#141B2D;color:#D8DBE2;padding:32px 36px;border-radius:12px;font-family:'JuliaMono', 'JetBrains Mono', 'Courier New', monospace">
+<p style="font-size:26px;line-height:1.5">%l = const f64 [8] 1.0 2.0 ... 8.0</p>
+<p style="font-size:26px;line-height:1.5">%r = const f64 [] 4.0</p>
+<p style="font-size:26px;line-height:1.5">%div = map div %l %r</p>
+<p style="font-size:26px;line-height:1.5">%sub = map sub %div %r_2</p>
+<p style="font-size:26px;line-height:1.5">%gt = map gt %sub %r_3</p>
+<p style="font-size:26px;line-height:1.5">%f = cast f64 %gt</p>
+<p style="font-size:26px;line-height:1.5">%mul = map mul %sub %f</p>
+<p style="font-size:26px;line-height:1.5">%max = map max %sub %r_4</p>
+</div>
+<p style="font-size:26px;line-height:1.4;color:#3D4553">Library calls inlined, the range folded to a constant, every array operation one typed node. The comparison yields a Bool, the cast makes a mask, the multiply is the threshold, the max is ReLU.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<h3 style="font-size:32px;font-weight:600">threshold.cl, generated</h3>
+<div style="display:flex;flex-direction:column;gap:4px;background:#141B2D;color:#D8DBE2;padding:32px 36px;border-radius:12px;font-family:'JuliaMono', 'JetBrains Mono', 'Courier New', monospace">
+<p style="font-size:26px;line-height:1.5">__kernel void k0(__global const float* b_l, ...) {</p>
+<p style="font-size:26px;line-height:1.5">  size_t i = get_global_id(0);</p>
+<p style="font-size:26px;line-height:1.5">  if (i &gt;= 8) return;</p>
+<p style="font-size:26px;line-height:1.5">  float t_div = (b_l[i] / 4.0f);</p>
+<p style="font-size:26px;line-height:1.5">  float t_sub = (t_div - 1.0f);</p>
+<p style="font-size:26px;line-height:1.5">  int t_gt = (t_sub &gt; 0.5f);</p>
+<p style="font-size:26px;line-height:1.5">  float t_f = (float)t_gt;</p>
+<p style="font-size:26px;line-height:1.5">  float t_mul = (t_sub * t_f);</p>
+<p style="font-size:26px;line-height:1.5">  float t_max = fmax(t_sub, 0.0f);</p>
+<p style="font-size:26px;line-height:1.5">  ...</p>
+</div>
+<p style="font-size:26px;line-height:1.4;color:#3D4553">Consecutive maps of one shape fuse into one kernel; the IR temporaries become register expressions. The guard matters because the launch rounds up to a work-group. Floats are f32 on this no-fp64 device, Ints i64.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6A7179">xetal-gpu lower and xetal-gpu kernel, run on the board; the full files are in the evidence directory</p>
+<aside>The emitter is the one that has been running on Kepler Quadros and RTX 5060 Tis for weeks. The only thing specific to this board is a schedule file, which we will get to.</aside>
+</section>

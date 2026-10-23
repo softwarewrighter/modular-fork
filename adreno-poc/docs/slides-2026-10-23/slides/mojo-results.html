@@ -1,0 +1,32 @@
+<section id="mojo-results" data-transition="fade" style="background:#EAE6DC;color:#141B2D;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#B07A1A">Mojo results</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">24 of 24 outputs agree, and a planted error is caught</h2>
+</div>
+<div style="display:flex;gap:40px">
+<div style="flex:3;display:flex;flex-direction:column;gap:4px;background:#141B2D;color:#D8DBE2;padding:32px 36px;border-radius:12px;font-family:'JuliaMono', 'JetBrains Mono', 'Courier New', monospace">
+<p style="font-size:25px;line-height:1.55;color:#8A93A3">Mojo bridge: opencl:0 FD702 (GPU, Qualcomm; rusticl)</p>
+<p style="font-size:25px;line-height:1.55;color:#8A93A3">OpenCL device kernels: 0.003692 ms; total 26.954 ms</p>
+<p style="font-size:25px;line-height:1.55">-0.75 -0.5 -0.25 0 0.25 0.5 0.75 1</p>
+<p style="font-size:25px;line-height:1.55">-0 -0 -0 0 0 0 0.75 1</p>
+<p style="font-size:25px;line-height:1.55">0 0 0 0 0.25 0.5 0.75 1</p>
+<p style="font-size:25px;line-height:1.55"><span style="color:#8FD3D4">ok: 3 lines agree (tolerance 1e-05)</span></p>
+<p style="font-size:25px;line-height:1.55"><span style="color:#8FD3D4">PASS: deliberately corrupted final output was rejected</span></p>
+<p style="font-size:25px;line-height:1.55"><span style="color:#E0B400">RESULT: 24 of 24 outputs agree with X_eTaL baseline</span></p>
+<p style="font-size:25px;line-height:1.55"><span style="color:#E0B400">and Mojo reference on physical FD702</span></p>
+</div>
+<div style="flex:2;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:8px;background:#FFFFFC;padding:28px 32px;border:1px solid #D8D3C6;border-radius:16px">
+<p style="font-size:64px;font-weight:600;line-height:1;color:#141B2D">2 oracles</p>
+<p style="font-size:25px;line-height:1.4;color:#3D4553">Mojo's own CPU reference and X_eTaL's saved evaluator output, both exact on these values.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#FFFFFC;padding:28px 32px;border:1px solid #D8D3C6;border-radius:16px">
+<p style="font-size:64px;font-weight:600;line-height:1;color:#141B2D">1 negative test</p>
+<p style="font-size:25px;line-height:1.4;color:#3D4553">The launcher's --corrupt-output flag adds one to element 23; the run must fail, and did: "Mismatch at 23: got 2 expected 1".</p>
+</div>
+</div>
+</div>
+<p style="font-size:27px;line-height:1.4;color:#3D4553;width:1664px">The 27 ms total is one-shot setup, upload, dispatch and download for eight elements. It is a proof of execution, not a throughput number, and nobody should quote it as one.</p>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6A7179">adreno-poc/docs/evidence/unoq-mojo-opencl-20261023: demo.log, corrupt.log, environment.log with binary hashes</p>
+<aside>A test that cannot fail proves nothing, so the demo script corrupts one output on purpose and checks that the comparison rejects it. The same bridge, same shader, same inputs as the X_eTaL run; only the host language changed.</aside>
+</section>

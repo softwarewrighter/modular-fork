@@ -1,0 +1,20 @@
+<section id="metal" data-transition="fade" style="background:#141B2D;color:#F5F3EE;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#E0A030">To the metal</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">The Adreno instructions, read against the source</h2>
+</div>
+<table style="font-size:27px;color:#C9D1DC;border:1px solid #33425F">
+<tr style="background:#1F2A44;color:#F5F3EE"><th style="width:44%;text-align:left;padding:14px 20px;font-family:'JuliaMono', 'JetBrains Mono', 'Courier New', monospace">Freedreno IR3 instruction</th><th style="width:56%;text-align:left">Role in the kernel</th></tr>
+<tr><td style="font-family:'JuliaMono', 'JetBrains Mono', 'Courier New', monospace;color:#8FD3D4">(sy)mul.f r3.w, r3.w, c16.y</td><td>Multiply by 0.25: the source's divide by four</td></tr>
+<tr style="background:#1A2338"><td style="font-family:'JuliaMono', 'JetBrains Mono', 'Courier New', monospace;color:#8FD3D4">add.f r3.w, r3.w, c16.z</td><td>Add -1.0 to form x</td></tr>
+<tr><td style="font-family:'JuliaMono', 'JetBrains Mono', 'Courier New', monospace;color:#8FD3D4">cmps.f.lt hr3.z, (0.5), r3.w</td><td>Test 0.5 &lt; x, that is x &gt; 0.5</td></tr>
+<tr style="background:#1A2338"><td style="font-family:'JuliaMono', 'JetBrains Mono', 'Courier New', monospace;color:#8FD3D4">cov.u16f32 (even)r2.x, hr3.z</td><td>Convert the comparison into a Float mask</td></tr>
+<tr><td style="font-family:'JuliaMono', 'JetBrains Mono', 'Courier New', monospace;color:#8FD3D4">mul.f r2.x, r3.w, r2.x</td><td>x times the mask: the threshold</td></tr>
+<tr style="background:#1A2338"><td style="font-family:'JuliaMono', 'JetBrains Mono', 'Courier New', monospace;color:#8FD3D4">max.f r3.w, r3.w, (0.0)</td><td>ReLU</td></tr>
+<tr><td style="font-family:'JuliaMono', 'JetBrains Mono', 'Courier New', monospace;color:#8FD3D4">stg.u32 g[r5.x], r2.x, 1</td><td>Store one threshold element</td></tr>
+<tr style="background:#1A2338"><td style="font-family:'JuliaMono', 'JetBrains Mono', 'Courier New', monospace;color:#8FD3D4">stg.u32 g[r2.w], r3.w, 1</td><td>Store one ReLU element</td></tr>
+</table>
+<p style="font-size:27px;line-height:1.4;color:#C9D1DC;width:1664px">Captured with Mesa's own switches: RUSTICL_DEBUG=nir for every NIR stage and IR3_SHADER_DEBUG=disasm for the native shader. The driver's binary container holds SPIR-V 1.4 with OpenCL physical pointers, not machine code; the Adreno instructions appear only in this diagnostic compile. The 64-bit Int remainder expands to dozens of 32-bit instructions around this short Float sequence.</p>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#8A93A3">adreno-poc/docs/evidence/unoq-deep-dive-20261023: xetal-native.disasm, xetal-mesa-debug.log, threshold.opencl.spvasm</p>
+<aside>This is the same exercise as the earlier CUDA, Metal and AMD deep dive, now for a Qualcomm GPU through an open-source driver. The constant 0x3e800000 is 0.25; the compiler turned the division into a multiply. The annotations relate data flow and constants, not a debug map; no source-to-instruction mapping is claimed.</aside>
+</section>

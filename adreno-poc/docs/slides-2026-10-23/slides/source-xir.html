@@ -1,0 +1,38 @@
+<section id="source-xir" data-transition="fade" style="background:#F5F3EE;color:#141B2D;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#B07A1A">The source</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">Eight lines of X_eTaL, as typed and as rendered</h2>
+</div>
+<div style="display:flex;gap:40px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<h3 style="font-size:32px;font-weight:600">As typed: plain ASCII</h3>
+<div style="display:flex;flex-direction:column;gap:4px;background:#141B2D;color:#D8DBE2;padding:32px 36px;border-radius:12px;font-family:'JuliaMono', 'JetBrains Mono', 'Courier New', monospace">
+<p style="font-size:28px;line-height:1.5">"ac:" u_se&lt; "Accel"</p>
+<p style="font-size:28px;line-height:1.5">x := ((r_ange 8) / 4) - 1.0</p>
+<p style="font-size:28px;line-height:1.5">x</p>
+<p style="font-size:28px;line-height:1.5">0.5 ac:t_hreshold x</p>
+<p style="font-size:28px;line-height:1.5">ac:r_elu x</p>
+<p style="font-size:28px;line-height:1.5">n := (r_ange 8) - 4</p>
+<p style="font-size:28px;line-height:1.5">ac:r_elu n</p>
+<p style="font-size:28px;line-height:1.5">(n m_od 2) ac:k_eep n</p>
+</div>
+<p style="font-size:26px;line-height:1.4;color:#3D4553">An underscore underlines the letter before it and makes the name a function. A library alias before a colon becomes a superscript.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<h3 style="font-size:32px;font-weight:600">As rendered: the editor's decorated pane</h3>
+<div style="display:flex;flex-direction:column;gap:4px;background:#16181D;color:#D8DBE2;padding:32px 36px;border-radius:12px;font-family:'JuliaMono', 'JetBrains Mono', 'Courier New', monospace">
+<p style="font-size:28px;line-height:1.5"><span style="color:#E8D27A">"ac:"</span> <span style="color:#E0B400">u̲se&lt;</span> <span style="color:#E8D27A">"Accel"</span></p>
+<p style="font-size:28px;line-height:1.5">x ← ((<span style="color:#5B9CFF">r̲ange</span> <span style="color:#E0B400">8</span>) <span style="color:#7FBFFF">÷</span> <span style="color:#E0B400">4</span>) <span style="color:#7FBFFF">−</span> <span style="color:#E0B400">1.0</span></p>
+<p style="font-size:28px;line-height:1.5">x</p>
+<p style="font-size:28px;line-height:1.5"><span style="color:#E0B400">0.5</span> <span style="color:#22B8C8">ᵃᶜt̲hreshold</span> x</p>
+<p style="font-size:28px;line-height:1.5"><span style="color:#22B8C8">ᵃᶜr̲elu</span> x</p>
+<p style="font-size:28px;line-height:1.5">n ← (<span style="color:#5B9CFF">r̲ange</span> <span style="color:#E0B400">8</span>) <span style="color:#7FBFFF">−</span> <span style="color:#E0B400">4</span></p>
+<p style="font-size:28px;line-height:1.5"><span style="color:#22B8C8">ᵃᶜr̲elu</span> n</p>
+<p style="font-size:28px;line-height:1.5">(n <span style="color:#5B9CFF">m̲od</span> <span style="color:#E0B400">2</span>) <span style="color:#22B8C8">ᵃᶜk̲eep</span> n</p>
+</div>
+<p style="font-size:26px;line-height:1.4;color:#3D4553">Blue: built-in function. Teal: library function, with its alias raised. Amber: number, string, or the import macro. Light blue: operator. The evaluator prints five lines; these are the oracle.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6A7179">adreno-poc/docs/evidence/unoq-xetal-opencl-20261023/threshold.xtl; the text is the output of xetal render, set in JuliaMono, the editor's colors</p>
+<aside>X_eTaL source is plain ASCII on disk. The editor shows the decorated form: the first letter of a function underlined, the library alias raised, the ASCII operators replaced by their mathematical symbols. The colors are the ones the X_eTaL editor and its documentation pages use.</aside>
+</section>

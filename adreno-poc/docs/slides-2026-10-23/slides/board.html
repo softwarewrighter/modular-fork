@@ -1,0 +1,29 @@
+<section id="board" data-transition="fade" style="background:#F5F3EE;color:#141B2D;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#B07A1A">The board</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">A 2 GB Arduino with a GPU nobody targets</h2>
+</div>
+<div style="display:flex;gap:40px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FFFFFC;padding:40px;border:1px solid #D8D3C6;border-radius:16px">
+<h3 style="font-size:36px;font-weight:600">Arduino UNO Q</h3>
+<ul style="font-size:30px;line-height:1.45;color:#3D4553">
+<li>Qualcomm Dragonwing QRB2210</li>
+<li>Four Cortex-A53 cores, reported as Kryo-V2 at 2016 MHz</li>
+<li>Qualcomm Adreno 702 GPU</li>
+<li>1.7 GiB usable RAM, 870 MiB swap</li>
+<li>Debian 13.1 aarch64, glibc 2.41, Mesa 25.2.6</li>
+</ul>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#141B2D;color:#F5F3EE;padding:40px;border-radius:16px">
+<h3 style="font-size:36px;font-weight:600;color:#E0A030">Why it is interesting</h3>
+<ul style="font-size:30px;line-height:1.45;color:#C9D1DC">
+<li>Mojo's GPU support lists NVIDIA, AMD and Apple. No Qualcomm, no OpenCL, no Vulkan.</li>
+<li>Mesa exposes the GPU twice: Turnip for Vulkan 1.0 and rusticl for OpenCL 3.0.</li>
+<li>CPU and GPU share one small memory. Every copy and every byte matters.</li>
+<li>Mojo's own requirements ask for 8 GB of RAM.</li>
+</ul>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6A7179">Source: adreno-poc/docs/uno-q-capabilities.md, collected over ssh on 2026-10-23</p>
+<aside>The UNO Q pairs a Qualcomm QRB2210 application processor with an STM32 microcontroller. The part I care about is the Adreno 702. Mesa drives it with two open-source stacks, Turnip for Vulkan and rusticl for OpenCL. Mojo knows nothing about either. That is the whole challenge.</aside>
+</section>
