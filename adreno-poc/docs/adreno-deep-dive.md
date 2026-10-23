@@ -333,6 +333,165 @@ are captured separately from the full X_eTaL kernel. Its native dump contains
 smaller kernels omit the full X_eTaL fixture's Int arithmetic. This is a
 code-size observation, not a measured performance comparison.
 
+## 8. threshold.mojo, line by line, and how it relates to threshold.xtl
+
+[`mojo/threshold.mojo`](../mojo/threshold.mojo) is the CPU half of the Mojo
+demo. It computes the first three lines `threshold.xtl` prints, keeps its
+own answers, and asks the Adreno for the same values. The GPU kernel is not
+compiled from this Mojo, and not from the X_eTaL source either; both demos
+end in the same X_eTaL-gpu OpenCL emitter.
+
+1. `@export("mojo_adreno_demo")` with `abi("C")` gives the function a plain
+   C symbol. [`mojo/launcher.c`](../mojo/launcher.c) owns `main`, allocates
+   three float arrays and calls it, so no Mojo startup or runtime is
+   linked (the runtime is what failed with SIGILL, section 6).
+2. The loop sets `x = (i + 1) / 4 - 1` for eight elements: -0.75 to 1.0,
+   the same vector as X_eTaL's `x := ((r_ange 8) / 4) - 1.0`, whose range
+   runs 1 to 8.
+3. For each element it writes the expected x, the threshold `x * mask`
+   (mask 1.0 when x > 0.5) and ReLU `max(x, 0)`: 24 values in three rows.
+4. `external_call["adreno_threshold_v1", Int32](...)` calls the Rust bridge
+   with the 8 inputs and room for 24 outputs.
+5. It compares all 24 returned values with its reference and returns the
+   number of mismatches.
+
+The bridge refuses to run unless exactly one OpenCL device is the Qualcomm
+FD702, then builds this XIR as text and runs it through X_eTaL-gpu's
+planner, OpenCL C emitter and runtime:
+
+```text
+%x = input f64 [8]
+%gt = map gt %x %t
+%mask = cast f64 %gt
+%threshold = map mul %x %mask
+%relu = map max %x %zero
+output %x
+output %threshold
+output %relu
+```
+
+| | X_eTaL demo | Mojo demo |
+| --- | --- | --- |
+| Who writes the computation | `threshold.xtl`, lowered by `xetal-gpu lower` | Written twice by hand: in Mojo for the CPU check, and as the bridge's XIR string |
+| Where x is computed | On the GPU, from the range constant (divide, subtract) | On the CPU in Mojo, uploaded as an input |
+| Outputs | Five lines, including Int ReLU and the modulo mask | The first three lines, all Float |
+| Path to the GPU | XIR, OpenCL C, Mesa, Adreno | Mojo on the A53, a C call, then the same XIR-to-Adreno path |
+| Oracle | X_eTaL evaluator's saved output | Mojo's own reference and the same saved output (first three lines) |
+
+The threshold is the same formula in all three spellings. X_eTaL's Accel
+library defines it, in Core, as `x * f_loat (x > t)`; Mojo writes
+`x * mask` with the mask 1.0 when x > 0.5; the bridge's XIR spells it
+`gt`, `cast`, `mul`. What this demo shows is Mojo-compiled code on the A53
+driving real GPU work, checked against two oracles. It does not show Mojo
+generating a GPU kernel: Mojo is the host program.
+
+## 9. Toward ordinary Mojo on the Adreno
+
+### What ordinary Mojo looks like on a supported GPU
+
+[`mojo/activation_gpu.mojo`](../mojo/activation_gpu.mojo) is the same
+threshold and ReLU written the way Mojo is written for Apple silicon or
+NVIDIA: a kernel function that reads `block_idx`, `block_dim` and
+`thread_idx`, and a host `main` that opens a `DeviceContext`, creates
+buffers, copies, launches with `enqueue_function[activations](...,
+grid_dim=..., block_dim=...)` and copies back. The kernel:
+
+```mojo
+def activations(x: Pointer[Float32, ImmutAnyOrigin],
+                threshold: Pointer[Float32, MutAnyOrigin],
+                relu: Pointer[Float32, MutAnyOrigin], t: Float32, n: Int32):
+    var i = Int(block_idx.x * block_dim.x + thread_idx.x)
+    if i < Int(n):
+        var v = x[unsafe_offset=i]
+        var mask = Float32(1.0) if v > t else Float32(0.0)
+        threshold[unsafe_offset=i] = v * mask
+        relu[unsafe_offset=i] = max(v, Float32(0.0))
+```
+
+There is no separate Apple and NVIDIA version. The one file ran on the
+M1 Max ([run log](evidence/m1max-mojo-targets-20261023/metal-run.log): 24 of
+24, the first three lines of X_eTaL's output exactly, `-0.0` included),
+and the same file cross-compiles on the Mac for the RTX 5060 Ti and for
+Apple M4 ([PTX](evidence/m1max-mojo-targets-20261023/activations.rtx5060.ptx),
+[NVPTX LLVM IR](evidence/m1max-mojo-targets-20261023/activations.rtx5060.nvptx.ll),
+[AIR](evidence/m1max-mojo-targets-20261023/activations.apple-m4.air.ll)).
+`DeviceContext()` picks the machine's GPU; the compiler picks AIR or PTX.
+Running it on the RTX 5060 Ti is the Arch box's `mojo run`; it has not been
+run there for this file.
+
+### Why X_eTaL reaches the Adreno and ordinary Mojo does not
+
+X_eTaL-gpu owns its code generation only down to OpenCL C, a portable
+source language, and hands that to whatever OpenCL driver is present;
+rusticl compiles it for the Adreno like any other device. Mojo owns its
+code generation all the way to the vendor's own form and its runtime talks
+to the vendor's own driver:
+
+| Layer | Apple silicon | RTX 5060 Ti | Adreno 702 |
+| --- | --- | --- | --- |
+| Kernel target in Mojo's stdlib | `air64-apple-macosx` ([Metal plugin targets](../../Mojo/stdlib/std/_plugin/metal/metal_targets.mojo)) | `nvptx64-nvidia-cuda` | none |
+| LLVM back-end in Mojo's compiler | AIR | NVPTX | SPIR-V back-end not in this build |
+| Runtime behind `DeviceContext` | Metal | CUDA driver | none: CUDA, HIP and Metal only |
+| Driver on the device | Apple's | NVIDIA's | Mesa: rusticl (OpenCL 3.0, accepts SPIR-V) and Turnip (Vulkan 1.0) |
+
+Two probes on the Mac, with the pinned nightly, establish the middle rows
+([probe](evidence/m1max-mojo-targets-20261023/spirv-target-probe.mojo),
+[its output](evidence/m1max-mojo-targets-20261023/spirv-target-probe.log)):
+
+- `--target-accelerator=spirv`, `opencl`, `vulkan`, `adreno` and others
+  fail in the stdlib's target lookup: no such accelerator is registered.
+- Building a `CompilationTarget` by hand with the triple
+  `spirv64-unknown-unknown` (also `spirv-unknown-vulkan1.3`,
+  `spirv64-unknown-opencl`) and asking `compile_info` for code, even
+  unoptimized LLVM IR only, fails with
+  `target 'spirv64-unknown-unknown' is not supported by this build`.
+  The gate is in the compiler binary, not in the open stdlib.
+
+### What the kernel needs to become SPIR-V
+
+The [NVPTX LLVM IR](evidence/m1max-mojo-targets-20261023/activations.rtx5060.nvptx.ll)
+Mojo emits for the kernel is 25 lines of ordinary LLVM. Only these parts
+are NVIDIA-specific:
+
+| NVPTX IR | OpenCL SPIR-V equivalent |
+| --- | --- |
+| `target triple = "nvptx64-nvidia-cuda"` and its data layout | `spirv64-unknown-unknown` and the SPIR-V data layout |
+| `ptx_kernel` calling convention | `spir_kernel` |
+| plain `ptr` buffer arguments | `ptr addrspace(1)` (OpenCL global) |
+| `llvm.nvvm.read.ptx.sreg.ctaid.x` | `get_group_id(0)` (SPIR-V `WorkgroupId`) |
+| `llvm.nvvm.read.ptx.sreg.ntid.x` | `get_local_size(0)` (`WorkgroupSize`) |
+| `llvm.nvvm.read.ptx.sreg.tid.x` | `get_local_id(0)` (`LocalInvocationId`) |
+| `"target-cpu"="sm_120a"` attributes | dropped |
+
+The arithmetic (`fcmp ogt`, `select`, `fmul`, `llvm.maxnum.f32`) is
+target-neutral. rusticl advertises `cl_khr_il_program`, so a SPIR-V module
+can be loaded with `clCreateProgramWithIL` in place of OpenCL C source.
+
+### The road, in three stages
+
+1. **Retarget experiment (Arch, then the board; saga step
+   `mojo-kernel-spirv`).** Take the kernel IR Mojo emits for NVIDIA,
+   rewrite the parts in the table above with a small script, compile it
+   with an LLVM that has the SPIR-V back-end (or the Khronos
+   SPIR-V/LLVM translator), load it on the board through the bridge with
+   `clCreateProgramWithIL`, launch it with the same grid, and check the 24
+   outputs against both oracles. That is a Mojo-authored kernel, compiled
+   by Mojo to LLVM IR, executing on the Adreno. The host is still the C ABI
+   bridge, not `DeviceContext`.
+2. **Generalize the rewrite.** Barriers, shared memory (address space 3),
+   atomics and math library calls (`__nv_expf` and friends from libdevice)
+   need their OpenCL SPIR-V equivalents; each one a test with an oracle.
+   The rust-demo programs (reductions, softmax) are the test set.
+3. **Native support.** A SPIR-V target and an OpenCL or Vulkan runtime
+   behind `DeviceContext`. The target table is open stdlib code; the
+   compiler's back-end list and the runtime are not in this repository,
+   so this stage needs Modular. The retarget experiment is the evidence
+   to bring to them.
+
+This is the go/no-go the plan's `mojo-spirv-research` step asked for: no-go
+for a native Mojo Adreno target from this fork alone; go for the retarget
+experiment, which needs only tools Arch has.
+
 ## Reproduce and evidence index
 
 The working X_eTaL demo is available now:

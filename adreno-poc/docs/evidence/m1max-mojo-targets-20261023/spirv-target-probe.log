@@ -1,0 +1,4 @@
+/Users/mike/github/softwarewrighter/modular-fork/adreno-poc/work/probe/p2.mojo:1:1: error: target 'spirv64-unknown-unknown' is not supported by this build
+from std.compile import compile_info
+^
+/Users/mike/github/softwarewrighter/modular-fork/rust-demo/.venv/bin/mojo: error: failed to run the pass manager

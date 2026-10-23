@@ -1,0 +1,10 @@
+# From adreno-poc on the M1 Max, Mojo from ../rust-demo/.venv (pinned nightly).
+mojo run mojo/activation_gpu.mojo                                              > metal-run.log
+mojo build mojo/activation_gpu.mojo --target-accelerator=nvidia:120 --emit asm   # side file: activations.rtx5060.ptx
+mojo build mojo/activation_gpu.mojo --target-accelerator=nvidia:120 --emit llvm  # side file: activations.rtx5060.nvptx.ll
+mojo build mojo/activation_gpu.mojo --target-accelerator=metal:4 --emit asm      # side file: activations.apple-m4.air.ll
+mojo run spirv-target-probe.mojo                                               > spirv-target-probe.log
+# Side files were renamed from <out>_activation_gpu_activations_<hash>.<ext>.
+# Also tried, same "not supported by this build" error: spirv-unknown-vulkan1.3,
+# spirv64-unknown-opencl; and --target-accelerator=spirv|spirv64|opencl|vulkan|adreno|qualcomm,
+# which fail earlier in the stdlib's target lookup (std/_gpu/host/info.mojo).
