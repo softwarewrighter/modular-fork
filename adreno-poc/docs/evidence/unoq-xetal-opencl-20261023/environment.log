@@ -11,7 +11,7 @@ bf768f23a3adce771e4ac7b9fa6611db76b8a5d2e0a74919d8878aafb7d745fb  schedules/adre
 Number of platforms                               1
   Platform Name                                   rusticl
   Platform Vendor                                 Mesa/X.org
-  Platform Version                                OpenCL 3.0 
+  Platform Version                                OpenCL 3.0
   Platform Profile                                FULL_PROFILE
   Platform Extensions                             cl_khr_icd cl_khr_byte_addressable_store cl_khr_create_command_queue cl_khr_expect_assume cl_khr_extended_bit_ops cl_khr_extended_versioning cl_khr_global_int32_base_atomics cl_khr_global_int32_extended_atomics cl_khr_il_program cl_khr_local_int32_base_atomics cl_khr_local_int32_extended_atomics cl_khr_integer_dot_product cl_khr_spirv_no_integer_wrap_decoration cl_khr_spirv_queries cl_khr_suggested_local_work_size cl_khr_spirv_linkonce_odr cl_khr_fp16 cles_khr_int64 cl_khr_kernel_clock cl_khr_image2d_from_buffer cl_khr_3d_image_writes cl_khr_depth_images cl_ext_image_unorm_int_2_101010 cl_khr_priority_hints cl_khr_device_uuid
   Platform Extensions with Version                cl_khr_icd                                                       0x800000 (2.0.0)
@@ -48,7 +48,7 @@ Number of devices                                 1
   Device Name                                     FD702
   Device Vendor                                   Qualcomm
   Device Vendor ID                                0x5143
-  Device Version                                  OpenCL 3.0 
+  Device Version                                  OpenCL 3.0
   Device UUID                                     d9222251-41b3-52f3-e17d-56e2eb8a6415
   Driver UUID                                     45c33411-6401-64f3-a2c2-29b107000a52
   Valid Device LUID                               No
@@ -56,7 +56,7 @@ Number of devices                                 1
   Device Node Mask                                0
   Device Numeric Version                          0xc00000 (3.0.0)
   Driver Version                                  25.2.6-1~bpo13+1
-  Device OpenCL C Version                         OpenCL C 1.2 
+  Device OpenCL C Version                         OpenCL C 1.2
   Device OpenCL C Numeric Version                 0x402000 (1.2.0)
   Device OpenCL C all versions                    OpenCL C                                                         0xc00000 (3.0.0)
                                                   OpenCL C                                                         0x402000 (1.2.0)
@@ -89,13 +89,13 @@ Number of devices                                 1
   Preferred work group size multiple (device)     16
   Preferred work group size multiple (kernel)     32
   Max sub-groups per work group                   0
-  Preferred / native vector sizes                 
-    char                                                 1 / 1       
-    short                                                1 / 1       
-    int                                                  1 / 1       
-    long                                                 1 / 1       
+  Preferred / native vector sizes
+    char                                                 1 / 1
+    short                                                1 / 1
+    int                                                  1 / 1
+    long                                                 1 / 1
     half                                                 1 / 1        (cl_khr_fp16)
-    float                                                1 / 1       
+    float                                                1 / 1
     double                                               0 / 0        (n/a)
   Half-precision Floating-point support           (cl_khr_fp16)
     Denormals                                     No
@@ -127,7 +127,7 @@ Number of devices                                 1
     Atomics                                       No
   Minimum alignment for any data type             128 bytes
   Alignment of base address                       4096 bits (512 bytes)
-  Preferred alignment for atomics                 
+  Preferred alignment for atomics
     SVM                                           0 bytes
     Global                                        0 bytes
     Local                                         0 bytes
@@ -157,11 +157,11 @@ Number of devices                                 1
   Max constant buffer size                        67108864 (64MiB)
   Generic address space support                   No
   Max size of kernel argument                     4096 (4KiB)
-  Queue properties (on host)                      
+  Queue properties (on host)
     Out-of-order execution                        Yes
     Profiling                                     Yes
   Device enqueue capabilities                     (n/a)
-  Queue properties (on device)                    
+  Queue properties (on device)
     Out-of-order execution                        No
     Profiling                                     No
     Preferred size                                0
@@ -170,7 +170,7 @@ Number of devices                                 1
   Max events on device                            0
   Prefer user sync for interop                    Yes
   Profiling timer resolution                      52ns
-  Execution capabilities                          
+  Execution capabilities
     Run OpenCL kernels                            Yes
     Run native kernels                            No
     Non-uniform work-groups                       No

@@ -1,7 +1,7 @@
 number = 5
 slug = "mojo-opencl-demo"
 status = "pending"
-description = "HIGH PRIORITY - NEXT: equivalent Mojo program driving the same physical Adren..."
+description = "Prefer Arch-to-UNO cross-compilation first: the pinned Mojo 1.2.0.dev20261013..."
 role = "production"
 context_files = []
 created_at = "2026-10-23T14:05:21"

@@ -1,0 +1,8 @@
+Failed to initialize Crashpad.  Crash reporting will not be available.  Cause: while locating crashpad handler: unable to locate crashpad handler executable
+Warning: cache directory '/home/mike/.cache/modular/.mojo_cache/mojo/transform' is not writable; compilation caching will be disabled for this path. Set MODULAR_CACHE_DIR to a writable directory, or set MODULAR_ENABLE_CACHE_LOGGING=1 for full diagnostics.
+Warning: cache directory '/home/mike/.cache/modular/.mojo_cache/mojo/transform' is not writable; compilation caching will be disabled for this path. Set MODULAR_CACHE_DIR to a writable directory, or set MODULAR_ENABLE_CACHE_LOGGING=1 for full diagnostics.
+/usr/bin/ld: /disk1/tmp/mojo_archive-6f57011.a: Relocations in generic ELF (EM: 183)
+/usr/bin/ld: /disk1/tmp/mojo_archive-6f57011.a: Relocations in generic ELF (EM: 183)
+/usr/bin/ld: /disk1/tmp/mojo_archive-6f57011.a: error adding symbols: file in wrong format
+collect2: error: ld returned 1 exit status
+../rust-demo/.venv/bin/mojo: error: failed to link executable

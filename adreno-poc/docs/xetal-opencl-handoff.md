@@ -147,3 +147,14 @@ native GPU kernels require separate compiler/runtime backend work. The
 describes the existing accelerator targets and notes that cross-compilation
 support is still in development; a host cross-build fallback must be tested,
 not assumed, if the board cannot run the compiler.
+
+Arch cross-compilation probe with the pinned Mojo
+1.2.0.dev2026101305 compiler succeeded with `--emit object`,
+`--target-triple aarch64-unknown-linux-gnu --target-cpu cortex-a53`.
+`file` identifies the output as ARM aarch64. A normal executable build
+instead invoked the host linker and failed with `EM: 183` / wrong format.
+The next step now prioritizes target linking and ARM64 runtime provisioning,
+then a real board hello, before attempting compiler installation on the board.
+Evidence: `docs/evidence/arch-mojo-cross-20261023/`; no object is committed.
+Trailing horizontal whitespace in captured OpenCL logs was normalized for
+Git's whitespace check; numeric outputs and diagnostics are preserved.
