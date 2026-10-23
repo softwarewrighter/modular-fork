@@ -13,8 +13,12 @@ against what the repositories already have: X_eTaL-gpu's XIR, OpenCL
 emitter, runtime and native extension; rust-demo's XIR parser,
 evaluator and Mojo emitter; Mojo's published aarch64 Linux wheels.
 
-Nothing is built or run yet. The steps, in order, with the host each
-needs:
+The scaffold is validated on Arch; no board dispatch has run yet. Start with
+`just setup` and `just gate`. Run `bash scripts/inventory.sh OUTPUT_DIRECTORY`
+on the UNO Q and return the complete output directory. See
+[the scaffold handoff](docs/scaffold-handoff.md) for setup and limitations.
+
+The steps, in order, with the host each needs:
 
 | # | Step | Host | What it establishes |
 | - | ---- | ---- | ------------------- |

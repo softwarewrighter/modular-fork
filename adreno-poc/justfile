@@ -1,0 +1,13 @@
+gate:
+    cargo fmt --check
+    cargo test --offline
+    cargo clippy --offline --all-targets -- -D warnings
+    for script in scripts/*.sh tests/*.sh; do bash -n "$script"; done
+    bash tests/scaffold.sh
+    git diff --check
+
+setup:
+    bash scripts/setup-host.sh
+
+inventory out:
+    bash scripts/inventory.sh {{quote(out)}}

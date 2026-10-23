@@ -1,6 +1,6 @@
 number = 1
 slug = "scaffold"
-status = "pending"
+status = "in-progress"
 description = "adreno-702 step 1, scaffold [mac]: the workspace: README, .gitignore (work/, ..."
 role = "production"
 context_files = ["docs/plan.md"]
