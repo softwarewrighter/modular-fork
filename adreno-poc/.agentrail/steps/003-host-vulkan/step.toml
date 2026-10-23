@@ -1,6 +1,6 @@
 number = 3
 slug = "host-vulkan"
-status = "pending"
+status = "in-progress"
 description = "adreno-702 step 3, host-vulkan [arch, or mac via MoltenVK]: crate `adreno-vk`..."
 role = "production"
 context_files = []

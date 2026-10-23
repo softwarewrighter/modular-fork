@@ -13,7 +13,10 @@ against what the repositories already have: X_eTaL-gpu's XIR, OpenCL
 emitter, runtime and native extension; rust-demo's XIR parser,
 evaluator and Mojo emitter; Mojo's published aarch64 Linux wheels.
 
-The scaffold is validated on Arch; no board dispatch has run yet. Start with
+The scaffold and Vulkan vector addition are validated on Arch's RTX 5060 Ti,
+with every element checked from 1K through 1M. No board dispatch has run yet.
+See [the host Vulkan results](docs/host-vulkan-handoff.md).
+Start with
 `just setup` and `just gate`. Run `bash scripts/inventory.sh OUTPUT_DIRECTORY`
 on the UNO Q and return the complete output directory. See
 [the scaffold handoff](docs/scaffold-handoff.md) for setup and limitations.

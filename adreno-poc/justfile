@@ -1,3 +1,6 @@
+export CARGO_HOME := justfile_directory() / "work/cargo"
+export CARGO_TARGET_DIR := justfile_directory() / "target"
+
 gate:
     cargo fmt --check
     cargo test --offline
@@ -11,3 +14,7 @@ setup:
 
 inventory out:
     bash scripts/inventory.sh {{quote(out)}}
+
+gpu-check:
+    cargo test --offline --test vector_add -- --ignored --nocapture
+    cargo run --offline --release

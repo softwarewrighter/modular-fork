@@ -6,3 +6,7 @@ license = "Apache-2.0 WITH LLVM-exception"
 description = "Adreno compute research scaffold"
 
 [dependencies]
+ash = "0.38"
+
+[build-dependencies]
+naga = { version = "24", features = ["glsl-in", "spv-out"] }

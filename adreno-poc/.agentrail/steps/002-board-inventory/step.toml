@@ -1,8 +1,9 @@
 number = 2
 slug = "board-inventory"
-status = "pending"
+status = "in-progress"
 description = "adreno-702 step 2, board-inventory [board]: run the inventory on the 2 GB UNO..."
 role = "production"
 context_files = []
 created_at = "2026-10-23T08:57:41"
 commits = []
+reserved_for = "UNO Q board session (waiting for user to connect board)"

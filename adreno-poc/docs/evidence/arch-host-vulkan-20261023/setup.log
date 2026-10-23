@@ -1,0 +1,8 @@
+Prepared /disk1/github/softwarewrighter/modular-fork/adreno-poc/work/host.env (arch).
+Source it before builds. See work/environment.log for installed/missing tools.
+Cross compilation is not ready until the aarch64 Rust standard library and
+linker are present. System packages and shared toolchains are never modified.
+Use --prepare-cross to install a project-local Rust target (network required).
+Mac: place MoltenVK under work/MoltenVK; install cargo-zigbuild under
+work/ and ziglang in work/.venv when cross-build step 004 needs them.
+See docs/scaffold-handoff.md for local toolchain preparation instructions.
