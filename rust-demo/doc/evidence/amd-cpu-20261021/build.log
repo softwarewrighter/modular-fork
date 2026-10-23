@@ -1,0 +1,18 @@
++ cargo run --manifest-path /disk1/github/softwarewrighter/modular-fork/rust-demo/Cargo.toml -- run /disk1/github/softwarewrighter/modular-fork/rust-demo/programs/accel-threshold.xir --emit-only
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.01s
+     Running `rust-demo/target/debug/xir-mojo run /disk1/github/softwarewrighter/modular-fork/rust-demo/programs/accel-threshold.xir --emit-only`
+program: accel-threshold (/disk1/github/softwarewrighter/modular-fork/rust-demo/programs/accel-threshold.xir)
+  N = 8 elements; 19 value(s), 0 input(s), 5 output(s); 1 fused kernel stage(s), 0 reduction(s), 7 device buffer(s)
+generated: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/accel-threshold/accel-threshold.mojo (196 lines of Mojo)
++ cargo run --manifest-path /disk1/github/softwarewrighter/modular-fork/rust-demo/Cargo.toml -- emit-cpu /disk1/github/softwarewrighter/modular-fork/rust-demo/programs/accel-threshold.xir
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.01s
+     Running `rust-demo/target/debug/xir-mojo emit-cpu /disk1/github/softwarewrighter/modular-fork/rust-demo/programs/accel-threshold.xir`
+generated: /disk1/github/softwarewrighter/modular-fork/rust-demo/work/accel-threshold/accel-threshold.cpu.mojo
++ cp /disk1/github/softwarewrighter/modular-fork/rust-demo/work/accel-threshold/accel-threshold.mojo /disk1/github/softwarewrighter/modular-fork/rust-demo/work/accel-threshold/accel-threshold.cpu.mojo /disk1/github/softwarewrighter/modular-fork/rust-demo/doc/evidence/amd-cpu-20261021/
++ /disk1/github/softwarewrighter/modular-fork/rust-demo/.venv/bin/mojo build --target-accelerator=amdgpu:gfx1100 --emit asm /disk1/github/softwarewrighter/modular-fork/rust-demo/doc/evidence/amd-cpu-20261021/accel-threshold.mojo -o /disk1/github/softwarewrighter/modular-fork/rust-demo/work/accel-threshold/mojo-amd-host.s
+Failed to initialize Crashpad.  Crash reporting will not be available.  Cause: while locating crashpad handler: unable to locate crashpad handler executable
++ cp /disk1/github/softwarewrighter/modular-fork/rust-demo/work/accel-threshold/mojo-amd-host_accel_threshold_stage0_PointetA6A6AoA6A6A_71249f9d18c284f8.amdgcn /disk1/github/softwarewrighter/modular-fork/rust-demo/work/accel-threshold/mojo-amd-host_accel_threshold_trace_PointertA6A6AoA6A6A_4463a244a46f423d.amdgcn /disk1/github/softwarewrighter/modular-fork/rust-demo/doc/evidence/amd-cpu-20261021/
++ /disk1/github/softwarewrighter/modular-fork/rust-demo/.venv/bin/mojo build --emit asm /disk1/github/softwarewrighter/modular-fork/rust-demo/doc/evidence/amd-cpu-20261021/accel-threshold.cpu.mojo -o /disk1/github/softwarewrighter/modular-fork/rust-demo/doc/evidence/amd-cpu-20261021/threshold-cpu.s
+Failed to initialize Crashpad.  Crash reporting will not be available.  Cause: while locating crashpad handler: unable to locate crashpad handler executable
++ /disk1/github/softwarewrighter/modular-fork/rust-demo/.venv/bin/mojo build /disk1/github/softwarewrighter/modular-fork/rust-demo/doc/evidence/amd-cpu-20261021/accel-threshold.cpu.mojo -o /disk1/github/softwarewrighter/modular-fork/rust-demo/work/accel-threshold/threshold-mojo-cpu
+Failed to initialize Crashpad.  Crash reporting will not be available.  Cause: while locating crashpad handler: unable to locate crashpad handler executable

@@ -9,7 +9,7 @@
 //! X_eTaL evaluator printed for the same program, one line per output; the
 //! device is then checked against it too, as X_eTaL-gpu's gate checks OpenCL.
 
-use xir_mojo::{cuda, emit, eval, host, ir};
+use xir_mojo::{cuda, emit, eval, hip, host, ir};
 
 use std::collections::{BTreeMap, HashMap};
 use std::fs;
@@ -38,7 +38,7 @@ fn usage() -> ! {
 fn parse_args() -> Args {
     let mut it = std::env::args().skip(1);
     let command = it.next().unwrap_or_else(|| usage());
-    if command != "run" && command != "check" && command != "emit-cuda" {
+    if !["run", "check", "emit-cuda", "emit-hip", "emit-cpu"].contains(&command.as_str()) {
         usage();
     }
     let mut args = Args {
@@ -217,7 +217,7 @@ fn real_main(args: &Args) -> Result<(), String> {
     };
     let plan = emit::plan(&program);
 
-    if args.command == "emit-cuda" {
+    if args.command.starts_with("emit-") {
         if let Some(expected) = &expected {
             for (j, &o) in program.outputs.iter().enumerate() {
                 if !compare(&reference[j], &expected[j], program.values[o].ty).0 {
@@ -225,14 +225,19 @@ fn real_main(args: &Args) -> Result<(), String> {
                 }
             }
         }
-        let text = cuda::emit(&program, &bound, expected.as_deref().unwrap_or(&reference))?;
+        let oracle = expected.as_deref().unwrap_or(&reference);
+        let (text, extension) = match args.command.as_str() {
+            "emit-hip" => (hip::emit(&program, &bound, oracle)?, "hip"),
+            "emit-cpu" => (emit::emit_cpu(&program, &bound, oracle)?, "cpu.mojo"),
+            _ => (cuda::emit(&program, &bound, oracle)?, "cu"),
+        };
         let dir = args
             .work
             .clone()
             .unwrap_or_else(|| host::experiment_root().join("work"))
             .join(&stem);
         fs::create_dir_all(&dir).map_err(|e| e.to_string())?;
-        let path = dir.join(format!("{stem}.cu"));
+        let path = dir.join(format!("{stem}.{extension}"));
         fs::write(&path, text).map_err(|e| e.to_string())?;
         println!("generated: {}", path.display());
         return Ok(());

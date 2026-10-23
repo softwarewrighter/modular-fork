@@ -6,4 +6,5 @@ pub mod cuda;
 pub mod emit;
 pub mod eval;
 pub mod host;
+pub mod hip;
 pub mod ir;

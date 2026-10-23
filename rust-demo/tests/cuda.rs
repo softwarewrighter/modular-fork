@@ -1,6 +1,6 @@
 //! Execute emitted expressions with a host C++ compiler, independently of CUDA.
 use std::{collections::HashMap, fs, process::Command};
-use xir_mojo::{cuda, eval, ir};
+use xir_mojo::{cuda, eval, hip, ir};
 
 #[test]
 fn generated_cpp_checks_signed_mod_bools_scalar_outputs_and_casts() {
@@ -45,6 +45,10 @@ fn generated_cpp_checks_signed_mod_bools_scalar_outputs_and_casts() {
         .unwrap()
         .success());
     assert!(!Command::new(&exe).output().unwrap().status.success());
+    // Compile and execute the HIP spelling too, including its oracle checks.
+    fs::write(&src, hip::emit(&p, &inputs, &want).unwrap()).unwrap();
+    assert!(Command::new("c++").args(["-DXIR_CPU_ONLY", "-Wall", "-Werror"]).arg(&src).arg("-o").arg(&exe).status().unwrap().success());
+    assert!(Command::new(&exe).output().unwrap().status.success());
     fs::remove_dir_all(dir).unwrap();
 }
 
