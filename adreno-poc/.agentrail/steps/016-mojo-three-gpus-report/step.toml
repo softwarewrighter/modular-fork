@@ -1,8 +1,9 @@
 number = 16
 slug = "mojo-three-gpus-report"
-status = "pending"
+status = "completed"
 description = "Write docs/mojo-on-3-gpus.md documenting the shared Mojo activation sample, s..."
 role = "production"
 context_files = []
 created_at = "2026-10-23T16:52:03"
-commits = []
+completed_at = "2026-10-23T16:55:25"
+commits = ["80fba7d30458f3106d16220b6b1a0498495ad55d"]
