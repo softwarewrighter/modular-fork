@@ -1,8 +1,9 @@
 number = 5
 slug = "mojo-opencl-demo"
-status = "in-progress"
+status = "completed"
 description = "Prefer Arch-to-UNO cross-compilation first: the pinned Mojo 1.2.0.dev20261013..."
 role = "production"
 context_files = []
 created_at = "2026-10-23T14:05:21"
-commits = []
+completed_at = "2026-10-23T14:25:04"
+commits = ["3332f5ecba1f45ced88622659f92befdab676850"]
