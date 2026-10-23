@@ -93,19 +93,25 @@ evaluator's `.expect`) and says what ran and what is only a listing.
    creates storage buffers, binds, dispatches with the count as a push
    constant, reads back and checks every element against a CPU
    reference; 1 K to 1 M elements. Runs on the host GPU first.
-4. cross-aarch64 [arch or mac, then board] -- the
+4. xetal-gpu-opencl-board [arch, then board] -- HIGH PRIORITY, DO NEXT.
+   The connected UNO Q inventory confirms rusticl's physical Qualcomm FD702
+   GPU and compiler. Cross-build the existing X_eTaL-gpu tool under work/,
+   deploy it with its Accel library and demos, and show X_eTaL source running
+   through OpenCL on the Adreno. Start with threshold/ReLU and vector-add,
+   then saxpy, reduce-sum and pipeline. Print the selected device and driver;
+   check every output against X_eTaL's evaluator. Capture source, exact
+   commands, reference and GPU outputs, source revisions and run logs in an
+   evidence directory, with a one-command demo script and a handoff. Add an
+   adreno-702 schedule only if required. Do not wait for Vulkan compatibility
+   work. Enumeration alone does not complete this step; if dispatch fails,
+   record the exact failure and the next experiment rather than claiming a
+   successful demo.
+5. cross-aarch64 [arch or mac, then board] -- the
    aarch64-unknown-linux-gnu build of adreno-vk (cross gcc on Arch,
    cargo-zigbuild on the Mac), `scripts/deploy.sh` (scp, ssh, run,
    fetch the log); the first dispatch on the Adreno 702 through
    Turnip, driver name in the log, every element checked. This is the
-   research's acceptance criterion; nothing compiler-side before it.
-5. xetal-gpu-opencl-board [board] -- X_eTaL-gpu's existing path:
-   cross-build `xetal-gpu`, `xetal-gpu devices` on the board through
-   rusticl, the Accel demos (threshold, saxpy, reduce-sum, pipeline,
-   vector-add) run and checked against the evaluator, a
-   `schedules/adreno-702.toml` if the defaults do not fit; evidence
-   and a handoff. If rusticl is absent or broken, that finding is the
-   deliverable and the step closes.
+   Vulkan acceptance criterion; the OpenCL demo has priority before it.
 6. xir-glsl [mac or arch] -- the emitter: XIR to GLSL compute, one
    shader per fused stage, reductions as two passes, patterned on
    rust-demo's `emit.rs` and X_eTaL-gpu's OpenCL emitter; `xir-vk run

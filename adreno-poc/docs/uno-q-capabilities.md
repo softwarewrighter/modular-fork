@@ -48,7 +48,7 @@ COMPUTE and TRANSFER. Its relevant limits are:
 A HOST_VISIBLE, HOST_COHERENT, DEVICE_LOCAL memory type is exposed. The
 256-thread workgroup and 4 MiB buffers of the host vector-add demo fit
 these reported limits. Its current Vulkan >= 1.1 selection requirement
-would nevertheless reject the Adreno. Step 004 needs a Vulkan 1.0-compatible
+would nevertheless reject the Adreno. Step 005 needs a Vulkan 1.0-compatible
 path, including extension-aware property queries and shader validation for
 that environment, before attempting a physical dispatch. Do not select
 llvmpipe to bypass this requirement.
@@ -77,13 +77,13 @@ kernel has been compiled or dispatched by this inventory.
 
 **OpenCL-first: go for the existing X_eTaL-gpu path.** The physical GPU and
 compiler are exposed through rusticl, with the OpenCL C 1.2 language that
-the existing emitter uses. Step 005 must still verify compilation,
+the existing emitter uses. Step 004 must still verify compilation,
 dispatch and every output against the evaluator before calling it working.
 
 **Vulkan: go for a Vulkan 1.0 compatibility experiment.** Physical compute
 queues and appropriate buffer/workgroup limits are exposed, but the host
 demo's 1.1 minimum is incompatible with this driver as reported. Keep
-step 004's real-Adreno dispatch acceptance criterion; modify the host
+step 005's real-Adreno dispatch acceptance criterion; modify the host
 code with tests when that step is begun. No compiler-side work is justified
 by inventory alone.
 

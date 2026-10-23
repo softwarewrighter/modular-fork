@@ -1,7 +1,7 @@
-number = 5
+number = 4
 slug = "xetal-gpu-opencl-board"
 status = "pending"
-description = "adreno-702 step 5, xetal-gpu-opencl-board [board]: X_eTaL-gpu's existing path..."
+description = "HIGH PRIORITY - NEXT: demonstrate actual X_eTaL source running on the UNO Q A..."
 role = "production"
 context_files = []
 created_at = "2026-10-23T08:57:41"
