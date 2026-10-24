@@ -1,42 +1,55 @@
-<section id="mojo-source" data-transition="fade" style="background:#F5F3EE;color:#141B2D;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
-<div style="display:flex;flex-direction:column;gap:12px">
-<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#B07A1A">The Mojo</p>
-<h2 style="font-size:72px;font-weight:600;line-height:1.1">One exported function: fill, call, check</h2>
+<section id="mojo-source" data-transition="fade" style="background:#F5F3EE;color:#141B2D;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 96px 160px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:10px">
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#B07A1A">The Mojo host</p>
+<h2 style="font-size:56px;font-weight:600;line-height:1.1">One exported function: fill, call, check</h2>
 </div>
-<div style="display:flex;gap:40px">
-<div style="flex:3;display:flex;flex-direction:column;gap:4px;background:#141B2D;color:#D8DBE2;padding:32px 36px;border-radius:12px;font-family:'JuliaMono', 'JetBrains Mono', 'Courier New', monospace">
-<p style="font-size:24px;line-height:1.5"><span style="color:#E0B400">@export</span>("mojo_adreno_demo")</p>
-<p style="font-size:24px;line-height:1.5"><span style="color:#5B9CFF">def</span> mojo_adreno_demo(inputs, outputs, expected: Pointer[Float32, MutAnyOrigin],</p>
-<p style="font-size:24px;line-height:1.5">                    n: Int) <span style="color:#5B9CFF">abi</span>("C") -&gt; Int32:</p>
-<p style="font-size:24px;line-height:1.5">    <span style="color:#5B9CFF">for</span> i <span style="color:#5B9CFF">in</span> range(n):</p>
-<p style="font-size:24px;line-height:1.5">        <span style="color:#5B9CFF">var</span> x = Float32(i + 1) / 4.0 - 1.0</p>
-<p style="font-size:24px;line-height:1.5">        inputs[unsafe_offset=i] = x</p>
-<p style="font-size:24px;line-height:1.5">        expected[unsafe_offset=i] = x</p>
-<p style="font-size:24px;line-height:1.5">        <span style="color:#5B9CFF">var</span> mask = Float32(1.0) <span style="color:#5B9CFF">if</span> x &gt; 0.5 <span style="color:#5B9CFF">else</span> Float32(0.0)</p>
-<p style="font-size:24px;line-height:1.5">        expected[unsafe_offset=n + i] = x * mask</p>
-<p style="font-size:24px;line-height:1.5">        expected[unsafe_offset=2 * n + i] = max(x, Float32(0.0))</p>
-<p style="font-size:24px;line-height:1.5">    <span style="color:#5B9CFF">var</span> status = <span style="color:#22B8C8">external_call</span>["adreno_threshold_v1", Int32](inputs, outputs, n, 3 * n)</p>
-<p style="font-size:24px;line-height:1.5">    <span style="color:#5B9CFF">if</span> status != 0: <span style="color:#5B9CFF">return</span> status</p>
-<p style="font-size:24px;line-height:1.5">    <span style="color:#5B9CFF">var</span> failures: Int32 = 0</p>
-<p style="font-size:24px;line-height:1.5">    <span style="color:#5B9CFF">for</span> i <span style="color:#5B9CFF">in</span> range(3 * n):</p>
-<p style="font-size:24px;line-height:1.5">        <span style="color:#5B9CFF">if</span> outputs[unsafe_offset=i] != expected[unsafe_offset=i]: failures += 1</p>
-<p style="font-size:24px;line-height:1.5">    <span style="color:#5B9CFF">return</span> failures</p>
+<div style="display:flex;gap:32px">
+<div style="flex:3;display:flex;flex-direction:column;background:#16181D;color:#D8DBE2;padding:24px 28px;border-radius:12px;font-family:'JuliaMono', 'JetBrains Mono', 'Courier New', monospace">
+<p style="font-size:17px;line-height:1.35;white-space:nowrap"><span style="color:#5B9CFF">from</span> std.ffi <span style="color:#5B9CFF">import</span> external_call</p>
+<p style="font-size:17px;line-height:1.35;white-space:nowrap">&#160;</p>
+<p style="font-size:17px;line-height:1.35;white-space:nowrap"><span style="color:#8A90A0"># C launcher provides storage; this exported function needs no Mojo startup.</span></p>
+<p style="font-size:17px;line-height:1.35;white-space:nowrap"><span style="color:#E0B400">@export</span>(<span style="color:#E8D27A">"mojo_adreno_demo"</span>)</p>
+<p style="font-size:17px;line-height:1.35;white-space:nowrap"><span style="color:#5B9CFF">def</span> mojo_adreno_demo(</p>
+<p style="font-size:17px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;inputs: Pointer[Float32, MutAnyOrigin],</p>
+<p style="font-size:17px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;outputs: Pointer[Float32, MutAnyOrigin],</p>
+<p style="font-size:17px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;expected: Pointer[Float32, MutAnyOrigin],</p>
+<p style="font-size:17px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;n: Int,</p>
+<p style="font-size:17px;line-height:1.35;white-space:nowrap">) <span style="color:#5B9CFF">abi</span>(<span style="color:#E8D27A">"C"</span>) -&gt; Int32:</p>
+<p style="font-size:17px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">if</span> n != 8:</p>
+<p style="font-size:17px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">return</span> -1</p>
+<p style="font-size:17px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">for</span> i <span style="color:#5B9CFF">in</span> range(n):</p>
+<p style="font-size:17px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">var</span> x = Float32(i + 1) / 4.0 - 1.0</p>
+<p style="font-size:17px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;inputs[unsafe_offset=i] = x</p>
+<p style="font-size:17px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;expected[unsafe_offset=i] = x</p>
+<p style="font-size:17px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">var</span> mask = Float32(1.0) <span style="color:#5B9CFF">if</span> x &gt; 0.5 <span style="color:#5B9CFF">else</span> Float32(0.0)</p>
+<p style="font-size:17px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;expected[unsafe_offset=n + i] = x * mask</p>
+<p style="font-size:17px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;expected[unsafe_offset=2 * n + i] = max(x, Float32(0.0))</p>
+<p style="font-size:17px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">var</span> status = external_call[<span style="color:#E8D27A">"adreno_threshold_v1"</span>, Int32](</p>
+<p style="font-size:17px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;inputs, outputs, n, 3 * n</p>
+<p style="font-size:17px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;)</p>
+<p style="font-size:17px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">if</span> status != 0:</p>
+<p style="font-size:17px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">return</span> status</p>
+<p style="font-size:17px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">var</span> failures: Int32 = 0</p>
+<p style="font-size:17px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">for</span> i <span style="color:#5B9CFF">in</span> range(3 * n):</p>
+<p style="font-size:17px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">if</span> outputs[unsafe_offset=i] != expected[unsafe_offset=i]:</p>
+<p style="font-size:17px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;failures += 1</p>
+<p style="font-size:17px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">return</span> failures</p>
 </div>
 <div style="flex:2;display:flex;flex-direction:column;gap:20px">
-<div style="display:flex;flex-direction:column;gap:10px;background:#FFFFFC;padding:28px 32px;border:1px solid #D8D3C6;border-radius:16px">
+<div style="display:flex;flex-direction:column;gap:10px;background:#FFFFFC;padding:26px 30px;border:1px solid #D8D3C6;border-radius:16px">
 <h3 style="font-size:28px;font-weight:600">What Mojo does</h3>
-<p style="font-size:25px;line-height:1.4;color:#3D4553">Builds the same eight inputs as the X_eTaL program, computes its own threshold and ReLU reference on the CPU, calls the bridge, and counts mismatches over all 24 returned values.</p>
+<p style="font-size:24px;line-height:1.4;color:#3D4553">Builds the same eight inputs as the X_eTaL program, computes its own threshold and ReLU reference on the CPU, calls the bridge, and counts mismatches over all 24 values.</p>
 </div>
-<div style="display:flex;flex-direction:column;gap:10px;background:#FFFFFC;padding:28px 32px;border:1px solid #D8D3C6;border-radius:16px">
+<div style="display:flex;flex-direction:column;gap:10px;background:#FFFFFC;padding:26px 30px;border:1px solid #D8D3C6;border-radius:16px">
 <h3 style="font-size:28px;font-weight:600">What the bridge does</h3>
-<p style="font-size:25px;line-height:1.4;color:#3D4553">Verifies there is exactly one Qualcomm GPU, builds a checked XIR program with a dynamic input, and runs it through X_eTaL-gpu's planner and OpenCL runtime.</p>
+<p style="font-size:24px;line-height:1.4;color:#3D4553">Checks for exactly one Qualcomm GPU, builds a checked XIR program, and runs it through X_eTaL-gpu's planner and OpenCL runtime.</p>
 </div>
-<div style="display:flex;flex-direction:column;gap:10px;background:#141B2D;color:#F5F3EE;padding:28px 32px;border-radius:16px">
+<div style="display:flex;flex-direction:column;gap:10px;background:#141B2D;color:#F5F3EE;padding:26px 30px;border-radius:16px">
 <h3 style="font-size:28px;font-weight:600;color:#E0A030">What it compiles to</h3>
-<p style="font-size:25px;line-height:1.4;color:#C9D1DC">An ELF64 AArch64 object with one unresolved symbol, adreno_threshold_v1, linked by the ARM64 GCC with the launcher. The disassembly shows fcmp, fcsel and fmul for the reference, then bl to the bridge.</p>
+<p style="font-size:24px;line-height:1.4;color:#C9D1DC">An AArch64 object with one unresolved symbol, adreno_threshold_v1, linked with the C launcher. No Mojo runtime.</p>
 </div>
 </div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6A7179">adreno-poc/mojo/threshold.mojo, condensed for the slide; Mojo 1.2.0.dev2026101305, pinned</p>
-<aside>Signatures are shortened to fit; the real file declares each pointer parameter. The point to make out loud: Mojo generated the code that runs on the A53, and that code was never linked against Mojo's runtime, which is what let it run on a CPU without LSE atomics.</aside>
+<p style="position:absolute;left:96px;bottom:64px;font-size:24px;color:#6A7179">adreno-poc/mojo/threshold.mojo, the whole file; Mojo 1.2.0.dev2026101305, pinned</p>
+<aside>Here Mojo is the host program only. The GPU kernel comes from X_eTaL-gpu's emitter, through a hand-written XIR string in the Rust bridge. The next section is the step past this: a kernel written in Mojo itself.</aside>
 </section>

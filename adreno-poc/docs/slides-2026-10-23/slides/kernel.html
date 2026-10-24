@@ -22,15 +22,15 @@
 <h3 style="font-size:32px;font-weight:600">threshold.cl, generated</h3>
 <div style="display:flex;flex-direction:column;gap:4px;background:#141B2D;color:#D8DBE2;padding:32px 36px;border-radius:12px;font-family:'JuliaMono', 'JetBrains Mono', 'Courier New', monospace">
 <p style="font-size:26px;line-height:1.5">__kernel void k0(__global const float* b_l, ...) {</p>
-<p style="font-size:26px;line-height:1.5">  size_t i = get_global_id(0);</p>
-<p style="font-size:26px;line-height:1.5">  if (i &gt;= 8) return;</p>
-<p style="font-size:26px;line-height:1.5">  float t_div = (b_l[i] / 4.0f);</p>
-<p style="font-size:26px;line-height:1.5">  float t_sub = (t_div - 1.0f);</p>
-<p style="font-size:26px;line-height:1.5">  int t_gt = (t_sub &gt; 0.5f);</p>
-<p style="font-size:26px;line-height:1.5">  float t_f = (float)t_gt;</p>
-<p style="font-size:26px;line-height:1.5">  float t_mul = (t_sub * t_f);</p>
-<p style="font-size:26px;line-height:1.5">  float t_max = fmax(t_sub, 0.0f);</p>
-<p style="font-size:26px;line-height:1.5">  ...</p>
+<p style="font-size:26px;line-height:1.5">&#160;&#160;size_t i = get_global_id(0);</p>
+<p style="font-size:26px;line-height:1.5">&#160;&#160;if (i &gt;= 8) return;</p>
+<p style="font-size:26px;line-height:1.5">&#160;&#160;float t_div = (b_l[i] / 4.0f);</p>
+<p style="font-size:26px;line-height:1.5">&#160;&#160;float t_sub = (t_div - 1.0f);</p>
+<p style="font-size:26px;line-height:1.5">&#160;&#160;int t_gt = (t_sub &gt; 0.5f);</p>
+<p style="font-size:26px;line-height:1.5">&#160;&#160;float t_f = (float)t_gt;</p>
+<p style="font-size:26px;line-height:1.5">&#160;&#160;float t_mul = (t_sub * t_f);</p>
+<p style="font-size:26px;line-height:1.5">&#160;&#160;float t_max = fmax(t_sub, 0.0f);</p>
+<p style="font-size:26px;line-height:1.5">&#160;&#160;...</p>
 </div>
 <p style="font-size:26px;line-height:1.4;color:#3D4553">Consecutive maps of one shape fuse into one kernel; the IR temporaries become register expressions. The guard matters because the launch rounds up to a work-group. Floats are f32 on this no-fp64 device, Ints i64.</p>
 </div>

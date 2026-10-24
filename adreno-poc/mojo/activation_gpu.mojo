@@ -1,10 +1,10 @@
-# activation_gpu.mojo: threshold and ReLU as an ordinary Mojo GPU program,
-# the way it is written for a GPU Mojo supports (Apple silicon, NVIDIA,
-# AMD). The same file runs unchanged on the M1 Max (Metal) and on the
-# RTX 5060 Ti (CUDA): DeviceContext() picks the machine's GPU and the
-# compiler emits AIR or PTX for the kernel. It does not run on the
-# Adreno 702: there is no Mojo target or runtime for it (docs/adreno-deep-dive.md,
-# "Toward ordinary Mojo on the Adreno").
+# activation_gpu.mojo: threshold and ReLU as an ordinary Mojo GPU
+# program, the way it is written for a GPU Mojo supports (Apple
+# silicon, NVIDIA, AMD). The same file runs unchanged on the M1 Max
+# (Metal) and the RTX 5060 Ti (CUDA): DeviceContext() picks the GPU
+# and the compiler emits AIR or PTX for the kernel. Mojo has no
+# Adreno target; there the kernel runs through a SPIR-V retarget
+# (docs/mojo-on-3-gpus.md).
 #
 #   mojo run mojo/activation_gpu.mojo
 
@@ -23,7 +23,8 @@ def activations(
     t: Float32,
     n: Int32,
 ):
-    """One thread per element: threshold(x, t) = x * (x > t), relu(x) = max(x, 0)."""
+    """One thread per element: threshold(x, t) = x * (x > t),
+    relu(x) = max(x, 0)."""
     var i = Int(block_idx.x * block_dim.x + thread_idx.x)
     if i < Int(n):
         var v = x[unsafe_offset=i]
@@ -58,18 +59,25 @@ def main() raises:
     ctx.enqueue_copy(dst_buf=h_relu, src_buf=d_relu)
     ctx.synchronize()
 
-    # The same three lines X_eTaL's evaluator prints first for threshold.xtl.
+    # The first three lines X_eTaL's evaluator prints for threshold.xtl.
     var failures = 0
     for row in range(3):
         var line = String()
         for i in range(N):
             var x = h_x[i]
-            var got = x if row == 0 else (h_threshold[i] if row == 1 else h_relu[i])
-            var want = x if row == 0 else (
-                x * (Float32(1.0) if x > 0.5 else Float32(0.0)) if row == 1 else max(x, Float32(0.0))
-            )
+            var got = x
+            var want = x
+            if row == 1:
+                got = h_threshold[i]
+                want = x * (Float32(1.0) if x > 0.5 else Float32(0.0))
+            elif row == 2:
+                got = h_relu[i]
+                want = max(x, Float32(0.0))
             if got != want:
                 failures += 1
             line += (" " if i else "") + String(got)
         print(line)
-    print("RESULT:", 3 * N - failures, "of", 3 * N, "outputs agree with the CPU reference")
+    print(
+        "RESULT:", 3 * N - failures, "of", 3 * N,
+        "outputs agree with the CPU reference",
+    )

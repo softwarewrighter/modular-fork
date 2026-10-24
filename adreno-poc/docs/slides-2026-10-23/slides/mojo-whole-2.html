@@ -1,0 +1,63 @@
+<section id="mojo-whole-2" data-transition="fade" style="background:#F5F3EE;color:#141B2D;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 96px 160px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:10px">
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#B07A1A">The whole Mojo program, 2 of 2</p>
+<h2 style="font-size:56px;font-weight:600;line-height:1.1">Lines 35 to 83: the host, then the check</h2>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;background:#16181D;color:#D8DBE2;padding:24px 24px;border-radius:12px;font-family:'JuliaMono', 'JetBrains Mono', 'Courier New', monospace">
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap"><span style="color:#5B9CFF">def</span> main() <span style="color:#5B9CFF">raises</span>:</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">var</span> ctx = DeviceContext()</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;print(<span style="color:#E8D27A">"device:"</span>, ctx.api(), ctx.name())</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;<span style="color:#8A90A0"># x = ((range 8) / 4) - 1.0, X_eTaL's range running 1..8</span></p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">var</span> h_x = ctx.enqueue_create_host_buffer[DType.float32](N)</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;ctx.synchronize()</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">for</span> i <span style="color:#5B9CFF">in</span> range(N):</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;h_x[i] = Float32(i + 1) / 4.0 - 1.0</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">var</span> d_x = ctx.enqueue_create_buffer[DType.float32](N)</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">var</span> d_threshold = ctx.enqueue_create_buffer[DType.float32](N)</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">var</span> d_relu = ctx.enqueue_create_buffer[DType.float32](N)</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;ctx.enqueue_copy(dst_buf=d_x, src_buf=h_x)</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;ctx.enqueue_function[activations](</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;d_x, d_threshold, d_relu, Float32(0.5), Int32(N),</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;grid_dim=BLOCKS, block_dim=TPB,</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;)</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">var</span> h_threshold = ctx.enqueue_create_host_buffer[DType.float32](N)</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">var</span> h_relu = ctx.enqueue_create_host_buffer[DType.float32](N)</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;ctx.enqueue_copy(dst_buf=h_threshold, src_buf=d_threshold)</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;ctx.enqueue_copy(dst_buf=h_relu, src_buf=d_relu)</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;background:#16181D;color:#D8DBE2;padding:24px 24px;border-radius:12px;font-family:'JuliaMono', 'JetBrains Mono', 'Courier New', monospace">
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;ctx.synchronize()</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;<span style="color:#8A90A0"># The first three lines X_eTaL's evaluator prints for threshold.xtl.</span></p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">var</span> failures = 0</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">for</span> row <span style="color:#5B9CFF">in</span> range(3):</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">var</span> line = String()</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">for</span> i <span style="color:#5B9CFF">in</span> range(N):</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">var</span> x = h_x[i]</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">var</span> got = x</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">var</span> want = x</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">if</span> row == 1:</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;got = h_threshold[i]</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;want = x * (Float32(1.0) <span style="color:#5B9CFF">if</span> x &gt; 0.5 <span style="color:#5B9CFF">else</span> Float32(0.0))</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">elif</span> row == 2:</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;got = h_relu[i]</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;want = max(x, Float32(0.0))</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">if</span> got != want:</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;failures += 1</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;line += (<span style="color:#E8D27A">" "</span> <span style="color:#5B9CFF">if</span> i <span style="color:#5B9CFF">else</span> <span style="color:#E8D27A">""</span>) + String(got)</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;print(line)</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;print(</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span style="color:#E8D27A">"RESULT:"</span>, 3 * N - failures, <span style="color:#E8D27A">"of"</span>, 3 * N,</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span style="color:#E8D27A">"outputs agree with the CPU reference"</span>,</p>
+<p style="font-size:18px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;)</p>
+</div>
+</div>
+<p style="position:absolute;left:96px;bottom:64px;font-size:24px;color:#6A7179">Left: context, buffers, upload, launch, readback. Right: the program checks itself against a CPU calculation</p>
+<aside>On Apple and NVIDIA this whole file runs as is. On the Adreno only the kernel from the previous slide is used: Mojo compiles it, the retargeter turns it into SPIR-V, and a separate Mojo host on the A53 plays the role of this main through the C bridge.</aside>
+</section>

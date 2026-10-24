@@ -1,6 +1,6 @@
 # Slides: X_eTaL and Mojo on the Adreno 702 (2026-10-23)
 
-The source of the talk Mike Wright gave on the day's work: twenty-one
+The source of the talk Mike Wright gave on the day's work: twenty-three
 slides, one HTML file each under `slides/`, in the order `deck.json`
 lists. Each file is one `<section>` on a 1920 x 1080 canvas with inline
 styles, speaker notes in a trailing `<aside>`. Nothing here is built;
@@ -19,9 +19,11 @@ the files are the deck's own data as published.
 | results-xetal | Five programs, 71 outputs, all agree; the work-group 128 schedule |
 | metal | Eight Freedreno IR3 instructions read against the source |
 | mojo-problem | No Adreno target, no compiler on the board, SIGILL; object cross-build, exported C ABI, Rust bridge |
-| mojo-source | threshold.mojo, condensed |
+| mojo-source | threshold.mojo, the whole file |
 | mojo-results | 24 of 24 agree with two oracles; the planted error caught |
 | two-sources | X_eTaL's Accel threshold and relu beside the ordinary Mojo kernel |
+| mojo-whole-1 | The whole of mojo/activation_gpu.mojo, lines 1 to 34: header, imports, kernel |
+| mojo-whole-2 | Lines 35 to 83: the host and the self-check |
 | steps-all | Every step: X_eTaL to the Adreno; Mojo to Metal, CUDA and, through the retarget, the Adreno |
 | retarget | The seven NVPTX-to-OpenCL-SPIR-V substitutions, llc, SPIR-V 1.0 |
 | three-gpus | One Mojo kernel on M1 Max, RTX 5060 Ti and Adreno 702, 24 of 24 each |
@@ -34,7 +36,7 @@ The deck is published as a private page at
 https://claude.ai/artifact/38GHd98m2sKJyvXZWcGamE; its Share menu
 exports PowerPoint and PDF. The PDF export is committed here as
 `xetal-and-mojo-on-the-adreno-702.pdf` (the first 16-slide version, slides as
-pictures with a text layer, 4.8 MB; re-export for the 21-slide deck), the one binary in this directory, so the
+pictures with a text layer, 4.8 MB; re-export for the 23-slide deck), the one binary in this directory, so the
 talk can be read without the page. The PowerPoint export is not.
 The typefaces are IBM Plex Sans and JetBrains Mono from Google Fonts,
 and JuliaMono Regular uploaded to the page for the code blocks, because

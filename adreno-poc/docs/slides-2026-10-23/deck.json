@@ -21,6 +21,8 @@
     "mojo-source",
     "mojo-results",
     "two-sources",
+    "mojo-whole-1",
+    "mojo-whole-2",
     "steps-all",
     "retarget",
     "three-gpus",

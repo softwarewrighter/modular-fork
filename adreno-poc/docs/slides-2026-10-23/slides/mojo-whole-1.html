@@ -1,0 +1,48 @@
+<section id="mojo-whole-1" data-transition="fade" style="background:#F5F3EE;color:#141B2D;font-family:'IBM Plex Sans', Arial, sans-serif;padding:96px 96px 160px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:10px">
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#B07A1A">The whole Mojo program, 1 of 2</p>
+<h2 style="font-size:56px;font-weight:600;line-height:1.1">mojo/activation_gpu.mojo, lines 1 to 34: header, imports, kernel</h2>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;background:#16181D;color:#D8DBE2;padding:24px 24px;border-radius:12px;font-family:'JuliaMono', 'JetBrains Mono', 'Courier New', monospace">
+<p style="font-size:19px;line-height:1.35;white-space:nowrap"><span style="color:#8A90A0"># activation_gpu.mojo: threshold and ReLU as an ordinary Mojo GPU</span></p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap"><span style="color:#8A90A0"># program, the way it is written for a GPU Mojo supports (Apple</span></p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap"><span style="color:#8A90A0"># silicon, NVIDIA, AMD). The same file runs unchanged on the M1 Max</span></p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap"><span style="color:#8A90A0"># (Metal) and the RTX 5060 Ti (CUDA): DeviceContext() picks the GPU</span></p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap"><span style="color:#8A90A0"># and the compiler emits AIR or PTX for the kernel. Mojo has no</span></p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap"><span style="color:#8A90A0"># Adreno target; there the kernel runs through a SPIR-V retarget</span></p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap"><span style="color:#8A90A0"># (docs/mojo-on-3-gpus.md).</span></p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap"><span style="color:#8A90A0">#</span></p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap"><span style="color:#8A90A0">#&#160;&#160;&#160;mojo run mojo/activation_gpu.mojo</span></p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap">&#160;</p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap"><span style="color:#5B9CFF">from</span> max.gpu <span style="color:#5B9CFF">import</span> block_dim, block_idx, thread_idx</p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap"><span style="color:#5B9CFF">from</span> max.gpu.host <span style="color:#5B9CFF">import</span> DeviceContext</p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap">&#160;</p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap"><span style="color:#5B9CFF">comptime</span> N = 8</p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap"><span style="color:#5B9CFF">comptime</span> TPB = 64</p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap"><span style="color:#5B9CFF">comptime</span> BLOCKS = (N + TPB - 1) // TPB</p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap">&#160;</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;background:#16181D;color:#D8DBE2;padding:24px 24px;border-radius:12px;font-family:'JuliaMono', 'JetBrains Mono', 'Courier New', monospace">
+<p style="font-size:19px;line-height:1.35;white-space:nowrap">&#160;</p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap"><span style="color:#5B9CFF">def</span> activations(</p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;x: Pointer[Float32, ImmutAnyOrigin],</p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;threshold: Pointer[Float32, MutAnyOrigin],</p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;relu: Pointer[Float32, MutAnyOrigin],</p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;t: Float32,</p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;n: Int32,</p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap">):</p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;<span style="color:#E8D27A">"""One thread per element: threshold(x, t) = x * (x &gt; t),</span></p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;<span style="color:#E8D27A">relu(x) = max(x, 0)."""</span></p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">var</span> i = Int(block_idx.x * block_dim.x + thread_idx.x)</p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">if</span> i &lt; Int(n):</p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">var</span> v = x[unsafe_offset=i]</p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span style="color:#5B9CFF">var</span> mask = Float32(1.0) <span style="color:#5B9CFF">if</span> v &gt; t <span style="color:#5B9CFF">else</span> Float32(0.0)</p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;threshold[unsafe_offset=i] = v * mask</p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;relu[unsafe_offset=i] = max(v, Float32(0.0))</p>
+<p style="font-size:19px;line-height:1.35;white-space:nowrap">&#160;</p>
+</div>
+</div>
+<p style="position:absolute;left:96px;bottom:64px;font-size:24px;color:#6A7179">Exactly as committed. 83 lines: 5 code lines of imports and constants, 15 kernel, 20 host, 21 check and print</p>
+<aside>This and the next slide are the entire file, nothing elided. Mojo's GPU support comes from the max.gpu package: the thread and block indices for the kernel, and DeviceContext for the host.</aside>
+</section>
