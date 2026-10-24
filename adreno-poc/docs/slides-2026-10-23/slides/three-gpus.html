@@ -1,0 +1,36 @@
+<section id="three-gpus" data-transition="fade" style="background:#EAE6DC;color:#141B2D;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#B07A1A">Three GPUs</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">One Mojo kernel, three vendors, 24 of 24 each</h2>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFFFC;padding:32px;border:1px solid #D8D3C6;border-radius:16px">
+<h3 style="font-size:32px;font-weight:600">Apple M1 Max</h3>
+<p style="font-size:24px;line-height:1.4;color:#3D4553">Metal, through DeviceContext, as Modular ships it</p>
+<p style="font-size:24px;color:#1E7A34;font-weight:600">24 of 24 agree</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFFFC;padding:32px;border:1px solid #D8D3C6;border-radius:16px">
+<h3 style="font-size:32px;font-weight:600">NVIDIA RTX 5060 Ti</h3>
+<p style="font-size:24px;line-height:1.4;color:#3D4553">CUDA, through DeviceContext, the same file unchanged</p>
+<p style="font-size:24px;color:#1E7A34;font-weight:600">24 of 24 agree</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#141B2D;color:#F5F3EE;padding:32px;border-radius:16px">
+<h3 style="font-size:32px;font-weight:600;color:#E0A030">Qualcomm Adreno 702</h3>
+<p style="font-size:24px;line-height:1.4;color:#C9D1DC">The same kernel as SPIR-V through rusticl, from a Mojo host on the A53</p>
+<p style="font-size:24px;color:#8FD3D4;font-weight:600">24 of 24 agree, both oracles</p>
+</div>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:3;display:flex;flex-direction:column;gap:4px;background:#141B2D;color:#D8DBE2;padding:28px 32px;border-radius:12px;font-family:'JuliaMono', 'JetBrains Mono', 'Courier New', monospace">
+<p style="font-size:24px;line-height:1.5;color:#8A93A3">input      -0.75 -0.5 -0.25 0.0 0.25 0.5 0.75 1.0</p>
+<p style="font-size:24px;line-height:1.5">threshold  -0.0  -0.0 -0.0  0.0 0.0  0.0 0.75 1.0</p>
+<p style="font-size:24px;line-height:1.5">relu        0.0   0.0  0.0  0.0 0.25 0.5 0.75 1.0</p>
+</div>
+<div style="flex:2;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;line-height:1.4;color:#3D4553">Identical on all three, and identical to X_eTaL's evaluator, signed zeros included.</p>
+<p style="font-size:24px;line-height:1.4;color:#3D4553">On the Adreno also: n of 1, 65 and 129 across groups, a corrupted output rejected, an invalid module rejected.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6A7179">adreno-poc/docs/mojo-on-3-gpus.md; evidence in m1max-mojo-targets-20261023 and unoq-mojo-spirv-20261023</p>
+<aside>Three vendors, three driver stacks, one kernel source. On Apple and NVIDIA that is what Mojo promises. On the Adreno it took a 100-line retargeter and the open-source Mesa driver, but the kernel itself was not rewritten.</aside>
+</section>

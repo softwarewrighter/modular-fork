@@ -20,6 +20,11 @@
     "mojo-problem",
     "mojo-source",
     "mojo-results",
+    "two-sources",
+    "steps-all",
+    "retarget",
+    "three-gpus",
+    "adreno-both",
     "boundary",
     "next",
     "links"
@@ -38,12 +43,16 @@
       "start": "path-xetal"
     },
     "mojo": {
-      "description": "Mojo cross-compiled for the Cortex-A53 and driving the same GPU kernel through a C ABI.",
+      "description": "Mojo cross-compiled for the Cortex-A53 as the host, driving X_eTaL's kernel through a C ABI.",
       "start": "mojo-problem"
     },
     "closing": {
       "description": "What is established, what is not, and what comes next.",
       "start": "boundary"
+    },
+    "mojo-kernel": {
+      "description": "An ordinary Mojo kernel on Apple, NVIDIA and, through SPIR-V, the Adreno; side by side with X_eTaL.",
+      "start": "two-sources"
     }
   },
   "faces": {

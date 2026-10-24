@@ -1,0 +1,38 @@
+<section id="retarget" data-transition="fade" style="background:#F5F3EE;color:#141B2D;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#B07A1A">The retarget</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">Seven substitutions turn NVIDIA IR into OpenCL SPIR-V</h2>
+</div>
+<div style="display:flex;gap:40px">
+<div style="flex:3;display:flex;flex-direction:column;gap:16px">
+<table style="font-size:25px;color:#3D4553;border:1px solid #D8D3C6;background:#FFFFFC">
+<tr style="background:#141B2D;color:#F5F3EE"><th style="width:50%;text-align:left;padding:12px 18px">Mojo's NVPTX LLVM IR</th><th style="width:50%;text-align:left">OpenCL SPIR-V form</th></tr>
+<tr><td style="font-family:'JuliaMono', 'JetBrains Mono', monospace">nvptx64-nvidia-cuda</td><td style="font-family:'JuliaMono', 'JetBrains Mono', monospace">spirv64v1.0</td></tr>
+<tr style="background:#F5F3EE"><td style="font-family:'JuliaMono', 'JetBrains Mono', monospace">ptx_kernel</td><td style="font-family:'JuliaMono', 'JetBrains Mono', monospace">spir_kernel</td></tr>
+<tr><td>plain ptr buffers</td><td style="font-family:'JuliaMono', 'JetBrains Mono', monospace">ptr addrspace(1)</td></tr>
+<tr style="background:#F5F3EE"><td style="font-family:'JuliaMono', 'JetBrains Mono', monospace">sreg.ctaid.x</td><td style="font-family:'JuliaMono', 'JetBrains Mono', monospace">get_group_id(0)</td></tr>
+<tr><td style="font-family:'JuliaMono', 'JetBrains Mono', monospace">sreg.ntid.x</td><td style="font-family:'JuliaMono', 'JetBrains Mono', monospace">get_local_size(0)</td></tr>
+<tr style="background:#F5F3EE"><td style="font-family:'JuliaMono', 'JetBrains Mono', monospace">sreg.tid.x</td><td style="font-family:'JuliaMono', 'JetBrains Mono', monospace">get_local_id(0)</td></tr>
+<tr><td>sm_120a target attributes</td><td>removed</td></tr>
+</table>
+<p style="font-size:25px;line-height:1.4;color:#3D4553">The arithmetic Mojo emitted, fcmp, select, fmul and maxnum, passes through untouched. Anything else, barriers, shared memory, atomics, library calls, is refused rather than guessed.</p>
+</div>
+<div style="flex:2;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:6px;background:#141B2D;color:#D8DBE2;padding:28px 30px;border-radius:12px;font-family:'JuliaMono', 'JetBrains Mono', 'Courier New', monospace">
+<p style="font-size:24px;line-height:1.5">llc -mtriple=spirv64v1.0-unknown-unknown \</p>
+<p style="font-size:24px;line-height:1.5">    -filetype=obj act.bc -o act.spv</p>
+<p style="font-size:24px;line-height:1.5">spirv-val --target-env opencl2.1 act.spv</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px;background:#FFFFFC;padding:28px 30px;border:1px solid #D8D3C6;border-radius:16px">
+<h3 style="font-size:28px;font-weight:600">Why a script at all</h3>
+<p style="font-size:24px;line-height:1.4;color:#3D4553">Mojo's compiler refuses a SPIR-V target: "target spirv64-unknown-unknown is not supported by this build". Its NVIDIA output is plain LLVM, and Arch's LLVM 23 has the SPIR-V back-end.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px;background:#141B2D;color:#F5F3EE;padding:28px 30px;border-radius:16px">
+<h3 style="font-size:28px;font-weight:600;color:#E0A030">One surprise</h3>
+<p style="font-size:24px;line-height:1.4;color:#C9D1DC">The unversioned target emitted SPIR-V 1.4, which the OpenCL validation rejected. Pinning SPIR-V 1.0 validated and ran.</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6A7179">scripts/nvptx-to-spirv.py with a golden-file test; loaded on the board with clCreateProgramWithIL, which rusticl supports</p>
+<aside>This is the smallest possible bridge between what Mojo can emit and what the Adreno's driver accepts. It is honest about its limits: it handles exactly the scalar subset this kernel needs and fails closed on anything else.</aside>
+</section>

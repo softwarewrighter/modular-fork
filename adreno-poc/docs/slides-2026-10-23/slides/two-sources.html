@@ -1,0 +1,39 @@
+<section id="two-sources" data-transition="fade" style="background:#F5F3EE;color:#141B2D;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#B07A1A">Path three: a Mojo kernel</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">The same two activations, in each language</h2>
+</div>
+<div style="display:flex;gap:40px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<h3 style="font-size:32px;font-weight:600">X_eTaL: the Accel library, and the call</h3>
+<div style="display:flex;flex-direction:column;gap:6px;background:#16181D;color:#D8DBE2;padding:32px 36px;border-radius:12px;font-family:'JuliaMono', 'JetBrains Mono', 'Courier New', monospace">
+<p style="font-size:26px;line-height:1.5;color:#8A90A0">⍝ libs/Accel/src/Accel.xtl</p>
+<p style="font-size:26px;line-height:1.5"><span style="color:#22B8C8">ˡr̲elu</span> ← { x → x <span style="color:#5B9CFF">m̲ax</span> <span style="color:#E0B400">0</span> }</p>
+<p style="font-size:26px;line-height:1.5"><span style="color:#22B8C8">ˡt̲hreshold</span> ← { t x → x <span style="color:#7FBFFF">×</span> <span style="color:#5B9CFF">f̲loat</span> x <span style="color:#7FBFFF">&gt;</span> t }</p>
+<p style="font-size:26px;line-height:1.5"> </p>
+<p style="font-size:26px;line-height:1.5;color:#8A90A0">⍝ threshold.xtl</p>
+<p style="font-size:26px;line-height:1.5">x ← ((<span style="color:#5B9CFF">r̲ange</span> <span style="color:#E0B400">8</span>) <span style="color:#7FBFFF">÷</span> <span style="color:#E0B400">4</span>) <span style="color:#7FBFFF">−</span> <span style="color:#E0B400">1.0</span></p>
+<p style="font-size:26px;line-height:1.5"><span style="color:#E0B400">0.5</span> <span style="color:#22B8C8">ᵃᶜt̲hreshold</span> x</p>
+<p style="font-size:26px;line-height:1.5"><span style="color:#22B8C8">ᵃᶜr̲elu</span> x</p>
+</div>
+<p style="font-size:25px;line-height:1.4;color:#3D4553">Whole-array functions. No threads, no indices, no buffers: the compiler finds the parallelism and writes the kernel.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<h3 style="font-size:32px;font-weight:600">Mojo: one kernel, one thread per element</h3>
+<div style="display:flex;flex-direction:column;gap:4px;background:#16181D;color:#D8DBE2;padding:32px 36px;border-radius:12px;font-family:'JuliaMono', 'JetBrains Mono', 'Courier New', monospace">
+<p style="font-size:24px;line-height:1.5;color:#8A90A0"># mojo/activation_gpu.mojo</p>
+<p style="font-size:24px;line-height:1.5"><span style="color:#5B9CFF">def</span> <span style="color:#22B8C8">activations</span>(x, threshold, relu: Pointer[...],</p>
+<p style="font-size:24px;line-height:1.5">                t: Float32, n: Int32):</p>
+<p style="font-size:24px;line-height:1.5">    <span style="color:#5B9CFF">var</span> i = Int(block_idx.x * block_dim.x + thread_idx.x)</p>
+<p style="font-size:24px;line-height:1.5">    <span style="color:#5B9CFF">if</span> i &lt; Int(n):</p>
+<p style="font-size:24px;line-height:1.5">        <span style="color:#5B9CFF">var</span> v = x[unsafe_offset=i]</p>
+<p style="font-size:24px;line-height:1.5">        <span style="color:#5B9CFF">var</span> mask = <span style="color:#E0B400">1.0</span> <span style="color:#5B9CFF">if</span> v &gt; t <span style="color:#5B9CFF">else</span> <span style="color:#E0B400">0.0</span></p>
+<p style="font-size:24px;line-height:1.5">        threshold[unsafe_offset=i] = v * mask</p>
+<p style="font-size:24px;line-height:1.5">        relu[unsafe_offset=i] = max(v, <span style="color:#E0B400">0.0</span>)</p>
+</div>
+<p style="font-size:25px;line-height:1.4;color:#3D4553">Written as for Apple or NVIDIA. The host opens a DeviceContext, copies x, launches with grid and block sizes, copies back.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6A7179">Same formula three ways: x × float(x &gt; t) in X_eTaL, v * mask in Mojo, gt, cast, mul in XIR. Mojo types shortened to fit.</p>
+<aside>This is the comparison I wanted from the start. X_eTaL states the activation over whole arrays and the compiler finds the parallelism. Mojo states one thread's work explicitly. Both describe exactly the same arithmetic, and from here on both reach the same GPU.</aside>
+</section>

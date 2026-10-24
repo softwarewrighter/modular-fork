@@ -1,35 +1,35 @@
 <section id="next" data-transition="fade" style="background:#EAE6DC;color:#141B2D;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
 <div style="display:flex;flex-direction:column;gap:12px">
 <p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#B07A1A">Next</p>
-<h2 style="font-size:72px;font-weight:600;line-height:1.1">Nine steps remain in the saga</h2>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">From one kernel to real workloads</h2>
 </div>
 <div style="display:flex;gap:32px">
 <div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFC;padding:36px;border:1px solid #D8D3C6;border-radius:16px">
-<h3 style="font-size:32px;font-weight:600;color:#1F5FBF">Vulkan</h3>
+<h3 style="font-size:32px;font-weight:600;color:#0B7D8A">Mojo</h3>
 <ul style="font-size:26px;line-height:1.45;color:#3D4553">
-<li>A Vulkan 1.0 path in the host demo, then the first Turnip dispatch on the Adreno</li>
-<li>XIR to GLSL compute: the same ten programs through SPIR-V</li>
-<li>The Vulkan runtime as an X_eTaL native extension beside the OpenCL one</li>
+<li>Widen the retargeter one construct at a time: barriers, shared memory, math functions</li>
+<li>Run rust-demo's reductions and softmax on the Adreno, each against the evaluator</li>
+<li>Take the evidence to Modular: a SPIR-V target and an OpenCL runtime are theirs to add</li>
 </ul>
 </div>
 <div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFC;padding:36px;border:1px solid #D8D3C6;border-radius:16px">
-<h3 style="font-size:32px;font-weight:600;color:#0B7D8A">Mojo</h3>
+<h3 style="font-size:32px;font-weight:600;color:#1F5FBF">Vulkan</h3>
 <ul style="font-size:26px;line-height:1.45;color:#3D4553">
-<li>Mojo calling the Vulkan runtime through the same C ABI</li>
-<li>rust-demo's CPU build of generated Mojo on the A53, checked against the evaluator</li>
-<li>What this fork exposes for a Mojo to SPIR-V path: a go or no-go with the smallest deciding experiment</li>
+<li>A Vulkan 1.0 host for Turnip, then the first dispatch on the Adreno</li>
+<li>XIR to GLSL compute: the same programs as Vulkan SPIR-V</li>
+<li>The Vulkan runtime as an X_eTaL extension beside the OpenCL one</li>
 </ul>
 </div>
 <div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFC;padding:36px;border:1px solid #D8D3C6;border-radius:16px">
 <h3 style="font-size:32px;font-weight:600;color:#9A6A00">Measurement</h3>
 <ul style="font-size:26px;line-height:1.45;color:#3D4553">
 <li>Threshold, SAXPY, ReLU and softmax from 1 K to 1 M elements</li>
-<li>Cortex-A53 against Adreno, OpenCL against Vulkan: the crossover size</li>
-<li>Peak memory on the 2 GB board, and whether the 4 GB model is worth buying</li>
+<li>Cortex-A53 against Adreno: where the GPU starts to pay</li>
+<li>Whether the 4 GB board is worth buying</li>
 </ul>
 </div>
 </div>
-<p style="font-size:27px;line-height:1.4;color:#3D4553;width:1664px">The order is deliberate: nothing compiler-side for Mojo until a Vulkan dispatch runs on the Adreno and the numbers say where the GPU starts to pay.</p>
-<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6A7179">adreno-poc/docs/plan.md; the saga's current step is cross-aarch64</p>
-<aside>The research notes wanted a Vulkan stack first. The day showed that OpenCL was the shorter road for both languages. Vulkan is still worth doing, because SPIR-V is the format a future Mojo back-end would have to emit, and the inventory says the hardware is ready for it.</aside>
+<p style="font-size:27px;line-height:1.4;color:#3D4553;width:1664px">The order is deliberate: correctness on every road first, then size, then speed.</p>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6A7179">adreno-poc/docs/plan.md and the agentrail saga adreno-702</p>
+<aside>The retarget experiment answered the research question faster than expected. The next Mojo work is to see how far the retargeter can go before it needs Modular, and to measure, because eight elements say nothing about speed.</aside>
 </section>

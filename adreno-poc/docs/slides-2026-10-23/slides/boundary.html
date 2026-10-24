@@ -1,28 +1,28 @@
 <section id="boundary" data-transition="fade" style="background:#F5F3EE;color:#141B2D;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
 <div style="display:flex;flex-direction:column;gap:12px">
 <p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#B07A1A">The boundary</p>
-<h2 style="font-size:72px;font-weight:600;line-height:1.1">GPU execution is not GPU code generation</h2>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">What the day established, and what it did not</h2>
 </div>
 <div style="display:flex;gap:40px">
 <div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FFFFFC;padding:40px;border:1px solid #D8D3C6;border-radius:16px">
 <h3 style="font-size:34px;font-weight:600;color:#1E7A34">Established</h3>
-<ul style="font-size:28px;line-height:1.45;color:#3D4553">
-<li>X_eTaL source, lowered by its own tool, runs on the physical Adreno 702 and matches the evaluator on 71 of 71 outputs.</li>
-<li>Mojo code compiled for the Cortex-A53 drives the same GPU through a C ABI and matches two oracles on 24 of 24.</li>
-<li>Every intermediate form is captured as text: Core, XIR, OpenCL C, SPIR-V, NIR, Adreno disassembly, LLVM IR, ARM64.</li>
-<li>Nothing was installed on the board. Binaries were cross-built on Arch and copied over.</li>
+<ul style="font-size:27px;line-height:1.45;color:#3D4553">
+<li>X_eTaL source, lowered by its own tool, runs on the physical Adreno 702: 71 of 71 outputs match the evaluator.</li>
+<li>A kernel written in ordinary Mojo runs on Apple, NVIDIA and the Adreno, 24 of 24 on each, from one source.</li>
+<li>On the Adreno, both languages reach the same Freedreno instructions for the activation.</li>
+<li>Every form is captured as text, and nothing was installed on the board.</li>
 </ul>
 </div>
 <div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#141B2D;color:#F5F3EE;padding:40px;border-radius:16px">
 <h3 style="font-size:34px;font-weight:600;color:#E0A030">Not established</h3>
-<ul style="font-size:28px;line-height:1.45;color:#C9D1DC">
-<li>No Mojo-authored GPU kernel. In both paths the kernel is generated OpenCL C; Mojo orchestrates from the CPU.</li>
-<li>No speedup. Eight-element programs prove execution and agreement, nothing about throughput or the crossover size.</li>
-<li>No Vulkan dispatch on the Adreno yet. Turnip reports 1.0; the host demo wanted 1.1.</li>
-<li>No Mojo compiler or runtime on the board. The ordinary Mojo executable path failed with SIGILL.</li>
+<ul style="font-size:27px;line-height:1.45;color:#C9D1DC">
+<li>Native Adreno support in Mojo. DeviceContext cannot see the GPU; a C bridge launches the SPIR-V.</li>
+<li>Kernels beyond this scalar subset. Barriers, shared memory, atomics and math library calls are refused, not translated.</li>
+<li>Any speedup. Eight elements prove execution and agreement, not throughput.</li>
+<li>A Vulkan dispatch on the Adreno, or Mojo's own runtime on the A53.</li>
 </ul>
 </div>
 </div>
 <p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6A7179">Each handoff document ends with a section titled "What this does not establish"</p>
-<aside>I want to keep these two columns separate in every public claim. Running a GPU from a language is one achievement. Having that language's compiler emit the GPU kernel is a different one, and for Mojo on this GPU it remains future work.</aside>
+<aside>The second bullet on the left is the headline, and the first bullet on the right is its fine print. A Mojo-authored kernel ran on the Adreno, but through a retargeter and a C bridge, not through Mojo's own GPU runtime. Native support needs a SPIR-V target in the compiler and a runtime behind DeviceContext, and both live in Modular's closed binaries.</aside>
 </section>

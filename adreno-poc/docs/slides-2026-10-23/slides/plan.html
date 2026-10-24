@@ -1,16 +1,17 @@
 <section id="plan" data-transition="fade" style="background:#F5F3EE;color:#141B2D;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
 <div style="display:flex;flex-direction:column;gap:12px">
 <p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#B07A1A">The day</p>
-<h2 style="font-size:72px;font-weight:600;line-height:1.1">From plan to proof in five and a half hours</h2>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">From plan to proof in eight hours</h2>
 </div>
-<table style="font-size:28px;color:#3D4553;border:1px solid #D8D3C6">
+<table style="font-size:26px;color:#3D4553;border:1px solid #D8D3C6">
 <tr style="background:#141B2D;color:#F5F3EE"><th style="width:12%;text-align:left;padding:14px 20px">Time</th><th style="width:30%;text-align:left">Step</th><th style="width:58%;text-align:left">What it established</th></tr>
 <tr style="background:#FFFFFC"><td>08:58</td><td>Plan</td><td>13-step saga; research notes corrected against what the repos already had</td></tr>
 <tr><td>09:05</td><td>Scaffold</td><td>Gate, board inventory script, host setup that stays inside the project</td></tr>
 <tr style="background:#FFFFFC"><td>11:44</td><td>Host Vulkan</td><td>Vector add on an RTX 5060 Ti, every element checked, 1 K to 1 M</td></tr>
 <tr><td>13:54</td><td>Inventory</td><td>Physical Adreno in both Turnip and rusticl; OpenCL first</td></tr>
 <tr style="background:#FFFFFC"><td>14:06</td><td>X_eTaL on Adreno</td><td>Five source demos, 71 outputs, all agree with the evaluator</td></tr>
-<tr><td>14:24</td><td>Mojo on Adreno</td><td>Cross-compiled Mojo drives the same kernel, 24 of 24 outputs agree</td></tr>
+<tr><td>14:24</td><td>Mojo host on Adreno</td><td>Cross-compiled Mojo drives the same kernel, 24 of 24 outputs agree</td></tr>
+<tr style="background:#FFFFFC"><td>16:49</td><td>Mojo kernel, 3 GPUs</td><td>One Mojo kernel on M1 Max, RTX 5060 Ti and, via SPIR-V, the Adreno</td></tr>
 </table>
 <p style="font-size:28px;line-height:1.4;color:#3D4553;width:1664px">Two coding agents under agentrail: one on the Mac wrote the plan, one on an Arch Linux box with the board on ssh did the work. Every step left an evidence directory and a handoff document.</p>
 <p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#6A7179">Times are commit times, Pacific, on the branch research-qualcomm-adreno-702-gpu</p>

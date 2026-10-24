@@ -1,0 +1,18 @@
+<section id="adreno-both" data-transition="fade" style="background:#141B2D;color:#F5F3EE;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#E0A030">Both languages, same metal</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1">The Adreno instructions from X_eTaL and from Mojo</h2>
+</div>
+<table style="font-size:26px;color:#C9D1DC;border:1px solid #33425F">
+<tr style="background:#1F2A44;color:#F5F3EE"><th style="width:22%;text-align:left;padding:14px 20px">Step</th><th style="width:39%;text-align:left">From X_eTaL, via OpenCL C</th><th style="width:39%;text-align:left">From Mojo, via SPIR-V</th></tr>
+<tr><td>compare</td><td style="font-family:'JuliaMono', 'JetBrains Mono', monospace;color:#8FD3D4">cmps.f.lt hr3.z, (0.5), r3.w</td><td style="font-family:'JuliaMono', 'JetBrains Mono', monospace;color:#8FD3D4">cmps.f.lt hr5.z, c9.z, r1.z</td></tr>
+<tr style="background:#1A2338"><td>mask</td><td style="font-family:'JuliaMono', 'JetBrains Mono', monospace;color:#8FD3D4">cov.u16f32 (even)r2.x, hr3.z</td><td style="font-family:'JuliaMono', 'JetBrains Mono', monospace;color:#8FD3D4">cov.u16f32 (even)r0.y, hr5.z</td></tr>
+<tr><td>threshold</td><td style="font-family:'JuliaMono', 'JetBrains Mono', monospace;color:#8FD3D4">mul.f r2.x, r3.w, r2.x</td><td style="font-family:'JuliaMono', 'JetBrains Mono', monospace;color:#8FD3D4">mul.f r0.y, r1.z, r0.y</td></tr>
+<tr style="background:#1A2338"><td>relu</td><td style="font-family:'JuliaMono', 'JetBrains Mono', monospace;color:#8FD3D4">max.f r3.w, r3.w, (0.0)</td><td style="font-family:'JuliaMono', 'JetBrains Mono', monospace;color:#8FD3D4">max.f r1.z, r1.z, (0.0)</td></tr>
+<tr><td>store</td><td style="font-family:'JuliaMono', 'JetBrains Mono', monospace;color:#8FD3D4">stg.u32 g[r5.x], r2.x, 1</td><td style="font-family:'JuliaMono', 'JetBrains Mono', monospace;color:#8FD3D4">stg.u32 g[r2.y], r0.y, 1</td></tr>
+<tr style="background:#1A2338"><td>store</td><td style="font-family:'JuliaMono', 'JetBrains Mono', monospace;color:#8FD3D4">stg.u32 g[r2.w], r3.w, 1</td><td style="font-family:'JuliaMono', 'JetBrains Mono', monospace;color:#8FD3D4">stg.u32 g[r0.z], r1.z, 1</td></tr>
+</table>
+<p style="font-size:27px;line-height:1.4;color:#C9D1DC;width:1664px">The same five operations, register names aside. One visible difference: X_eTaL folds the threshold 0.5 into the instruction as an immediate, while Mojo passes t as a kernel argument, so the Adreno reads it from constant register c9.z.</p>
+<p style="position:absolute;left:128px;bottom:64px;font-size:24px;color:#8A93A3">Mesa IR3_SHADER_DEBUG=disasm: xetal-native.disasm and unoq-mojo-spirv-20261023/debug/native.disasm; excerpts, scheduling flags omitted</p>
+<aside>This is the punch line. Two very different source languages, two different routes into the driver, and the Freedreno compiler produced the same instruction sequence for the activation itself. The surrounding code differs: the X_eTaL kernel also computes x from the range and carries an Int path.</aside>
+</section>
